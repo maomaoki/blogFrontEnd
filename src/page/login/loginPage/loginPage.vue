@@ -3,7 +3,7 @@
 	<div id="loginPage">
 		
 		<div class="bg-img">
-			<img src="../../assets/images/bg/login-bg.jpg" alt="">
+			<img src="../../../assets/images/bg/login-bg.jpg" alt="">
 		</div>
 		
 		<div class="login-content" :class="isRegisteredStatus?'is-registered':''">
@@ -21,8 +21,6 @@
 							name="normal_registered"
 							class="registered-form"
 							:rules="registeredRules"
-							@finish="registeredFinish"
-					
 					>
 						<a-form-item name="account">
 							<a-input
@@ -47,7 +45,7 @@
 						</a-form-item>
 						<a-form-item name="confirmPassword">
 							<a-input-password
-									v-model:value="registeredState.password"
+									v-model:value="registeredState.confirmPassword"
 									placeholder="请再次输入密码"
 							>
 								<template #prefix>
@@ -76,7 +74,7 @@
 									<UserOutlined class="site-form-item-icon"/>
 								</template>
 							</a-input>
-							<a-button type="primary"> 获取验证码</a-button>
+							<a-button type="primary" html-type="submit" @click="getEmailCode"> 获取验证码</a-button>
 						</a-form-item>
 						
 						
@@ -84,6 +82,7 @@
 							<a-button
 									type="primary"
 									html-type="submit"
+									@click="registeredFinish"
 							>
 								注册
 							</a-button>
@@ -174,8 +173,10 @@ import {reactive, ref} from 'vue';
 import {UserOutlined, LockOutlined} from '@ant-design/icons-vue';
 import {message} from "ant-design-vue";
 import type {Rule} from "ant-design-vue/es/form";
-import {userLoginUsingPost} from "@/api/userController.ts";
+import {userEmailCodeSendUsingPost, userEmailRegisterUsingPost, userLoginUsingPost} from "@/api/userController.ts";
 import {useUserStores} from "@/stores/userStores.ts";
+import emailCodeConstant from "@/constants/emailCodeConstant.ts";
+import {useRouter} from "vue-router";
 
 /**
  * 是否 为 注册
@@ -201,7 +202,6 @@ const registeredState = reactive<API.UserRegisterEmailDto>({
 	confirmPassword: "",
 	code: ""
 })
-
 
 
 /**
@@ -306,9 +306,9 @@ const registeredRules: Record<string, Rule[]> = {
 };
 
 const userStore = useUserStores();
-const {setUserInfo,getUserInfo} = userStore;
+const {setUserInfo} = userStore;
 
-
+const router = useRouter();
 
 /**
  *  登录提交事件
@@ -320,7 +320,7 @@ async function loginFinish() {
 	const userLoginVo = result.data;
 	
 	// 请求结果判断
-	if(userLoginVo.code !==0){
+	if (userLoginVo.code !== 0) {
 		// 说明有错误
 		message.error(userLoginVo.message);
 		return
@@ -331,21 +331,77 @@ async function loginFinish() {
 	setUserInfo(userLoginVo.data as API.UserVo);
 	// 清空输入框
 	
-	// 跳转页面
-	setTimeout(()=>{
-		console.log(getUserInfo())
-	},5000)
+	// 跳回登录前的页面
+	if (router.currentRoute.value.query.redirect) {
+		await router.push(router.currentRoute.value.query.redirect as string);
+	} else {
+		await router.push("/home");
+	}
 	
+}
+
+
+/**
+ *  获取 邮箱注册验证码
+ */
+async function getEmailCode() {
+	
+	console.log(1)
+	
+	// @ts-ignore
+	if (registeredState.account.length === 0 || registeredState.email.length === 0) {
+		message.error("账号或者邮箱不能为空");
+		return
+	}
+	
+	
+	// 发送 验证码
+	const result = await userEmailCodeSendUsingPost({
+		account: registeredState.account,
+		email: registeredState.email,
+		type: emailCodeConstant.REGISTER
+	});
+	
+	const emailCodeVo = result.data;
+	if (emailCodeVo.code !== 0) {
+		message.error("发送失败:" + emailCodeVo.message);
+		return
+	}
+	message.success("发送成功");
 }
 
 
 /**
  *  注册提交事件
  */
-function registeredFinish() {
-	console.log(1)
+async function registeredFinish() {
+	
+	const result = await userEmailRegisterUsingPost(registeredState);
+	const userRegisterVo = result.data;
+	if (userRegisterVo.code !== 0) {
+		message.error("注册失败:" + userRegisterVo.message);
+		return
+	}
+	
+	// 提示注册成功
+	message.success("注册成功,请登录吧");
+	
+	// 切换到登录页面
+	isRegisteredStatus.value = false;
+	
+	// 并且输入账号和密码
+	loginState.account = registeredState.account;
+	loginState.password = registeredState.password;
+	
+	// 清空注册输入框
+	registeredState.account = "";
+	registeredState.email = "";
+	registeredState.password = "";
+	registeredState.confirmPassword = "";
+	registeredState.code = "";
+	
+	
 }
-
 
 
 </script>
