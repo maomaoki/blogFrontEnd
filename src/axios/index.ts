@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const myAxios = axios.create({
-    baseURL:"http://127.0.0.1:9999",
     timeout: 60000,
-    withCredentials: true,
+    withCredentials:true
 })
 
 // 全局请求拦截器

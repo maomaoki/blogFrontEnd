@@ -3,7 +3,7 @@
 	<div id="loginPage">
 		
 		<div class="bg-img">
-			<img src="../../../assets/images/bg/login-bg.jpg" alt="">
+			<img src="../../assets/images/bg/login-bg.jpg" alt="">
 		</div>
 		
 		<div class="login-content" :class="isRegisteredStatus?'is-registered':''">
@@ -335,7 +335,7 @@ async function loginFinish() {
 	if (router.currentRoute.value.query.redirect) {
 		await router.push(router.currentRoute.value.query.redirect as string);
 	} else {
-		await router.push("/home");
+		await router.push("/admin");
 	}
 	
 }

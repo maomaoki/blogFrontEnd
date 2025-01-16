@@ -67,7 +67,7 @@ export async function adminUserQueryUsingPost(
   body: API.AdminUserQueryDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponsePageUserVo_>("/api/user/admin/list/page", {
+  return request<API.BaseResponsePageUserPageVo_>("/api/user/admin/list/page", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

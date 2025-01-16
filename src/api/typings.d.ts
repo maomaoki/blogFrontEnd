@@ -50,9 +50,9 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponsePageUserVo_ = {
+  type BaseResponsePageUserPageVo_ = {
     code?: number;
-    data?: PageUserVo_;
+    data?: PageUserPageVo_;
     message?: string;
   };
 
@@ -78,10 +78,10 @@ declare namespace API {
     id?: number;
   };
 
-  type PageUserVo_ = {
+  type PageUserPageVo_ = {
     current?: number;
     pages?: number;
-    records?: UserVo[];
+    records?: UserPageVo[];
     size?: number;
     total?: number;
   };
@@ -114,6 +114,22 @@ declare namespace API {
   type UserLoginDto = {
     account?: string;
     password?: string;
+  };
+
+  type UserPageVo = {
+    createTime?: string;
+    id?: number;
+    updateTime?: string;
+    userAccount?: string;
+    userAvatar?: string;
+    userEmail?: string;
+    userName?: string;
+    userPhone?: string;
+    userProfile?: string;
+    userRegistrationSource?: string;
+    userRole?: string;
+    userStatus?: number;
+    userTags?: string;
   };
 
   type UserRegisterDto = {

@@ -7,16 +7,26 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
+    ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
+    ADivider: typeof import('ant-design-vue/es')['Divider']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
+    AImage: typeof import('ant-design-vue/es')['Image']
     AInput: typeof import('ant-design-vue/es')['Input']
     AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
+    AMenu: typeof import('ant-design-vue/es')['Menu']
+    ATable: typeof import('ant-design-vue/es')['Table']
+    ATag: typeof import('ant-design-vue/es')['Tag']
+    ATooltip: typeof import('ant-design-vue/es')['Tooltip']
+    DownOutlined: typeof import('@ant-design/icons-vue')['DownOutlined']
     HomeOutlined: typeof import('@ant-design/icons-vue')['HomeOutlined']
     LockOutlined: typeof import('@ant-design/icons-vue')['LockOutlined']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SmileOutlined: typeof import('@ant-design/icons-vue')['SmileOutlined']
     StepBackwardOutlined: typeof import('@ant-design/icons-vue')['StepBackwardOutlined']
     UserOutlined: typeof import('@ant-design/icons-vue')['UserOutlined']
   }
