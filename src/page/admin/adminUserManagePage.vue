@@ -2,13 +2,75 @@
 	<div id="adminUserManagePage">
 		
 		<!--上面是 搜索框-->
+		<div class="ym-search-bar">
+			<a-form
+					class="ym-form"
+					:model="searchParams"
+					@finish="doSearch">
+				<a-form-item label="账号">
+					<a-input v-model:value="searchParams.userAccount" placeholder="输入账号"/>
+				</a-form-item>
+				<a-form-item label="用户昵称">
+					<a-input v-model:value="searchParams.userName" placeholder="输入用户昵称"/>
+				</a-form-item>
+				<a-form-item label="用户标签">
+					<a-select
+							v-model:value="userTagsSelect"
+							mode="tags"
+							style="width: 120px"
+							placeholder="请输入用户标签"
+							:max-tag-count=3
+							:options="userTagsOptions"
+					></a-select>
+				</a-form-item>
+				<a-form-item label="用户角色">
+					<a-space>
+						<a-select
+								v-model:value="userRoleSelect"
+								mode="combobox"
+								:allowClear="true"
+								style="width: 120px"
+								placeholder="请输入角色"
+								:options="userRoleOptions"
+						></a-select>
+					</a-space>
+				</a-form-item>
+				<a-form-item label="注册方式">
+					<a-input v-model:value="searchParams.userRegistrationSource" placeholder="请输入注册方式"/>
+				</a-form-item>
+				<a-form-item label="注册时间">
+					<a-range-picker
+							style="width: 400px"
+							show-time
+							format="YYYY-MM-DD HH:mm:ss"
+							:presets="rangePresets"
+							@change="onRangeChange"
+					/>
+				</a-form-item>
+				<a-form-item class="btn">
+					<a-button type="primary" html-type="submit">搜索</a-button>
+					<a-button type="primary" danger @click="doReset">重置</a-button>
+				</a-form-item>
+			</a-form>
+		
+		</div>
 		
 		<!--下面是表格-->
 		<div class="ym-table">
+			
+			<!--表头提示-->
+			<div class="table-header">
+				<div class="table-title">用户管理</div>
+				<div class="table-add">
+					<a-button type="primary">新增</a-button>
+				</div>
+			</div>
+			
+			<!--表格数据-->
 			<a-table
 					rowKey="id"
+					class="ym-table-content"
 					:row-selection="rowSelection"
-					class="ym-table"
 					:columns="columns"
 					:data-source="dataList"
 					:scroll="{ x: 1500 }"
@@ -107,24 +169,28 @@
 					<!--操作按钮-->
 					<template v-else-if="column.key === 'operation'">
 						<div class="operation">
-							<a-button type="primary">编辑</a-button>
-							<a-button type="primary" danger>删除</a-button>
+							<a-button type="primary" @click="doEdit(record.id)">编辑</a-button>
+							<a-button type="primary" danger @click="openDelete(record.id)">删除</a-button>
 						</div>
 					</template>
 				</template>
 			</a-table>
 		</div>
-	
-	
+		
 	</div>
+	
+	<!--编辑用户信息-->
+	<admin-edit-user-info ref="editUserInfoRef"/>
 </template>
 <script setup lang="ts">
-import {CopyOutlined} from '@ant-design/icons-vue';
-import {computed, onMounted, reactive, ref} from "vue";
-import {adminUserQueryUsingPost} from "@/api/userController.ts";
-import {message, type TableProps} from "ant-design-vue";
+import {CopyOutlined, ExclamationCircleOutlined} from '@ant-design/icons-vue';
+import {computed, createVNode, onMounted, reactive, ref} from "vue";
+import {adminDeleteUserUsingPost, adminUserQueryUsingPost} from "@/api/userController.ts";
+import {message, Modal, type TableProps} from "ant-design-vue";
 import type {TableColumnsType} from 'ant-design-vue';
 import dayjs from "dayjs";
+import type {RangeValue} from "ant-design-vue/es/vc-picker/interface";
+import AdminEditUserInfo from "@/components/admin/adminEditUserInfo.vue";
 
 /**
  *  表格列
@@ -196,6 +262,10 @@ const columns = ref<TableColumnsType>([
 		width: 100,
 		minWidth: 100,
 		maxWidth: 500,
+		// 默认 升序
+		defaultSortOrder:"ascend",
+		// 排序
+		sorter: (a, b) => dayjs(a.createTime).valueOf() - dayjs(b.createTime).valueOf(),
 	},
 	{
 		title: '更新时间',
@@ -205,6 +275,10 @@ const columns = ref<TableColumnsType>([
 		width: 100,
 		minWidth: 100,
 		maxWidth: 500,
+		// 默认 升序
+		defaultSortOrder:"ascend",
+		// 排序
+		sorter: (a, b) => dayjs(a.updateTime).valueOf() - dayjs(b.updateTime).valueOf(),
 	},
 	{
 		title: '操作',
@@ -275,8 +349,110 @@ const searchParams = reactive<API.AdminUserQueryDto>({
 	pageSize: 5,
 })
 
-// 获取数据
+// 日期选着
+const rangePresets = ref([
+	{label: '一天前', value: [dayjs().add(-1, 'd'), dayjs()]},
+	{label: '一周前', value: [dayjs().add(-7, 'd'), dayjs()]},
+	{label: '一个月前', value: [dayjs().add(-30, 'd'), dayjs()]},
+	{label: '三个月前', value: [dayjs().add(-90, 'd'), dayjs()]},
+]);
+// @ts-ignore
+const onRangeChange = (dates: RangeValue, dateStrings: string[]) => {
+	if (dates) {
+		searchParams.startTime = dateStrings[0];
+		searchParams.endTime = dateStrings[1];
+	} else {
+		searchParams.startTime = "";
+		searchParams.endTime = "";
+	}
+};
+
+
+// 分页参数
+const pagination = computed(() => {
+	return {
+		current: searchParams.current ?? 1,
+		pageSize: searchParams.pageSize ?? 5,
+		total: total.value,
+		showSizeChanger: true,
+		showTotal: (total: number) => `共 ${total} 条`,
+	}
+})
+
+// 表格变化处理
+const doTableChange = (page: any) => {
+	searchParams.current = page.current
+	searchParams.pageSize = page.pageSize
+	fetchData()
+}
+
+
+/**
+ * 标签 默认分组
+ */
+const userTagsOptions = [
+	{
+		value: "Java"
+	},
+	{
+		value: "Python"
+	},
+	{
+		value: "Golang"
+	}
+]
+
+/**
+ * 标签 数据
+ */
+const userTagsSelect = ref<string[]>([])
+
+
+/**
+ * 角色 默认分组
+ */
+const userRoleOptions = [
+	{
+		value: "admin",
+		label: "管理员"
+	},
+	{
+		value: "user",
+		label: "普通用户"
+	},
+	{
+		value: "blackUser",
+		label: "黑名单"
+	}
+]
+
+/**
+ * 角色 数据
+ */
+const userRoleSelect = ref<string>()
+
+
+/**
+ * 获取数据
+ */
 const fetchData = async () => {
+	
+	// 一些 操作
+	// 将tags 序列化
+	if (userTagsSelect.value) {
+		searchParams.userTags = JSON.stringify(userTagsSelect.value)
+	} else {
+		searchParams.userTags = ""
+	}
+	
+	// 角色
+	if (userRoleSelect.value) {
+		searchParams.userRole = userRoleSelect.value
+	} else {
+		searchParams.userRole = ""
+	}
+	
+	
 	const result = await adminUserQueryUsingPost({
 		...searchParams
 	})
@@ -288,7 +464,8 @@ const fetchData = async () => {
 	
 	if (result.data.data) {
 		dataList.value = result.data.data.records ?? [];
-		total.value = result.data.data.total ?? 0;
+		// @ts-ignore
+		total.value = Number.parseInt(result.data.data.total)?? 0;
 		message.success("请求成功");
 	} else {
 		message.error("请求失败:" + result.data.message);
@@ -297,22 +474,78 @@ const fetchData = async () => {
 	
 }
 
-// 分页参数
-const pagination = computed(() => {
-	return {
-		current: searchParams.current ?? 1,
-		pageSize: searchParams.pageSize ?? 5,
-		total: total.value,
-		showSizeChanger: true,
-		showTotal: (total:number) => `共 ${total} 条`,
-	}
-})
 
-// 表格变化处理
-const doTableChange = (page: any) => {
-	searchParams.current = page.current
-	searchParams.pageSize = page.pageSize
+/**
+ * 搜索 -获取数据
+ */
+const doSearch = () => {
+	
+	// 重置页码
+	searchParams.current = 1
 	fetchData()
+}
+
+/**
+ *  重置
+ */
+const doReset = () => {
+	searchParams.current = 1
+	searchParams.pageSize = 5
+	searchParams.userAccount = ""
+	searchParams.userName = ""
+	searchParams.userRegistrationSource = ""
+	searchParams.userRole = ""
+	searchParams.startTime = ""
+	searchParams.endTime = ""
+	userTagsSelect.value = []
+	userRoleSelect.value = ""
+	fetchData()
+}
+
+/**
+ * 打开删除 提示语
+ * @param id
+ */
+const openDelete = (id: number) => {
+	Modal.confirm({
+		title: '你确定要删除此用户吗?',
+		icon: createVNode(ExclamationCircleOutlined),
+		content: '用户id:' + id,
+		onOk() {
+			doDelete(id);
+		}
+	});
+};
+
+/**
+ * 删除
+ */
+const doDelete = async (id: number) => {
+	
+	const result = await adminDeleteUserUsingPost({
+		id
+	})
+	if (result.data.code !== 0) {
+		message.error("删除失败:" + result.data.message);
+		return;
+	}
+	
+	message.success("删除成功");
+	await fetchData()
+}
+
+
+/**
+ *  弹窗 ref
+ */
+const editUserInfoRef = ref()
+
+
+/**
+ *  编辑
+ */
+const doEdit = async (id: number) => {
+	editUserInfoRef.value.openModal(id);
 }
 
 
@@ -328,10 +561,67 @@ onMounted(() => {
 <style lang="less">
 #adminUserManagePage {
 	
-	.ym-table {
+	.ym-search-bar {
 		width: 100%;
 		overflow: hidden;
 		background: var(--admin_content_bg_color);
+		padding: 20px 15px;
+		border-radius: 10px;
+		margin-top: 20px;
+		margin-bottom: 60px;
+		
+		.ym-form {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			
+			.ant-form-item {
+				margin: 0 15px 20px 0;
+			}
+			
+			.btn {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				
+				button {
+					margin-right: 15px;
+				}
+			}
+			
+		}
+		
+	}
+	
+	.ym-table {
+		
+		width: 100%;
+		overflow: hidden;
+		background: var(--admin_content_bg_color);
+		border-radius: 10px;
+		
+		
+		.table-header {
+			width: 100%;
+			
+			.table-title {
+				width: 100%;
+				padding: 15px 15px;
+				border-bottom: 1px solid var(--admin_line_bg_color);
+				font-size: 21px;
+			}
+			
+			.table-add {
+				width: 100%;
+				padding: 15px 15px;
+			}
+			
+		}
+		
+		
+		.ym-table-content {
+			padding: 10px 15px;
+		}
 		
 		.ant-table-tbody {
 			background: var(--admin_content_bg_color);
