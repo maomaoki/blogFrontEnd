@@ -101,6 +101,14 @@
 						
 						<span v-else style="text-align: center">null</span>
 					</template>
+					<!--账号-->
+					<template v-if="column.dataIndex === 'userName'">
+						<a-tooltip>
+							<div style="text-align: center">{{ record.userName }}</div>
+							<template #title>{{ record.userName }}</template>
+						</a-tooltip>
+					
+					</template>
 					<!--邮箱-->
 					<template v-if="column.dataIndex === 'userEmail'">
 						
@@ -114,7 +122,13 @@
 					</template>
 					<!--头像-->
 					<template v-if="column.dataIndex === 'userAvatar'">
-						<a-image v-if="record.userAvatar" :src="record.userAvatar" :width="80"/>
+						<div v-if="record.userAvatar" style="text-align: center">
+							<a-image
+									style="text-align: center"
+									:src="record.userAvatar"
+									:width="80"/>
+						</div>
+						
 						<div v-else style="text-align: center">null</div>
 					</template>
 					<!--标签-->
@@ -661,6 +675,8 @@ onMounted(() => {
 		
 		.tags {
 			display: flex;
+			align-items: center;
+			justify-content: center;
 			flex-wrap: wrap;
 			
 			span {

@@ -9,14 +9,44 @@ import {message} from "ant-design-vue";
 const adminRouters: RouteRecordRaw[] = [
     {
         path: '/admin',
-        name: '首页',
+        name: 'admin',
+        meta: {
+            title: "admin"
+        },
         component: () => import('@/page/admin/adminPage.vue'),
-        redirect: "/admin/userManage",
+        redirect: "/admin/home",
         children: [
             {
-                path: '/admin/userManage', // 用户管理
+                path: '/admin/home',
+                name: '首页',
+                meta: {
+                    title: "首页"
+                },
+                component: () => import('@/page/admin/adminHomePage.vue'),
+            },
+            {
+                path: '/admin/userManage',
                 name: '用户管理',
+                meta: {
+                    title: "用户管理"
+                },
                 component: () => import('@/page/admin/adminUserManagePage.vue'),
+            },
+            {
+                path: '/admin/adminArticleManage',
+                name: '文章管理',
+                meta: {
+                    title: "文章管理"
+                },
+                component: () => import('@/page/admin/adminArticleManagePage.vue'),
+            },
+            {
+                path: '/admin/adminUserInfo',
+                name: '个人信息',
+                meta: {
+                    title: "个人信息"
+                },
+                component: () => import('@/page/admin/adminUserInfoPage.vue'),
             }
         ],
         // @ts-ignore

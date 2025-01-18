@@ -1,7 +1,6 @@
 <template>
 	<div id="adminPage" :class="collapsed?'collapsed':''">
 		
-		
 		<!--左边-->
 		<div class="left">
 			<!--上面是头像显示显示-->
