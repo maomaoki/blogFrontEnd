@@ -62,7 +62,7 @@
 			<div class="table-header">
 				<div class="table-title">用户管理</div>
 				<div class="table-add">
-					<a-button type="primary">新增</a-button>
+					<a-button @click="doAdd" type="primary">新增</a-button>
 				</div>
 			</div>
 			
@@ -176,11 +176,19 @@
 				</template>
 			</a-table>
 		</div>
-		
+	
 	</div>
 	
 	<!--编辑用户信息-->
-	<admin-edit-user-info ref="editUserInfoRef"/>
+	<admin-edit-user-info
+			:do-refresh="doReset"
+			ref="editUserInfoRef"/>
+	
+	
+	<!--添加用户信息-->
+	<admin-add-user
+			ref="addUserRef"
+			:do-refresh="doReset"/>
 </template>
 <script setup lang="ts">
 import {CopyOutlined, ExclamationCircleOutlined} from '@ant-design/icons-vue';
@@ -191,6 +199,7 @@ import type {TableColumnsType} from 'ant-design-vue';
 import dayjs from "dayjs";
 import type {RangeValue} from "ant-design-vue/es/vc-picker/interface";
 import AdminEditUserInfo from "@/components/admin/adminEditUserInfo.vue";
+import AdminAddUser from "@/components/admin/adminAddUser.vue";
 
 /**
  *  表格列
@@ -263,7 +272,7 @@ const columns = ref<TableColumnsType>([
 		minWidth: 100,
 		maxWidth: 500,
 		// 默认 升序
-		defaultSortOrder:"ascend",
+		defaultSortOrder: "ascend",
 		// 排序
 		sorter: (a, b) => dayjs(a.createTime).valueOf() - dayjs(b.createTime).valueOf(),
 	},
@@ -276,7 +285,7 @@ const columns = ref<TableColumnsType>([
 		minWidth: 100,
 		maxWidth: 500,
 		// 默认 升序
-		defaultSortOrder:"ascend",
+		defaultSortOrder: "ascend",
 		// 排序
 		sorter: (a, b) => dayjs(a.updateTime).valueOf() - dayjs(b.updateTime).valueOf(),
 	},
@@ -465,7 +474,7 @@ const fetchData = async () => {
 	if (result.data.data) {
 		dataList.value = result.data.data.records ?? [];
 		// @ts-ignore
-		total.value = Number.parseInt(result.data.data.total)?? 0;
+		total.value = Number.parseInt(result.data.data.total) ?? 0;
 		message.success("请求成功");
 	} else {
 		message.error("请求失败:" + result.data.message);
@@ -531,12 +540,13 @@ const doDelete = async (id: number) => {
 	}
 	
 	message.success("删除成功");
-	await fetchData()
+	// 数据 格式化一下
+	await doReset()
 }
 
 
 /**
- *  弹窗 ref
+ *  编辑弹窗 ref
  */
 const editUserInfoRef = ref()
 
@@ -546,6 +556,20 @@ const editUserInfoRef = ref()
  */
 const doEdit = async (id: number) => {
 	editUserInfoRef.value.openModal(id);
+}
+
+
+/**
+ *  添加弹窗 ref
+ */
+const addUserRef = ref()
+
+
+/**
+ *  添加
+ */
+const doAdd = async () => {
+	addUserRef.value.openModal();
 }
 
 

@@ -165,6 +165,7 @@ declare namespace API {
     userProfile?: string;
     userRegistrationSource?: string;
     userRole?: string;
+    userStatus?: number;
     userTags?: string;
   };
 }
