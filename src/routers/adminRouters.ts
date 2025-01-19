@@ -47,7 +47,15 @@ const adminRouters: RouteRecordRaw[] = [
                     title: "个人信息"
                 },
                 component: () => import('@/page/admin/adminUserInfoPage.vue'),
-            }
+            },
+            {
+                path: '/admin/userEdit',
+                name: '修改信息',
+                meta: {
+                    title: "修改信息"
+                },
+                component: () => import('@/page/admin/adminEditUserInfoPage.vue'),
+            },
         ],
         // @ts-ignore
         beforeEnter: async (to, from) => {

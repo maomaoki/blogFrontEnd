@@ -6,6 +6,9 @@
     --admin_active_font_color:#ffffff;
 
     --admin_content_bg_color: #ffffff;
+    --admin_link_color: rgba(22, 93, 255, 0.8);
+    --admin_link_hover_color:rgba(22, 93, 255, 100);
+
 }
 
 .dark {

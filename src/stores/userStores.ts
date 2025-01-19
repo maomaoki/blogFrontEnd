@@ -16,8 +16,8 @@ export const useUserStores = defineStore('user', () => {
         userInfo.value = user
     }
 
-    const getUserInfo = (): API.UserVo => {
-        return userInfo.value
+    const getUserInfo = () => {
+        return userInfo.value;
     }
 
     return {
