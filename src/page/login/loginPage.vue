@@ -328,7 +328,7 @@ async function loginFinish() {
 	
 	message.success("登陆成功")
 	// 存一份数据到userStore
-	setUserInfo(userLoginVo.data as API.UserVo);
+	await setUserInfo();
 	// 清空输入框
 	
 	// 跳回登录前的页面

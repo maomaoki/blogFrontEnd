@@ -60,8 +60,11 @@
 					<!--头像-->
 					<div class="userAvatar-down-menus">
 						<a-button type="primary" v-if="!userStore.getUserInfo().id">登录</a-button>
-						<a-dropdown v-else>
-							<a-avatar :size="64" :src="userStore.getUserInfo().userAvatar">
+						<a-dropdown
+								placement="bottom"
+								:arrow="{ pointAtCenter: true }"
+								v-else>
+							<a-avatar :size="48" :src="userStore.getUserInfo().userAvatar">
 								<template #icon>
 									<UserOutlined/>
 								</template>
@@ -69,10 +72,14 @@
 							<template #overlay>
 								<a-menu>
 									<a-menu-item>
-										<a href="/admin">后台管理</a>
+										<a href="/admin">
+											<AppstoreOutlined style="font-size: 14px; margin-right: 5px"/>
+											后台管理
+										</a>
 									</a-menu-item>
-									<a-menu-item>
-										<span @click="logout">注销</span>
+									<a-menu-item @click="logout">
+										<LoginOutlined style="font-size: 14px; margin-right: 5px"/>
+										<span>注销</span>
 									</a-menu-item>
 								</a-menu>
 							</template>
@@ -126,32 +133,16 @@ import {
 	HomeOutlined,
 	MenuUnfoldOutlined,
 	MenuFoldOutlined,
-	HomeTwoTone
+	HomeTwoTone,
+	LoginOutlined,
+	AppstoreOutlined
 } from '@ant-design/icons-vue';
-import {type ItemType, type MenuProps, message} from 'ant-design-vue';
+import {type ItemType, message} from 'ant-design-vue';
 import {useRoute, useRouter} from "vue-router";
 import {useUserStores} from "@/stores/userStores.ts";
-import {getLoginUserUsingGet, userLogoutUsingPost} from "@/api/userController.ts";
+import {userLogoutUsingPost} from "@/api/userController.ts";
+import checkAdmin from "@/auth/checkAdmin.ts";
 
-
-/**
- *  这里模拟请求获取个人信息
- */
-async function getUserLogin() {
-	const result = await getLoginUserUsingGet()
-	if (result.data.code !== 0) {
-		message.error("未登录");
-		await router.push("/login")
-		return;
-	}
-	
-	if (result.data.data) {
-		userStore.setUserInfo(result.data.data)
-	}
-	
-}
-
-getUserLogin()
 
 // 登录信息
 const userStore = useUserStores();
@@ -160,43 +151,71 @@ const userStore = useUserStores();
 /**
  * 注销
  */
-async function logout(){
+async function logout() {
 	
 	const result = await userLogoutUsingPost()
 	if (result.data.code !== 0) {
-		 message.error("注销失败:" + result.data.msg);
-		 return;
+		message.error("注销失败:" + result.data.message);
+		return;
 	}
 	message.success("注销成功");
+	
+	// 1. 需要清空一些东西
+	localStorage.removeItem("tags_list");
+	
+	
 	await router.push("/login")
 }
 
+let items = ref([
+	{
+		key: "/admin/home",
+		icon: () => h(HomeOutlined),
+		label: "主页",
+		title: "主页",
+		isAdmin: false,
+	},
+	{
+		key: "/admin/userManage",
+		icon: () => h(UserOutlined),
+		label: "用户管理",
+		title: "用户管理",
+		isAdmin: true,
+	},
+	{
+		key: "/admin/adminArticleManage",
+		icon: () => h(BookOutlined),
+		label: "文章管理",
+		title: "文章管理",
+		isAdmin: true,
+	},
+	{
+		key: "/admin/adminUserInfo",
+		icon: () => h(WechatOutlined),
+		label: "个人信息",
+		title: "个人信息",
+		isAdmin: false,
+	}
+])
 
 
-
-
-function getItem(
-		label: VueElement | string,
-		key: string,
-		icon?: any,
-		children?: ItemType[] | null,
-		path?: string
-): ItemType {
-	return {
-		key,
-		icon,
-		children,
-		label,
-		path,
-	} as ItemType;
+/**
+ * 这里 过滤菜单
+ */
+async function filterRoleMenus() {
+	// 校验
+	const isAdmin = await checkAdmin();
+	if (isAdmin) {
+		return
+	} else {
+		items.value = items.value.filter((item) => {
+			return !item.isAdmin;
+		})
+	}
 }
 
-const items: ItemType[] = reactive([
-	getItem('主页', 'sub1', () => h(HomeOutlined), null, "/admin/home"),
-	getItem('用户管理', 'sub2', () => h(UserOutlined), null, "/admin/userManage"),
-	getItem('文章管理', 'sub3', () => h(BookOutlined), null, "/admin/adminArticleManage"),
-	getItem('个人信息', 'sub4', () => h(WechatOutlined), null, "/admin/adminUserInfo"),
-]);
+filterRoleMenus()
+
 
 /**
  * todo 这里有bug
@@ -208,8 +227,8 @@ const selectedKeys = ref<string[]>(['sub1']);
  * @param e
  */
 // @ts-ignore
-function onClick(e) {
-	gotoRouter(e.item.path)
+function onClick({key}: { key: string }) {
+	gotoRouter(key)
 }
 
 
@@ -255,17 +274,11 @@ const tags = string ? JSON.parse(string as string) : [
 ];
 const routerTagList = ref<routerTagDataType[]>(tags)
 
-// 监听路由变化
+// 监听路由变化( todo如果是没有权限进入路由就不会变化 )
 watch(() => route.path, () => {
 	
-	// 这里可以判断一下当前路由 跟 菜单
-	items.forEach(item => {
-		//@ts-ignore
-		if (item.path === route.path) {
-			//@ts-ignore
-			selectedKeys.value = [item.key as string]
-		}
-	})
+	// 选中路由
+	selectedKeys.value = [route.path]
 	
 	// 面包屑
 	route.matched.forEach((item) => {
@@ -456,6 +469,7 @@ function setTags() {
 				}
 				
 				.userAvatar-down-menus {
+				
 				
 				}
 			}

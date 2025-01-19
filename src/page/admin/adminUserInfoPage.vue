@@ -84,7 +84,10 @@
 					</div>
 					<div class="info">
 						<span>用户角色</span>
-						<span>{{ userInfo.userRole }}</span>
+						<span>{{
+								// @ts-ignore
+								userRoleConstants[userInfo.userRole as string]
+							}}</span>
 					</div>
 					<div class="info">
 						<span>注册时间</span>
@@ -104,6 +107,7 @@ import {onMounted, ref} from "vue";
 import {getLoginUserUsingGet} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
+import userRoleConstants from "@/constants/userRoleConstants.ts";
 
 /**
  *  用户 个人 信息
@@ -208,6 +212,7 @@ function jsonParse(str: string) {
 		
 		.edit-card {
 			padding: 10px 0;
+			
 			.edit-title {
 				width: 100%;
 				padding: 10px 15px;

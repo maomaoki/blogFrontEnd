@@ -133,25 +133,6 @@ import {useUserStores} from "@/stores/userStores.ts";
 import {getLoginUserUsingGet, userLogoutUsingPost} from "@/api/userController.ts";
 
 
-/**
- *  这里模拟请求获取个人信息
- */
-async function getUserLogin() {
-	const result = await getLoginUserUsingGet()
-	if (result.data.code !== 0) {
-		message.error("未登录");
-		await router.push("/login")
-		return;
-	}
-	
-	if (result.data.data) {
-		userStore.setUserInfo(result.data.data)
-	}
-	
-}
-
-getUserLogin()
-
 // 登录信息
 const userStore = useUserStores();
 
@@ -159,19 +140,16 @@ const userStore = useUserStores();
 /**
  * 注销
  */
-async function logout(){
+async function logout() {
 	
 	const result = await userLogoutUsingPost()
 	if (result.data.code !== 0) {
-		 message.error("注销失败:" + result.data.msg);
-		 return;
+		message.error("注销失败:" + result.data.message);
+		return;
 	}
 	message.success("注销成功");
 	await router.push("/login")
 }
-
-
-
 
 
 function getItem(
