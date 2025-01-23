@@ -1,4 +1,22 @@
 declare namespace API {
+  type AdminPictureQueryDto = {
+    category?: string;
+    current?: number;
+    endTime?: string;
+    introduction?: string;
+    name?: string;
+    pageSize?: number;
+    picFormat?: string;
+    picSize?: number;
+    saveWay?: string;
+    sortField?: string;
+    sortOrder?: string;
+    startTime?: string;
+    tags?: string;
+    useUserId?: number;
+    userId?: number;
+  };
+
   type AdminUserAddDto = {
     userAccount?: string;
     userAvatar?: string;
@@ -50,6 +68,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePagePictureVo_ = {
+    code?: number;
+    data?: PagePictureVo_;
+    message?: string;
+  };
+
   type BaseResponsePageUserPageVo_ = {
     code?: number;
     data?: PageUserPageVo_;
@@ -78,12 +102,45 @@ declare namespace API {
     id?: number;
   };
 
+  type PagePictureVo_ = {
+    current?: number;
+    pages?: number;
+    records?: PictureVo[];
+    size?: number;
+    total?: number;
+  };
+
   type PageUserPageVo_ = {
     current?: number;
     pages?: number;
     records?: UserPageVo[];
     size?: number;
     total?: number;
+  };
+
+  type pictureUploadUsingPOSTParams = {
+    category?: string;
+    introduction?: string;
+    tags?: string;
+  };
+
+  type PictureVo = {
+    category?: string;
+    createTime?: string;
+    id?: number;
+    introduction?: string;
+    name?: string;
+    picFormat?: string;
+    picHeight?: number;
+    picScale?: number;
+    picSize?: number;
+    picWidth?: number;
+    saveUrl?: string;
+    saveWay?: string;
+    tags?: string;
+    url?: string;
+    useUserId?: number;
+    userId?: number;
   };
 
   type User = {
@@ -165,7 +222,6 @@ declare namespace API {
     userProfile?: string;
     userRegistrationSource?: string;
     userRole?: string;
-    userStatus?: number;
     userTags?: string;
   };
 }

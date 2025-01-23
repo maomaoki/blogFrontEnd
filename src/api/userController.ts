@@ -62,7 +62,7 @@ export async function adminGetUserVoByIdUsingPost(
   });
 }
 
-/** AdminUserQuery POST /api/user/admin/list/page */
+/** adminUserQuery POST /api/user/admin/list/page */
 export async function adminUserQueryUsingPost(
   body: API.AdminUserQueryDto,
   options?: { [key: string]: any }
