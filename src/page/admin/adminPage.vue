@@ -135,8 +135,7 @@ import {
 	MenuFoldOutlined,
 	HomeTwoTone,
 	LoginOutlined,
-	AppstoreOutlined,
-	PictureOutlined
+	AppstoreOutlined
 } from '@ant-design/icons-vue';
 import {type ItemType, message} from 'ant-design-vue';
 import {useRoute, useRouter} from "vue-router";
@@ -181,13 +180,6 @@ let items = ref([
 		icon: () => h(UserOutlined),
 		label: "用户管理",
 		title: "用户管理",
-		isAdmin: true,
-	},
-	{
-		key: "/admin/pictureManage",
-		icon: () => h(PictureOutlined),
-		label: "图片管理",
-		title: "图片管理",
 		isAdmin: true,
 	},
 	{

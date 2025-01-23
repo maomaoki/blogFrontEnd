@@ -32,15 +32,6 @@ const adminRouters: RouteRecordRaw[] = [
                 component: () => import('@/page/admin/adminUserManagePage.vue'),
             },
             {
-                path: '/admin/pictureManage',
-                name: '图片管理',
-                meta: {
-                    title: "图片管理",
-                    authAdmin: true
-                },
-                component: () => import('@/page/admin/adminPictureManagePage.vue'),
-            },
-            {
                 path: '/admin/adminArticleManage',
                 name: '文章管理',
                 meta: {
