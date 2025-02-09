@@ -14,24 +14,16 @@
 						
 						<a-form-item label="头像">
 							<!--头像	-->
-							<a-upload
-									class="avatar-uploader"
-									v-model:file-list="fileList"
-									name="avatar"
-									list-type="picture-card"
-									:show-upload-list="false"
-									:before-upload="beforeUpload"
-									@change="handleChange"
+							<Ym-avatar
+									:imageData="imageData"
+									:loading="uploadLoading"
+									:beforeUpload="avatarBeforeUpload"
+									:upload="avatarUpload"
+									:clear-data="clearData"
 							>
-								<img v-if="userInfo.userAvatar"
-								     :src="userInfo.userAvatar"
-								     alt="avatar"/>
-								<div v-else>
-									<loading-outlined v-if="loading"></loading-outlined>
-									<plus-outlined v-else></plus-outlined>
-									<div class="ant-upload-text">Upload</div>
-								</div>
-							</a-upload>
+							
+							</Ym-avatar>
+						
 						</a-form-item>
 						
 						<a-form-item label="用户昵称">
@@ -46,9 +38,9 @@
 						<a-form-item label="用户简介">
 							<!--简介-->
 							<a-textarea
-									v-model:value="userInfo.userProfile"
+									v-model:value="userInfo.userIntroduction"
 									placeholder="用户简介"
-									:rows="4"/>
+									:auto-size="{ minRows: 5, maxRows: 5 }"/>
 						</a-form-item>
 						
 						<a-form-item label="用户标签">
@@ -73,6 +65,26 @@
 								New Tag
 							</a-tag>
 						</a-form-item>
+						
+						<a-form-item label="性别">
+							<!--性别-->
+							<a-select
+									ref="select"
+									v-model:value="userGenderSelect"
+									style="width: 120px"
+									@change="userGenderHandleChange"
+							>
+								<a-select-option :value="0">小哥哥</a-select-option>
+								<a-select-option :value="1">小姐姐</a-select-option>
+							</a-select>
+						</a-form-item>
+						
+						<a-form-item label="年龄">
+							<!--年龄-->
+							<a-input-number id="inputNumber"
+							                v-model:value="userInfo.userAge"
+							                :min="1" :max="99"/>
+						</a-form-item>
 					</a-form>
 				</div>
 				
@@ -88,11 +100,15 @@
 </template>
 
 <script setup lang="ts">
-import {LoadingOutlined, PlusOutlined} from '@ant-design/icons-vue';
+import {PlusOutlined} from '@ant-design/icons-vue';
 import {nextTick, onMounted, reactive, ref} from "vue";
-import {getLoginUserUsingGet, userUpdateUsingPost} from "@/api/userController.ts";
+import {userEditUsingPost, userGetLoginInfoUsingGet} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
+import YmAvatar from "@/components/ym/YmAvatar/YmAvatar.vue";
+import PictureConstant from "@/constants/pictureConstant.ts";
+import {uploadPictureUsingPost} from "@/api/pictureController.ts";
+import {useUserStores} from "@/stores/userStores.ts";
 
 /**
  *  用户 个人 信息
@@ -120,16 +136,48 @@ function jsonParse(str: string) {
 }
 
 
-/**
- * 头像数据
- */
-const loading = ref<boolean>(false)
-const fileList = ref([]);
+// 上传loading
+const uploadLoading = ref<boolean>(false)
 
-function beforeUpload() {
+// 上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。
+function avatarBeforeUpload(file: File) {
+	if (file.size > 1024 * 1024 * 3) {
+		message.error("文件大小过大")
+		return false
+	}
+	
+	if (!PictureConstant.ALLOWED_FILE_TYPES.includes(file.type)) {
+		message.error("文件类型错误")
+		return false
+	}
+	return true;
 }
 
-function handleChange() {
+// 头像数据
+const imageData = ref<API.UploadPictureVo>({})
+
+// 头像上传逻辑
+async function avatarUpload(file: File) {
+	uploadLoading.value = true
+	
+	// 上传 文件,默认是头像
+	const result = await uploadPictureUsingPost({}, {}, file)
+	// @ts-ignore
+	if (result.data.code != 0) {
+		// @ts-ignore
+		message.error("上传文件失败:" + result.data.msg)
+		uploadLoading.value = false
+		return
+	}
+	// @ts-ignore
+	imageData.value = result.data.data;
+	uploadLoading.value = false
+	message.success("上传成功")
+}
+
+// 清除数据
+function clearData() {
+	imageData.value = {}
 }
 
 /**
@@ -186,18 +234,32 @@ const handleInputConfirm = () => {
 //---------------------------------------
 
 
+/**
+ * 用户 性别 选着
+ */
+const userGenderSelect = ref<number>(0)
+
+function userGenderHandleChange(value: number) {
+	userInfo.value.userFGender = value
+}
+
+
 onMounted(async () => {
-	const result = await getLoginUserUsingGet();
-	if (result.data.code !== 0) {
+	const result = await userGetLoginInfoUsingGet();
+	if (result.data.code != 0) {
 		message.error("未登录")
 		await router.push("/login")
 		return
 	}
+	// 成功 后将数据替换
 	// @ts-ignore
 	userInfo.value = result.data.data
 	tagsState.tags = userInfo.value.userTags ? jsonParse(userInfo.value.userTags) : []
+	userGenderSelect.value = userInfo.value.userFGender as number
+	imageData.value.pictureUrl = userInfo.value.userAvatar
 })
 
+const {setUserInfo} = useUserStores();
 
 /**
  * 触发编辑
@@ -208,12 +270,23 @@ async function doEdit() {
 	// 需要将 标签数组 转成json
 	userInfo.value.userTags = JSON.stringify(tagsState.tags)
 	
-	const result = await userUpdateUsingPost(userInfo.value)
+	// 是否修改过头像数据
+	if (imageData.value.id !== 0) {
+		// 会有 头像id
+		// 需要携带头像数据
+		userInfo.value.userAvatar = imageData.value.pictureUrl
+		// @ts-ignore
+		userInfo.value.avatarId = imageData.value.id
+	}
+	
+	const result = await userEditUsingPost(userInfo.value)
 	if (result.data.code !== 0) {
-		message.error("修改错误:" + result.data.message)
+		message.error("修改错误:" + result.data.msg)
 		return;
 	}
 	message.success("修改成功")
+	// 更新一下 全局状态库 刷新数据
+	await setUserInfo();
 	await router.push("/admin/adminUserInfo")
 }
 
@@ -262,7 +335,6 @@ function doBack() {
 				.ant-form-item-label {
 					margin-right: 30px;
 				}
-				
 			}
 			
 			.edit-btn {

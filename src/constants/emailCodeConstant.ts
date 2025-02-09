@@ -5,7 +5,7 @@ const emailCodeConstant = {
     /**
      *  注册 类型
      */
-    REGISTER: 1,
+    REGISTER: 0,
 }
 
 export default emailCodeConstant;

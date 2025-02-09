@@ -63,18 +63,30 @@
 					</div>
 					<!--简介-->
 					<div class="info">
-						<span>邮箱</span>
-						<span>{{ userInfo.userProfile }}</span>
+						<span>简介</span>
+						<span>
+							{{ userInfo.userIntroduction }}
+						</span>
+					</div>
+					<!--性别-->
+					<div class="info">
+						<span>性别</span>
+						<span>
+							{{ userGender(userInfo.userFGender as number) }}
+						</span>
+					</div>
+					<!--年龄-->
+					<div class="info">
+						<span>年龄</span>
+						<span>
+							{{ userInfo.userAge }}
+						</span>
 					</div>
 				</div>
 			</div>
 			<div class="edit-card">
 				<div class="edit-title">
 					<span class="text">其他信息</span>
-					<a href="#" class="href">
-						<EditOutlined/>
-						编辑
-					</a>
 				</div>
 				
 				<div class="edit-content">
@@ -90,8 +102,13 @@
 							}}</span>
 					</div>
 					<div class="info">
+						<span>注册方式</span>
+						<span>{{ userInfo.registeredSource }}</span>
+					</div>
+					<div class="info">
 						<span>注册时间</span>
-						<span>{{ userInfo.createTime }}</span>
+						<span>
+							{{ dayjs(userInfo.createTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
 					</div>
 				</div>
 			</div>
@@ -104,10 +121,11 @@
 <script setup lang="ts">
 import {UserOutlined, EditOutlined} from '@ant-design/icons-vue';
 import {onMounted, ref} from "vue";
-import {getLoginUserUsingGet} from "@/api/userController.ts";
+import {userGetLoginInfoUsingGet} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
 import userRoleConstants from "@/constants/userRoleConstants.ts";
+import dayjs from "dayjs";
 
 /**
  *  用户 个人 信息
@@ -115,10 +133,10 @@ import userRoleConstants from "@/constants/userRoleConstants.ts";
 const userInfo = ref<API.UserVo>({})
 
 onMounted(async () => {
-	const result = await getLoginUserUsingGet();
+	const result = await userGetLoginInfoUsingGet();
 	if (result.data.code !== 0) {
 		message.error("未登录")
-		router.push("/login")
+		await router.push("/login")
 		return
 	}
 	// @ts-ignore
@@ -144,6 +162,15 @@ const tagsColor = [
 function jsonParse(str: string) {
 	return JSON.parse(str);
 }
+
+
+/**
+ * 转性别
+ */
+function userGender(gender: number) {
+	return gender === 0 ? '小哥哥' : '小姐姐';
+}
+
 </script>
 
 

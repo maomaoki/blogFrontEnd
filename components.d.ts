@@ -20,6 +20,7 @@ declare module 'vue' {
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AImage: typeof import('ant-design-vue/es')['Image']
     AInput: typeof import('ant-design-vue/es')['Input']
+    AInputNumber: typeof import('ant-design-vue/es')['InputNumber']
     AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
     ALayout: typeof import('ant-design-vue/es')['Layout']
     ALayoutContent: typeof import('ant-design-vue/es')['LayoutContent']
@@ -40,11 +41,14 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     DownOutlined: typeof import('@ant-design/icons-vue')['DownOutlined']
     HomeOutlined: typeof import('@ant-design/icons-vue')['HomeOutlined']
+    LoadingOutlined: typeof import('@ant-design/icons-vue')['LoadingOutlined']
     LockOutlined: typeof import('@ant-design/icons-vue')['LockOutlined']
+    PlusOutlined: typeof import('@ant-design/icons-vue')['PlusOutlined']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SmileOutlined: typeof import('@ant-design/icons-vue')['SmileOutlined']
     StepBackwardOutlined: typeof import('@ant-design/icons-vue')['StepBackwardOutlined']
     UserOutlined: typeof import('@ant-design/icons-vue')['UserOutlined']
+    YmAvatar: typeof import('./src/components/ym/YmAvatar/YmAvatar.vue')['default']
   }
 }

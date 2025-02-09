@@ -36,7 +36,7 @@
 					</a-space>
 				</a-form-item>
 				<a-form-item label="注册方式">
-					<a-input v-model:value="searchParams.userRegistrationSource" placeholder="请输入注册方式"/>
+					<a-input v-model:value="searchParams.registeredSource" placeholder="请输入注册方式"/>
 				</a-form-item>
 				<a-form-item label="注册时间">
 					<a-range-picker
@@ -207,7 +207,7 @@
 <script setup lang="ts">
 import {CopyOutlined, ExclamationCircleOutlined} from '@ant-design/icons-vue';
 import {computed, createVNode, onMounted, reactive, ref} from "vue";
-import {adminDeleteUserUsingPost, adminUserQueryUsingPost} from "@/api/userController.ts";
+import {adminDeleteUserUsingPost, adminPageUserUsingPost} from "@/api/userController.ts";
 import {message, Modal, type TableProps} from "ant-design-vue";
 import type {TableColumnsType} from 'ant-design-vue';
 import dayjs from "dayjs";
@@ -313,7 +313,7 @@ const columns = ref<TableColumnsType>([
 /**
  * 数据
  */
-const dataList = ref<API.UserPageVo[]>([]);
+const dataList = ref<API.UserVo[]>([]);
 
 /**
  * 标签颜色
@@ -367,8 +367,8 @@ function copyText(text) {
 const total = ref(0)
 
 // 搜索条件
-const searchParams = reactive<API.AdminUserQueryDto>({
-	current: 1,
+const searchParams = reactive<API.AdminPageUserDto>({
+	pageNum: 1,
 	pageSize: 5,
 })
 
@@ -394,7 +394,7 @@ const onRangeChange = (dates: RangeValue, dateStrings: string[]) => {
 // 分页参数
 const pagination = computed(() => {
 	return {
-		current: searchParams.current ?? 1,
+		current: searchParams.pageNum ?? 1,
 		pageSize: searchParams.pageSize ?? 5,
 		total: total.value,
 		showSizeChanger: true,
@@ -404,7 +404,7 @@ const pagination = computed(() => {
 
 // 表格变化处理
 const doTableChange = (page: any) => {
-	searchParams.current = page.current
+	searchParams.pageNum = page.current
 	searchParams.pageSize = page.pageSize
 	fetchData()
 }
@@ -476,12 +476,12 @@ const fetchData = async () => {
 	}
 	
 	
-	const result = await adminUserQueryUsingPost({
+	const result = await adminPageUserUsingPost({
 		...searchParams
 	})
 	
 	if (result.data.code !== 0) {
-		message.error("请求失败:" + result.data.message);
+		message.error("请求失败:" + result.data.msg);
 		return;
 	}
 	
@@ -491,7 +491,7 @@ const fetchData = async () => {
 		total.value = Number.parseInt(result.data.data.total) ?? 0;
 		message.success("请求成功");
 	} else {
-		message.error("请求失败:" + result.data.message);
+		message.error("请求失败:" + result.data.msg);
 	}
 	
 	
@@ -504,7 +504,7 @@ const fetchData = async () => {
 const doSearch = () => {
 	
 	// 重置页码
-	searchParams.current = 1
+	searchParams.pageNum = 1
 	fetchData()
 }
 
@@ -512,11 +512,11 @@ const doSearch = () => {
  *  重置
  */
 const doReset = () => {
-	searchParams.current = 1
+	searchParams.pageNum = 1
 	searchParams.pageSize = 5
 	searchParams.userAccount = ""
 	searchParams.userName = ""
-	searchParams.userRegistrationSource = ""
+	searchParams.registeredSource = ""
 	searchParams.userRole = ""
 	searchParams.startTime = ""
 	searchParams.endTime = ""
@@ -549,13 +549,13 @@ const doDelete = async (id: number) => {
 		id
 	})
 	if (result.data.code !== 0) {
-		message.error("删除失败:" + result.data.message);
+		message.error("删除失败:" + result.data.msg);
 		return;
 	}
 	
 	message.success("删除成功");
 	// 数据 格式化一下
-	await doReset()
+	doReset()
 }
 
 

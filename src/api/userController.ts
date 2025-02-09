@@ -4,10 +4,10 @@ import request from "@/axios";
 
 /** adminAddUser POST /api/user/admin/add */
 export async function adminAddUserUsingPost(
-  body: API.AdminUserAddDto,
+  body: API.AdminAddUserDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseLong_>("/api/user/admin/add", {
+  return request<API.ResultLong_>("/api/user/admin/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,10 +19,10 @@ export async function adminAddUserUsingPost(
 
 /** adminDeleteUser POST /api/user/admin/delete */
 export async function adminDeleteUserUsingPost(
-  body: API.DeleteRequest,
+  body: API.AdminDeleteUserDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean_>("/api/user/admin/delete", {
+  return request<API.ResultLong_>("/api/user/admin/delete", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,12 +32,12 @@ export async function adminDeleteUserUsingPost(
   });
 }
 
-/** adminGetUserById POST /api/user/admin/get/user */
-export async function adminGetUserByIdUsingPost(
-  body: API.DeleteRequest,
+/** adminGetUserInfoById POST /api/user/admin/info */
+export async function adminGetUserInfoByIdUsingPost(
+  body: API.AdminDeleteUserDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseUser_>("/api/user/admin/get/user", {
+  return request<API.ResultUserVo_>("/api/user/admin/info", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,12 +47,12 @@ export async function adminGetUserByIdUsingPost(
   });
 }
 
-/** adminGetUserVoById POST /api/user/admin/get/userVo */
-export async function adminGetUserVoByIdUsingPost(
-  body: API.DeleteRequest,
+/** adminPageUser POST /api/user/admin/page */
+export async function adminPageUserUsingPost(
+  body: API.AdminPageUserDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseUserVo_>("/api/user/admin/get/userVo", {
+  return request<API.ResultPageUserVo_>("/api/user/admin/page", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -62,12 +62,12 @@ export async function adminGetUserVoByIdUsingPost(
   });
 }
 
-/** AdminUserQuery POST /api/user/admin/list/page */
-export async function adminUserQueryUsingPost(
-  body: API.AdminUserQueryDto,
+/** adminEditUser POST /api/user/admin/update */
+export async function adminEditUserUsingPost(
+  body: API.AdminUpdateUserDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponsePageUserPageVo_>("/api/user/admin/list/page", {
+  return request<API.ResultBoolean_>("/api/user/admin/update", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,55 +77,17 @@ export async function adminUserQueryUsingPost(
   });
 }
 
-/** adminUpdateUser POST /api/user/admin/update */
-export async function adminUpdateUserUsingPost(
-  body: API.AdminUserUpdateDto,
+/** userEdit POST /api/user/edit */
+export async function userEditUsingPost(
+  body: API.UserEditDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean_>("/api/user/admin/update", {
+  return request<API.ResultBoolean_>("/api/user/edit", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     data: body,
-    ...(options || {}),
-  });
-}
-
-/** userEmailCodeSend POST /api/user/emailCode/send */
-export async function userEmailCodeSendUsingPost(
-  body: API.UserEmailCodeDto,
-  options?: { [key: string]: any }
-) {
-  return request<API.BaseResponseBoolean_>("/api/user/emailCode/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** userEmailRegister POST /api/user/emailRegister */
-export async function userEmailRegisterUsingPost(
-  body: API.UserRegisterEmailDto,
-  options?: { [key: string]: any }
-) {
-  return request<API.BaseResponseLong_>("/api/user/emailRegister", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
-/** getLoginUser GET /api/user/get/login */
-export async function getLoginUserUsingGet(options?: { [key: string]: any }) {
-  return request<API.BaseResponseUserVo_>("/api/user/get/login", {
-    method: "GET",
     ...(options || {}),
   });
 }
@@ -135,7 +97,7 @@ export async function userLoginUsingPost(
   body: API.UserLoginDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseUserVo_>("/api/user/login", {
+  return request<API.ResultUserVo_>("/api/user/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -147,7 +109,7 @@ export async function userLoginUsingPost(
 
 /** userLogout POST /api/user/logout */
 export async function userLogoutUsingPost(options?: { [key: string]: any }) {
-  return request<API.BaseResponseBoolean_>("/api/user/logout", {
+  return request<API.ResultBoolean_>("/api/user/logout", {
     method: "POST",
     ...(options || {}),
   });
@@ -158,7 +120,7 @@ export async function userRegisterUsingPost(
   body: API.UserRegisterDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseLong_>("/api/user/register", {
+  return request<API.ResultLong_>("/api/user/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -168,17 +130,27 @@ export async function userRegisterUsingPost(
   });
 }
 
-/** userUpdate POST /api/user/update */
-export async function userUpdateUsingPost(
-  body: API.UserUpdateDto,
+/** userSendEmailCode POST /api/user/sendEmailCode */
+export async function userSendEmailCodeUsingPost(
+  body: API.UserSendEmailCodeDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseString_>("/api/user/update", {
+  return request<API.ResultBoolean_>("/api/user/sendEmailCode", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** userGetLoginInfo GET /api/user/userGetLoginInfo */
+export async function userGetLoginInfoUsingGet(options?: {
+  [key: string]: any;
+}) {
+  return request<API.ResultUserVo_>("/api/user/userGetLoginInfo", {
+    method: "GET",
     ...(options || {}),
   });
 }

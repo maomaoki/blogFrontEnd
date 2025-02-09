@@ -38,37 +38,6 @@
 					/>
 				</a-form-item>
 				
-				<a-form-item label="用户简介">
-					<!--简介-->
-					<a-textarea
-							v-model:value="userInfo.userProfile"
-							placeholder="用户简介"
-							:rows="4"/>
-				</a-form-item>
-				
-				<a-form-item label="用户标签">
-					<!--标签-->
-					<template v-for="(tag) in tagsState.tags" :key="tag">
-						<a-tag closable @close="handleClose(tag)">
-							{{ tag }}
-						</a-tag>
-					</template>
-					<a-input
-							v-if="tagsState.inputVisible"
-							ref="inputRef"
-							v-model:value="tagsState.inputValue"
-							type="text"
-							size="small"
-							:style="{ width: '78px' }"
-							@blur="handleInputConfirm"
-							@keyup.enter="handleInputConfirm"
-					/>
-					<a-tag v-else style="background: #fff; border-style: dashed" @click="showInput">
-						<plus-outlined/>
-						New Tag
-					</a-tag>
-				</a-form-item>
-				
 				<a-form-item label="用户权限">
 					<!--角色-->
 					<a-select
@@ -102,13 +71,12 @@
 </template>
 
 <script setup lang="ts">
-import {defineExpose, nextTick, reactive, ref} from 'vue';
+import {defineExpose, reactive, ref} from 'vue';
 import {
 	PlusOutlined,
 	LoadingOutlined,
-	UserOutlined
 } from '@ant-design/icons-vue';
-import {adminGetUserVoByIdUsingPost, adminUpdateUserUsingPost} from "@/api/userController.ts";
+import {adminEditUserUsingPost, adminGetUserInfoByIdUsingPost} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 
 
@@ -128,7 +96,7 @@ const confirmLoading = ref(false)
 /**
  *  用户信息
  */
-const userInfo = ref<API.AdminUserUpdateDto>({})
+const userInfo = ref<API.AdminUpdateUserDto>({})
 
 
 /**
@@ -144,10 +112,6 @@ function handleChange() {
 }
 
 
-/**
- * 标签 输入框 ref
- */
-const inputRef = ref();
 
 /**
  * 标签数据
@@ -159,46 +123,6 @@ const tagsState = reactive({
 });
 
 /**
- * 删除 tags
- * @param removedTag
- */
-const handleClose = (removedTag: string) => {
-	tagsState.tags = tagsState.tags.filter(tag => tag !== removedTag);
-};
-
-/**
- * 显示 输入
- */
-const showInput = () => {
-	tagsState.inputVisible = true;
-	nextTick(() => {
-		inputRef.value.focus();
-	});
-};
-
-/**
- * 确认输入
- */
-const handleInputConfirm = () => {
-	const inputValue = tagsState.inputValue;
-	let tags = tagsState.tags;
-	// @ts-ignore
-	if (inputValue && tags.indexOf(inputValue) === -1) {
-		// @ts-ignore
-		tags = [...tags, inputValue];
-	}
-	// 重新赋值
-	Object.assign(tagsState, {
-		tags,
-		inputVisible: false,
-		inputValue: '',
-	});
-};
-
-//---------------------------------------
-
-
-/**
  *  权限
  */
 const userRoleSelect = ref<string>("");
@@ -206,6 +130,10 @@ const userRoleSelect = ref<string>("");
  * 角色 默认分组
  */
 const userRoleOptions = [
+	{
+		value: "boss",
+		label: "云猫大大~"
+	},
 	{
 		value: "admin",
 		label: "管理员"
@@ -253,9 +181,9 @@ const openModal = async (id: number) => {
 	visible.value = true
 	
 	// 拿到id 去 获取 用户数据
-	const res = await adminGetUserVoByIdUsingPost({id});
+	const res = await adminGetUserInfoByIdUsingPost({id});
 	if (res.data.code !== 0) {
-		message.error("请求失败:" + res.data.message);
+		message.error("请求失败:" + res.data.msg);
 		return
 	}
 	
@@ -283,7 +211,7 @@ const openModal = async (id: number) => {
 		})
 		
 	} else {
-		message.error("请求失败:" + res.data.message);
+		message.error("请求失败:" + res.data.msg);
 		return
 	}
 	
@@ -291,19 +219,15 @@ const openModal = async (id: number) => {
 
 // 完成关闭弹窗
 const handleOk = async () => {
-	// 发送编辑用户请求
-	// 需要将 标签数组 转成json
-	userInfo.value.userTags = JSON.stringify(tagsState.tags)
-	
 	// 角色
 	userInfo.value.userRole = userRoleSelect.value
 	
 	// 状态
 	userInfo.value.userStatus = userStatusSelect.value
 	
-	const result = await adminUpdateUserUsingPost(userInfo.value);
+	const result = await adminEditUserUsingPost(userInfo.value);
 	if (result.data.code !== 0) {
-		message.error("编辑错误:" + result.data.message);
+		message.error("编辑错误:" + result.data.msg);
 		return
 	}
 	

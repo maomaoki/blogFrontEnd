@@ -1,169 +1,130 @@
 declare namespace API {
-  type AdminUserAddDto = {
+  type AdminAddUserDto = {
     userAccount?: string;
-    userAvatar?: string;
     userName?: string;
     userRole?: string;
   };
 
-  type AdminUserQueryDto = {
-    current?: number;
+  type AdminDeleteUserDto = {
+    id?: number;
+  };
+
+  type AdminPageUserDto = {
     endTime?: string;
     id?: number;
+    pageNum?: number;
     pageSize?: number;
+    registeredSource?: string;
     sortField?: string;
     sortOrder?: string;
     startTime?: string;
     userAccount?: string;
+    userAge?: number;
+    userFGender?: number;
+    userIntroduction?: string;
     userName?: string;
-    userProfile?: string;
-    userRegistrationSource?: string;
-    userRole?: string;
-    userTags?: string;
-  };
-
-  type AdminUserUpdateDto = {
-    id?: number;
-    userAvatar?: string;
-    userName?: string;
-    userProfile?: string;
     userRole?: string;
     userStatus?: number;
     userTags?: string;
   };
 
-  type BaseResponseBoolean_ = {
-    code?: number;
-    data?: boolean;
-    message?: string;
-  };
-
-  type BaseResponseLong_ = {
-    code?: number;
-    data?: number;
-    message?: string;
-  };
-
-  type BaseResponseObject_ = {
-    code?: number;
-    data?: Record<string, any>;
-    message?: string;
-  };
-
-  type BaseResponsePageUserPageVo_ = {
-    code?: number;
-    data?: PageUserPageVo_;
-    message?: string;
-  };
-
-  type BaseResponseString_ = {
-    code?: number;
-    data?: string;
-    message?: string;
-  };
-
-  type BaseResponseUser_ = {
-    code?: number;
-    data?: User;
-    message?: string;
-  };
-
-  type BaseResponseUserVo_ = {
-    code?: number;
-    data?: UserVo;
-    message?: string;
-  };
-
-  type DeleteRequest = {
+  type AdminUpdateUserDto = {
     id?: number;
+    userAvatar?: string;
+    userName?: string;
+    userRole?: string;
+    userStatus?: number;
   };
 
-  type PageUserPageVo_ = {
+  type PageUserVo_ = {
     current?: number;
     pages?: number;
-    records?: UserPageVo[];
+    records?: UserVo[];
     size?: number;
     total?: number;
   };
 
-  type User = {
-    createTime?: string;
-    editTime?: string;
-    id?: number;
-    isDelete?: number;
-    updateTime?: string;
-    userAccount?: string;
-    userAvatar?: string;
-    userEmail?: string;
-    userName?: string;
-    userPassword?: string;
-    userPhone?: string;
-    userProfile?: string;
-    userRegistrationSource?: string;
-    userRole?: string;
-    userStatus?: number;
-    userTags?: string;
+  type ResultBoolean_ = {
+    code?: number;
+    data?: boolean;
+    msg?: string;
   };
 
-  type UserEmailCodeDto = {
-    account?: string;
-    email?: string;
-    type?: number;
+  type ResultLong_ = {
+    code?: number;
+    data?: number;
+    msg?: string;
+  };
+
+  type ResultPageUserVo_ = {
+    code?: number;
+    data?: PageUserVo_;
+    msg?: string;
+  };
+
+  type ResultUploadPictureVo_ = {
+    code?: number;
+    data?: UploadPictureVo;
+    msg?: string;
+  };
+
+  type ResultUserVo_ = {
+    code?: number;
+    data?: UserVo;
+    msg?: string;
+  };
+
+  type uploadPictureUsingPOSTParams = {
+    pictureCategory?: string;
+  };
+
+  type UploadPictureVo = {
+    id?: number;
+    pictureName?: string;
+    pictureUrl?: string;
+  };
+
+  type UserEditDto = {
+    avatarId?: number;
+    userAge?: number;
+    userAvatar?: string;
+    userFGender?: number;
+    userIntroduction?: string;
+    userName?: string;
+    userTags?: string;
   };
 
   type UserLoginDto = {
-    account?: string;
-    password?: string;
-  };
-
-  type UserPageVo = {
-    createTime?: string;
-    id?: number;
-    updateTime?: string;
     userAccount?: string;
-    userAvatar?: string;
-    userEmail?: string;
-    userName?: string;
-    userPhone?: string;
-    userProfile?: string;
-    userRegistrationSource?: string;
-    userRole?: string;
-    userStatus?: number;
-    userTags?: string;
+    userPassword?: string;
   };
 
   type UserRegisterDto = {
-    account?: string;
-    confirmPassword?: string;
-    password?: string;
+    checkPassword?: string;
+    userAccount?: string;
+    userEmail?: string;
+    userEmailCode?: string;
+    userPassword?: string;
   };
 
-  type UserRegisterEmailDto = {
-    account?: string;
-    code?: string;
-    confirmPassword?: string;
-    email?: string;
-    password?: string;
-  };
-
-  type UserUpdateDto = {
-    userAvatar?: string;
-    userName?: string;
-    userProfile?: string;
-    userTags?: string;
+  type UserSendEmailCodeDto = {
+    emailCodeType?: number;
+    userAccount?: string;
+    userEmail?: string;
   };
 
   type UserVo = {
     createTime?: string;
     id?: number;
-    updateTime?: string;
+    registeredSource?: string;
     userAccount?: string;
+    userAge?: number;
     userAvatar?: string;
     userEmail?: string;
+    userFGender?: number;
+    userIntroduction?: string;
     userName?: string;
     userPhone?: string;
-    userProfile?: string;
-    userRegistrationSource?: string;
     userRole?: string;
     userStatus?: number;
     userTags?: string;

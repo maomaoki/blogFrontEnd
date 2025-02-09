@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import {getLoginUserUsingGet} from "@/api/userController.ts";
+import {userGetLoginInfoUsingGet} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
 
@@ -20,7 +20,7 @@ export const useUserStores = defineStore('user', () => {
      */
     const setUserInfo = async () => {
 
-        const result = await getLoginUserUsingGet();
+        const result = await userGetLoginInfoUsingGet();
         if (result.data.code !== 0) {
             message.error("未登录")
             // todo 这里偶联了

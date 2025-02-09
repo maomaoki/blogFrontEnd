@@ -22,9 +22,9 @@
 							class="registered-form"
 							:rules="registeredRules"
 					>
-						<a-form-item name="account">
+						<a-form-item name="userAccount">
 							<a-input
-									v-model:value="registeredState.account"
+									v-model:value="registeredState.userAccount"
 									placeholder="请输入账号/邮箱/手机号"
 							>
 								<template #prefix>
@@ -33,9 +33,9 @@
 							</a-input>
 						</a-form-item>
 						
-						<a-form-item name="password">
+						<a-form-item name="userPassword">
 							<a-input-password
-									v-model:value="registeredState.password"
+									v-model:value="registeredState.userPassword"
 									placeholder="请输入密码"
 							>
 								<template #prefix>
@@ -43,9 +43,9 @@
 								</template>
 							</a-input-password>
 						</a-form-item>
-						<a-form-item name="confirmPassword">
+						<a-form-item name="checkPassword">
 							<a-input-password
-									v-model:value="registeredState.confirmPassword"
+									v-model:value="registeredState.checkPassword"
 									placeholder="请再次输入密码"
 							>
 								<template #prefix>
@@ -54,9 +54,9 @@
 							</a-input-password>
 						</a-form-item>
 						
-						<a-form-item name="email">
+						<a-form-item name="userEmail">
 							<a-input
-									v-model:value="registeredState.email"
+									v-model:value="registeredState.userEmail"
 									placeholder="请输入邮箱"
 							>
 								<template #prefix>
@@ -65,16 +65,21 @@
 							</a-input>
 						</a-form-item>
 						
-						<a-form-item name="code" class="emailCodeBox">
+						<a-form-item name="userEmailCode" class="emailCodeBox">
 							<a-input
-									v-model:value="registeredState.code"
+									v-model:value="registeredState.userEmailCode"
 									placeholder="请输入验证码"
 							>
 								<template #prefix>
 									<UserOutlined class="site-form-item-icon"/>
 								</template>
 							</a-input>
-							<a-button type="primary" html-type="submit" @click="getEmailCode"> 获取验证码</a-button>
+							<a-button type="primary"
+							          html-type="submit"
+							          @click="getEmailCode"
+							          :loading="getEmailCodeBtnLoading"
+							> 获取验证码
+							</a-button>
 						</a-form-item>
 						
 						
@@ -106,9 +111,9 @@
 							:rules="loginRules"
 							@finish="loginFinish"
 							class="login-form">
-						<a-form-item name="account">
+						<a-form-item name="userAccount">
 							<a-input
-									v-model:value="loginState.account"
+									v-model:value="loginState.userAccount"
 									placeholder="请输入账号/邮箱/手机号"
 							>
 								<template #prefix>
@@ -117,9 +122,9 @@
 							</a-input>
 						</a-form-item>
 						
-						<a-form-item name="password">
+						<a-form-item name="userPassword">
 							<a-input-password
-									v-model:value="loginState.password"
+									v-model:value="loginState.userPassword"
 									placeholder="请输入密码"
 							>
 								<template #prefix>
@@ -169,11 +174,11 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue';
+import {onUnmounted, reactive, ref} from 'vue';
 import {UserOutlined, LockOutlined} from '@ant-design/icons-vue';
 import {message} from "ant-design-vue";
 import type {Rule} from "ant-design-vue/es/form";
-import {userEmailCodeSendUsingPost, userEmailRegisterUsingPost, userLoginUsingPost} from "@/api/userController.ts";
+import {userLoginUsingPost, userRegisterUsingPost, userSendEmailCodeUsingPost} from "@/api/userController.ts";
 import {useUserStores} from "@/stores/userStores.ts";
 import emailCodeConstant from "@/constants/emailCodeConstant.ts";
 import {useRouter} from "vue-router";
@@ -188,19 +193,19 @@ let isRegisteredStatus = ref<boolean>(false);
  */
 
 const loginState = reactive<API.UserLoginDto>({
-	account: "",
-	password: ""
+	userAccount: "",
+	userPassword: ""
 });
 
 /**
  * 注册 数据
  */
-const registeredState = reactive<API.UserRegisterEmailDto>({
-	account: "",
-	password: "",
-	email: "",
-	confirmPassword: "",
-	code: ""
+const registeredState = reactive<API.UserRegisterDto>({
+	userAccount: "",
+	userPassword: "",
+	userEmail: "",
+	checkPassword: "",
+	userEmailCode: ""
 })
 
 
@@ -245,10 +250,10 @@ const checkConfirmPassword = async (_rule: Rule, value: string) => {
 	if (!value) {
 		return Promise.reject('密码不能为空');
 	}
-	if (value.length < 8) {
-		return Promise.reject('密码长度不能小于8');
+	if (value.length < 9) {
+		return Promise.reject('密码长度不能小于9');
 	}
-	if (value !== registeredState.password) {
+	if (value !== registeredState.checkPassword) {
 		return Promise.reject('两次密码不一致');
 	}
 	return Promise.resolve();
@@ -289,8 +294,8 @@ const checkCode = async (_rule: Rule, value: string) => {
  *  登录 的 自定义校验
  */
 const loginRules: Record<string, Rule[]> = {
-	account: [{required: true, validator: checkAccount, trigger: 'change'}],
-	password: [{required: true, validator: checkPassword, trigger: 'change'}]
+	userAccount: [{required: true, validator: checkAccount, trigger: 'change'}],
+	userPassword: [{required: true, validator: checkPassword, trigger: 'change'}]
 };
 
 
@@ -298,11 +303,11 @@ const loginRules: Record<string, Rule[]> = {
  *  注册 的 自定义校验
  */
 const registeredRules: Record<string, Rule[]> = {
-	account: [{required: true, validator: checkAccount, trigger: 'change'}],
-	password: [{required: true, validator: checkPassword, trigger: 'change'}],
-	confirmPassword: [{required: true, validator: checkConfirmPassword, trigger: 'change'}],
-	email: [{required: true, validator: checkEmail, trigger: 'change'}],
-	code: [{required: true, validator: checkCode, trigger: 'change'}],
+	userAccount: [{required: true, validator: checkAccount, trigger: 'change'}],
+	userPassword: [{required: true, validator: checkPassword, trigger: 'change'}],
+	checkPassword: [{required: true, validator: checkConfirmPassword, trigger: 'change'}],
+	userEmail: [{required: true, validator: checkEmail, trigger: 'change'}],
+	userEmailCode: [{required: true, validator: checkCode, trigger: 'change'}],
 };
 
 const userStore = useUserStores();
@@ -322,7 +327,7 @@ async function loginFinish() {
 	// 请求结果判断
 	if (userLoginVo.code !== 0) {
 		// 说明有错误
-		message.error(userLoginVo.message);
+		message.error(userLoginVo.msg);
 		return
 	}
 	
@@ -342,33 +347,56 @@ async function loginFinish() {
 
 
 /**
+ *  获取验证码按钮 loading
+ */
+let getEmailCodeBtnLoading = ref<boolean>(false)
+
+/**
+ * 用于 定时 修改 验证码按钮
+ */
+let timer: number;
+
+
+/**
  *  获取 邮箱注册验证码
  */
 async function getEmailCode() {
 	
-	console.log(1)
-	
-	// @ts-ignore
-	if (registeredState.account.length === 0 || registeredState.email.length === 0) {
+	if (registeredState?.userAccount?.length === 0 || registeredState?.userEmail?.length === 0) {
 		message.error("账号或者邮箱不能为空");
 		return
 	}
 	
 	
 	// 发送 验证码
-	const result = await userEmailCodeSendUsingPost({
-		account: registeredState.account,
-		email: registeredState.email,
-		type: emailCodeConstant.REGISTER
+	const result = await userSendEmailCodeUsingPost({
+		userAccount: registeredState.userAccount,
+		userEmail: registeredState.userEmail,
+		emailCodeType: emailCodeConstant.REGISTER
 	});
 	
 	const emailCodeVo = result.data;
 	if (emailCodeVo.code !== 0) {
-		message.error("发送失败:" + emailCodeVo.message);
+		message.error("发送失败:" + emailCodeVo.msg);
 		return
 	}
+	getEmailCodeBtnLoading.value = true
 	message.success("发送成功");
+	// 三分钟再取消
+	timer = setTimeout(() => {
+		getEmailCodeBtnLoading.value = false
+	}, 1000 * 60 * 3)
 }
+
+/**
+ * 清除 定时器
+ */
+onUnmounted(() => {
+	if (timer != 0) {
+		clearTimeout(timer)
+	}
+	getEmailCodeBtnLoading.value = false
+})
 
 
 /**
@@ -376,10 +404,10 @@ async function getEmailCode() {
  */
 async function registeredFinish() {
 	
-	const result = await userEmailRegisterUsingPost(registeredState);
+	const result = await userRegisterUsingPost(registeredState);
 	const userRegisterVo = result.data;
 	if (userRegisterVo.code !== 0) {
-		message.error("注册失败:" + userRegisterVo.message);
+		message.error("注册失败:" + userRegisterVo.msg);
 		return
 	}
 	
@@ -390,15 +418,15 @@ async function registeredFinish() {
 	isRegisteredStatus.value = false;
 	
 	// 并且输入账号和密码
-	loginState.account = registeredState.account;
-	loginState.password = registeredState.password;
+	loginState.userAccount = registeredState.userAccount;
+	loginState.userPassword = registeredState.userPassword;
 	
 	// 清空注册输入框
-	registeredState.account = "";
-	registeredState.email = "";
-	registeredState.password = "";
-	registeredState.confirmPassword = "";
-	registeredState.code = "";
+	registeredState.userAccount = "";
+	registeredState.userEmail = "";
+	registeredState.userPassword = "";
+	registeredState.checkPassword = "";
+	registeredState.userEmailCode = "";
 	
 	
 }

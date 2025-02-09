@@ -124,7 +124,7 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref, h, watch, type VueElement} from 'vue';
+import {ref, h, watch} from 'vue';
 import {
 	UserOutlined,
 	BookOutlined,
@@ -137,7 +137,7 @@ import {
 	LoginOutlined,
 	AppstoreOutlined
 } from '@ant-design/icons-vue';
-import {type ItemType, message} from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import {useRoute, useRouter} from "vue-router";
 import {useUserStores} from "@/stores/userStores.ts";
 import {userLogoutUsingPost} from "@/api/userController.ts";
@@ -155,15 +155,13 @@ async function logout() {
 	
 	const result = await userLogoutUsingPost()
 	if (result.data.code !== 0) {
-		message.error("注销失败:" + result.data.message);
+		message.error("注销失败:" + result.data.msg);
 		return;
 	}
 	message.success("注销成功");
 	
 	// 1. 需要清空一些东西
 	localStorage.removeItem("tags_list");
-	
-	
 	await router.push("/login")
 }
 
@@ -377,7 +375,6 @@ function setTags() {
 	width: 100%;
 	height: 100%;
 	display: flex;
-	align-items: center;
 	
 	.left {
 		width: 240px;
