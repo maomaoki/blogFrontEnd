@@ -9,6 +9,26 @@ declare namespace API {
     id?: number;
   };
 
+  type AdminPagePictureDto = {
+    createEndTime?: string;
+    createStartTime?: string;
+    createUserId?: number;
+    id?: number;
+    pageNum?: number;
+    pageSize?: number;
+    pictureCategory?: string;
+    pictureFormat?: string;
+    pictureName?: string;
+    pictureSize?: number;
+    pictureTags?: string;
+    pictureUpload?: string;
+    reviewEndTime?: string;
+    reviewStartTime?: string;
+    reviewStatus?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
   type AdminPageUserDto = {
     endTime?: string;
     id?: number;
@@ -36,12 +56,45 @@ declare namespace API {
     userStatus?: number;
   };
 
+  type PagePictureVo_ = {
+    current?: number;
+    pages?: number;
+    records?: PictureVo[];
+    size?: number;
+    total?: number;
+  };
+
   type PageUserVo_ = {
     current?: number;
     pages?: number;
     records?: UserVo[];
     size?: number;
     total?: number;
+  };
+
+  type PictureVo = {
+    createTime?: string;
+    createUserId?: number;
+    editTime?: string;
+    id?: number;
+    pictureCategory?: string;
+    pictureFormat?: string;
+    pictureHeight?: number;
+    pictureIntroduction?: string;
+    pictureName?: string;
+    picturePath?: string;
+    pictureScale?: number;
+    pictureSize?: number;
+    pictureTags?: string;
+    pictureUpload?: string;
+    pictureUrl?: string;
+    pictureWidth?: number;
+    reviewReason?: string;
+    reviewStatus?: number;
+    reviewTime?: string;
+    reviewUserId?: number;
+    updateTime?: string;
+    usedUserId?: number;
   };
 
   type ResultBoolean_ = {
@@ -53,6 +106,12 @@ declare namespace API {
   type ResultLong_ = {
     code?: number;
     data?: number;
+    msg?: string;
+  };
+
+  type ResultPagePictureVo_ = {
+    code?: number;
+    data?: PagePictureVo_;
     msg?: string;
   };
 

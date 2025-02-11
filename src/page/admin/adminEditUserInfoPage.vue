@@ -118,6 +118,7 @@ const userInfo = ref<API.UserVo>({})
 /**
  * 标签颜色
  */
+//@ts-ignore
 const tagsColor = [
 	'pink',
 	'red',
