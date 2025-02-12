@@ -1,12 +1,69 @@
 declare namespace API {
+  type AdminAddArticleDto = {
+    articleBgImage?: string;
+    articleCategory?: string;
+    articleContent?: string;
+    articleIntroduction?: string;
+    articleStatus?: number;
+    articleTags?: string;
+    articleTitle?: string;
+    encryptPassword?: string;
+    isEncrypt?: number;
+    isHot?: number;
+    isRecommend?: number;
+  };
+
   type AdminAddUserDto = {
     userAccount?: string;
     userName?: string;
     userRole?: string;
   };
 
+  type AdminDeleteArticleDto = {
+    id?: number;
+  };
+
   type AdminDeleteUserDto = {
     id?: number;
+  };
+
+  type AdminEditArticleDto = {
+    articleAuthor?: string;
+    articleBgImage?: string;
+    articleCategory?: string;
+    articleContent?: string;
+    articleIntroduction?: string;
+    articleStatus?: number;
+    articleTags?: string;
+    articleTitle?: string;
+    encryptPassword?: string;
+    id?: number;
+    isEncrypt?: number;
+    isHot?: number;
+    isRecommend?: number;
+  };
+
+  type adminGetEditArticleByIdUsingGETParams = {
+    /** id */
+    id: string;
+  };
+
+  type AdminPageArticleDto = {
+    articleAuthor?: string;
+    articleCategory?: string;
+    articleCondition?: string;
+    articleStatus?: number;
+    articleTags?: string;
+    articleTitle?: string;
+    createEndTime?: string;
+    createStartTime?: string;
+    id?: number;
+    isHot?: number;
+    isRecommend?: number;
+    pageNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
   };
 
   type AdminPagePictureDto = {
@@ -56,6 +113,70 @@ declare namespace API {
     userStatus?: number;
   };
 
+  type Article = {
+    articleAuthor?: string;
+    articleBgImage?: string;
+    articleCategory?: string;
+    articleCollectNumber?: number;
+    articleCommentNumber?: number;
+    articleContent?: string;
+    articleIntroduction?: string;
+    articleLikeNumber?: number;
+    articleLookNumber?: number;
+    articleStatus?: number;
+    articleTags?: string;
+    articleTitle?: string;
+    createTime?: string;
+    editTime?: string;
+    encryptPassword?: string;
+    id?: number;
+    isDelete?: number;
+    isEncrypt?: number;
+    isHot?: number;
+    isRecommend?: number;
+    updateTime?: string;
+  };
+
+  type ArticleVo = {
+    articleAuthor?: string;
+    articleBgImage?: string;
+    articleCategory?: string;
+    articleCollectNumber?: number;
+    articleCommentNumber?: number;
+    articleContent?: string;
+    articleIntroduction?: string;
+    articleLikeNumber?: number;
+    articleLookNumber?: number;
+    articleStatus?: number;
+    articleTags?: string;
+    articleTitle?: string;
+    createTime?: string;
+    editTime?: string;
+    id?: number;
+    isEncrypt?: number;
+    isHot?: number;
+    isRecommend?: number;
+    updateTime?: string;
+  };
+
+  type getArticleByIdUsingGETParams = {
+    /** id */
+    id: string;
+  };
+
+  type GetArticleByPasswordDto = {
+    id?: number;
+    password?: string;
+  };
+
+  type PageArticleVo_ = {
+    current?: number;
+    pages?: number;
+    records?: ArticleVo[];
+    size?: number;
+    total?: number;
+  };
+
   type PagePictureVo_ = {
     current?: number;
     pages?: number;
@@ -97,6 +218,18 @@ declare namespace API {
     usedUserId?: number;
   };
 
+  type ResultArticle_ = {
+    code?: number;
+    data?: Article;
+    msg?: string;
+  };
+
+  type ResultArticleVo_ = {
+    code?: number;
+    data?: ArticleVo;
+    msg?: string;
+  };
+
   type ResultBoolean_ = {
     code?: number;
     data?: boolean;
@@ -106,6 +239,12 @@ declare namespace API {
   type ResultLong_ = {
     code?: number;
     data?: number;
+    msg?: string;
+  };
+
+  type ResultPageArticleVo_ = {
+    code?: number;
+    data?: PageArticleVo_;
     msg?: string;
   };
 
