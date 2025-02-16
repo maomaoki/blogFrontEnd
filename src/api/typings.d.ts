@@ -28,7 +28,6 @@ declare namespace API {
   };
 
   type AdminEditArticleDto = {
-    articleAuthor?: string;
     articleBgImage?: string;
     articleCategory?: string;
     articleContent?: string;

@@ -285,6 +285,7 @@ import {CopyOutlined} from "@ant-design/icons-vue";
 import {computed, onMounted, ref} from "vue";
 import {message, type TableColumnsType, type TableProps} from "ant-design-vue";
 import {adminPageArticleUsingPost} from "@/api/articleController.ts";
+import router from "@/routers";
 
 const searchParams = ref<API.AdminPageArticleDto>({
 	pageNum: 1,
@@ -655,7 +656,7 @@ const doReset = () => {
 	searchParams.value.pageSize = 5
 	searchParams.value.id = undefined
 	searchParams.value.articleTitle = ""
-	searchParams.value.articleCondition =""
+	searchParams.value.articleCondition = ""
 	searchParams.value.articleAuthor = ""
 	searchParams.value.createStartTime = ""
 	searchParams.value.createStartTime = ""
@@ -677,6 +678,8 @@ const doAdd = async () => {
  *  编辑
  */
 const doEdit = async (id: number) => {
+	// 直接路由跳转到编辑页面
+	await router.push("/admin/article/edit/" + id)
 }
 
 /**
