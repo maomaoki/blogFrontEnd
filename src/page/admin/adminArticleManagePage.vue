@@ -672,6 +672,7 @@ const doReset = () => {
  *  添加
  */
 const doAdd = async () => {
+	await router.push("/admin/article/add");
 }
 
 /**

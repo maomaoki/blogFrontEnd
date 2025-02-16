@@ -59,6 +59,15 @@ const adminRouters: RouteRecordRaw[] = [
                 component: () => import('@/page/admin/edit/adminEditArticlePage.vue'),
             },
             {
+                path:"/admin/article/add",
+                name:"添加文章",
+                meta: {
+                    title: "添加文章",
+                    authAdmin: true
+                },
+                component: () => import('@/page/admin/add/adminAddArticlePage.vue'),
+            },
+            {
                 path: '/admin/adminUserInfo',
                 name: '个人信息',
                 meta: {
