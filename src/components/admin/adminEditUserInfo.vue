@@ -9,26 +9,17 @@
 		
 		<div class="userInfo">
 			
-			<!--头像-->
-			<a-upload
-					v-model:file-list="fileList"
-					name="avatar"
-					list-type="picture-card"
-					:show-upload-list="false"
-					:before-upload="beforeUpload"
-					@change="handleChange"
-			>
-				<img v-if="userInfo.userAvatar"
-				     :src="userInfo.userAvatar"
-				     alt="avatar"/>
-				<div v-else>
-					<loading-outlined v-if="loading"></loading-outlined>
-					<plus-outlined v-else></plus-outlined>
-					<div class="ant-upload-text">Upload</div>
-				</div>
-			</a-upload>
-			
 			<a-form>
+				<a-form-item label="用户头像">
+					<!--头像-->
+					<Ym-avatar
+							:imageData="imageData"
+							:loading="uploadLoading"
+							:beforeUpload="avatarBeforeUpload"
+							:upload="avatarUpload"
+							:clear-data="clearData"
+					/>
+				</a-form-item>
 				<a-form-item label="用户昵称">
 					<!--昵称	-->
 					<a-input
@@ -78,6 +69,9 @@ import {
 } from '@ant-design/icons-vue';
 import {adminEditUserUsingPost, adminGetUserInfoByIdUsingPost} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
+import YmAvatar from "@/components/ym/YmAvatar/YmAvatar.vue";
+import PictureConstant from "@/constants/pictureConstant.ts";
+import {uploadPictureUsingPost} from "@/api/pictureController.ts";
 
 
 interface propsType {
@@ -102,15 +96,49 @@ const userInfo = ref<API.AdminUpdateUserDto>({})
 /**
  * 头像数据
  */
-const loading = ref<boolean>(false)
-const fileList = ref([]);
+// 上传loading
+const uploadLoading = ref<boolean>(false)
 
-function beforeUpload() {
+// 上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。
+function avatarBeforeUpload(file: File) {
+	if (file.size > 1024 * 1024 * 3) {
+		message.error("文件大小过大")
+		return false
+	}
+	
+	if (!PictureConstant.ALLOWED_FILE_TYPES.includes(file.type)) {
+		message.error("文件类型错误")
+		return false
+	}
+	return true;
 }
 
-function handleChange() {
+// 头像数据
+const imageData = ref<API.UploadPictureVo>({})
+
+// 头像上传逻辑
+async function avatarUpload(file: File) {
+	uploadLoading.value = true
+	
+	// 上传 文件,默认是头像
+	const result = await uploadPictureUsingPost({}, {}, file)
+	// @ts-ignore
+	if (result.data.code != 0) {
+		// @ts-ignore
+		message.error("上传文件失败:" + result.data.msg)
+		uploadLoading.value = false
+		return
+	}
+	// @ts-ignore
+	imageData.value = result.data.data;
+	uploadLoading.value = false
+	message.success("上传成功")
 }
 
+// 清除数据
+function clearData() {
+	imageData.value = {}
+}
 
 
 /**
@@ -224,6 +252,13 @@ const handleOk = async () => {
 	
 	// 状态
 	userInfo.value.userStatus = userStatusSelect.value
+	
+	// 头像数据更新
+	if(imageData.value.id){
+		// 存在id 一定是上传新的图片,清空会连数据一起清空
+		userInfo.value.avatarId = imageData.value.id
+		userInfo.value.userAvatar = imageData.value.pictureUrl
+	}
 	
 	const result = await adminEditUserUsingPost(userInfo.value);
 	if (result.data.code !== 0) {

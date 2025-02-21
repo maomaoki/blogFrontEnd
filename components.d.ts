@@ -51,6 +51,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SmileOutlined: typeof import('@ant-design/icons-vue')['SmileOutlined']
     StepBackwardOutlined: typeof import('@ant-design/icons-vue')['StepBackwardOutlined']
+    UserFilled: typeof import('@ant-design/icons-vue')['UserFilled']
     UserOutlined: typeof import('@ant-design/icons-vue')['UserOutlined']
     YmAvatar: typeof import('./src/components/ym/YmAvatar/YmAvatar.vue')['default']
     YmUploadImage: typeof import('./src/components/ym/YmUploadImage/YmUploadImage.vue')['default']

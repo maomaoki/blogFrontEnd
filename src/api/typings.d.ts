@@ -8,6 +8,7 @@ declare namespace API {
     articleTags?: string;
     articleTitle?: string;
     encryptPassword?: string;
+    imageId?: number;
     isEncrypt?: number;
     isHot?: number;
     isRecommend?: number;
@@ -37,6 +38,7 @@ declare namespace API {
     articleTitle?: string;
     encryptPassword?: string;
     id?: number;
+    imageId?: number;
     isEncrypt?: number;
     isHot?: number;
     isRecommend?: number;
@@ -105,6 +107,7 @@ declare namespace API {
   };
 
   type AdminUpdateUserDto = {
+    avatarId?: number;
     id?: number;
     userAvatar?: string;
     userName?: string;
@@ -259,6 +262,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type ResultSystemInfoVo_ = {
+    code?: number;
+    data?: SystemInfoVo;
+    msg?: string;
+  };
+
   type ResultUploadPictureVo_ = {
     code?: number;
     data?: UploadPictureVo;
@@ -269,6 +278,14 @@ declare namespace API {
     code?: number;
     data?: UserVo;
     msg?: string;
+  };
+
+  type SystemInfoVo = {
+    articleCount?: number;
+    chatCount?: number;
+    onlineCount?: number;
+    todayLoginCount?: number;
+    userCount?: number;
   };
 
   type uploadPictureUsingPOSTParams = {

@@ -1,0 +1,12 @@
+:root {
+    --bannerWave1: url("@/assets/images/wave/bannerwave1.png") repeat-x;
+    --bannerWave2: url("@/assets/images/wave/bannerwave2.png") repeat-x;
+    --home-card-bg-color: #fff;
+    --home-card-bg-none: rgba(255, 255, 255, 0);
+    --white:#fff;
+    --translucent: rgba(0, 0, 0, 0.5);
+}
+
+.dark {
+
+}

@@ -423,6 +423,7 @@ async function doEdit() {
 	// 只有上传了图片才会有url
 	if (imageData.value.pictureUrl) {
 		editArticlePost.articleBgImage = imageData.value.pictureUrl
+		editArticlePost.imageId = imageData.value.id
 	}
 	
 	

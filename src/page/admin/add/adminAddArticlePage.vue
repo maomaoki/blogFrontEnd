@@ -391,6 +391,7 @@ async function doAdd() {
 	// 只有上传了图片才会有url
 	if (imageData.value.pictureUrl) {
 		addArticlePost.articleBgImage = imageData.value.pictureUrl
+		addArticlePost.imageId = imageData.value.id
 	}
 	
 	

@@ -1,7 +1,8 @@
 import {createRouter, createWebHistory, type Router, type RouteRecordRaw} from "vue-router";
 import loginRouters from "@/routers/loginRouters.ts";
 import adminRouters from "@/routers/adminRouters.ts";
-const routes: RouteRecordRaw[] = [...loginRouters,...adminRouters]
+import homeRouters from "@/routers/homeRouters.ts";
+const routes: RouteRecordRaw[] = [...loginRouters,...adminRouters,...homeRouters]
 
 /**
  *  路由 配置
