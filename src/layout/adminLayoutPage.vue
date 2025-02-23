@@ -6,7 +6,7 @@
 		<div class="left">
 			<!--上面是头像显示显示-->
 			<div class="ym-logo">
-				<img src="../../assets/images/avatar/400x400.png" alt="">
+				<img src="../assets/images/avatar/400x400.png" alt="">
 				<div class="ym-logo-text">
 					<div>云猫</div>
 					<div>YunMao</div>

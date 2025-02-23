@@ -11,7 +11,7 @@ const adminRouters: RouteRecordRaw[] = [
         meta: {
             title: "admin"
         },
-        component: () => import('@/page/admin/adminLayoutPage.vue'),
+        component: () => import('@/layout/adminLayoutPage.vue'),
         redirect: "/admin/home",
         children: [
             {
