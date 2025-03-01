@@ -1,5 +1,5 @@
 <template>
-  <nav id="navBox">
+  <nav id="navBox" :class="isFixed?'isFixed':''">
 
     <div class="nav-group">
       <div class="blog-name">
@@ -49,6 +49,14 @@
         </div>
       </div>
 
+      <div class="mask-name-container">
+        <div class="name-container">
+          <a href="#">
+            云猫 - 生活明朗 万物可爱
+          </a>
+        </div>
+      </div>
+
       <div class="nav-right">
         <div class="nav-button">
           <span title="搜索🔍">
@@ -69,6 +77,53 @@
 
 <script lang="ts" setup>
 
+import {onMounted, onUnmounted, ref} from "vue";
+
+/**
+ * 是否固定
+ */
+const isFixed = ref<boolean>(false)
+
+
+/**
+ * 获取 window 对象
+ */
+const windowObj: Window = window;
+
+/**
+ *  改变 nav 状态
+ */
+function changeNavbar() {
+
+  if (windowObj.scrollY >= 800) {
+    // 需要 切换
+    isFixed.value = true
+
+
+  } else {
+    isFixed.value = false
+  }
+}
+
+
+onMounted(() => {
+  /**
+   * 监听滚动事件
+   */
+  window.addEventListener('scroll', changeNavbar);
+
+
+})
+
+onUnmounted(() => {
+  /**
+   * 取消滚动事件
+   */
+  window.removeEventListener('scroll', changeNavbar);
+
+})
+
+
 </script>
 
 
@@ -78,6 +133,9 @@
   width: 100%;
   height: 60px;
   padding: 0 calc((100% - 1400px + 3rem) / 2);
+  position: fixed;
+  z-index: 999;
+  transition: background 0.3s;
 
   i {
     font-size: 1.2rem;
@@ -88,6 +146,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    color: #fff;
 
     .blog-name {
       display: flex;
@@ -107,6 +166,8 @@
         align-items: center;
         justify-content: center;
         margin-right: 4px;
+        z-index: 999;
+        z-index: 999;
 
         &:hover {
           color: #fff;
@@ -161,6 +222,67 @@
       }
     }
 
+    .mask-name-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      overflow: hidden;
+      left: 0;
+
+      .name-container {
+        align-items: center;
+        display: flex;
+        border-radius: 12px;
+        height: 40px;
+        position: absolute;
+        top: 62px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        justify-content: center;
+        animation-timing-function: ease-out;
+
+        a {
+          color: #333;
+          text-shadow: none;
+          display: inline;
+          font-weight: 700;
+          padding: 4px 8px;
+          opacity: 0;
+          transition: .1s;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          position: relative;
+          text-align: center;
+          cursor: pointer;
+          top: 0;
+          font-size: 1.1rem;
+          animation-timing-function: ease-in;
+          text-decoration: none;
+          letter-spacing: 3px;
+
+          &:after {
+            opacity: 0;
+            content: "回到顶部";
+            transition: .2s;
+            position: absolute;
+            transform: translateY(-50%);
+            left: 0;
+            right: 0;
+            top: 50%;
+            margin: auto;
+            color: #fff !important;
+            font-weight: 700;
+            line-height: 2;
+          }
+        }
+
+
+      }
+
+    }
+
     .menus {
       padding: 0 calc((100% - 1400px + 3rem) / 2);
       display: flex;
@@ -172,7 +294,6 @@
       margin: 0;
       transform: translateZ(0);
       will-change: auto;
-      z-index: 999;
 
       .menu-list {
         position: relative;
@@ -181,44 +302,14 @@
         left: 0;
         right: 0;
         top: 0;
-        display: -webkit-box;
-        display: -moz-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: box;
         display: flex;
-        -webkit-box-orient: horizontal;
-        -moz-box-orient: horizontal;
-        -o-box-orient: horizontal;
-        -webkit-flex-direction: row;
-        -ms-flex-direction: row;
         flex-direction: row;
-        -webkit-box-pack: center;
-        -moz-box-pack: center;
-        -o-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
         justify-content: center;
 
         .menu-item {
           padding: 0 .4rem;
-          display: -webkit-box;
-          display: -moz-box;
-          display: -webkit-flex;
-          display: -ms-flexbox;
-          display: box;
           display: flex;
-          -webkit-box-orient: vertical;
-          -moz-box-orient: vertical;
-          -o-box-orient: vertical;
-          -webkit-flex-direction: column;
-          -ms-flex-direction: column;
           flex-direction: column;
-          -webkit-box-align: center;
-          -moz-box-align: center;
-          -o-box-align: center;
-          -ms-flex-align: center;
-          -webkit-align-items: center;
           align-items: center;
           margin: auto;
           position: relative;
@@ -250,7 +341,6 @@
             position: absolute;
             opacity: 0;
             width: max-content;
-            border-radius: 5px;
             top: 35px;
             -webkit-box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.05);
             box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.05);
@@ -265,19 +355,9 @@
             right: auto;
             left: auto;
             padding: 6px 4px;
-            -webkit-box-sizing: content-box;
-            -moz-box-sizing: content-box;
             box-sizing: content-box;
             line-height: 35px;
-            -webkit-transform: translateY(-10px) scale(0);
-            -moz-transform: translateY(-10px) scale(0);
-            -o-transform: translateY(-10px) scale(0);
-            -ms-transform: translateY(-10px) scale(0);
             transform: translateY(-10px) scale(0);
-            -webkit-transform-origin: top;
-            -moz-transform-origin: top;
-            -o-transform-origin: top;
-            -ms-transform-origin: top;
             transform-origin: top;
             pointer-events: none;
             margin-top: 8px;
@@ -334,10 +414,6 @@
             -ms-filter: none;
             filter: none;
             pointer-events: all;
-            -webkit-transform: translateY(0) scale(1);
-            -moz-transform: translateY(0) scale(1);
-            -o-transform: translateY(0) scale(1);
-            -ms-transform: translateY(0) scale(1);
             transform: translateY(0) scale(1);
           }
         }
@@ -348,24 +424,9 @@
       z-index: 102;
       position: absolute;
       right: 0;
-      display: -webkit-box;
-      display: -moz-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: box;
       display: flex;
-      -webkit-box-orient: horizontal;
-      -moz-box-orient: horizontal;
-      -o-box-orient: horizontal;
-      -webkit-flex-direction: row;
-      -ms-flex-direction: row;
       flex-direction: row;
       height: 100%;
-      -webkit-box-align: center;
-      -moz-box-align: center;
-      -o-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
       align-items: center;
 
       .nav-button {
@@ -387,10 +448,6 @@
             background: #425aef;
             -webkit-box-shadow: 0 8px 12px -3px #425aef23;
             box-shadow: 0 8px 12px -3px #425aef23;
-
-          }
-
-          i {
 
           }
         }
@@ -426,24 +483,14 @@
           right: auto;
           width: calc(1.375rem / 3);
           height: calc(1.375rem / 3);
-          -webkit-transform: translateY(calc(1.375rem / 4));
-          -moz-transform: translateY(calc(1.375rem / 4));
-          -o-transform: translateY(calc(1.375rem / 4));
-          -ms-transform: translateY(calc(1.375rem / 4));
           transform: translateY(calc(1.375rem / 4));
         }
 
         i.widget-left {
           width: 100%;
-          -webkit-transform: translateY(calc(1.375rem / -4));
-          -moz-transform: translateY(calc(1.375rem / -4));
-          -o-transform: translateY(calc(1.375rem / -4));
-          -ms-transform: translateY(calc(1.375rem / -4));
           transform: translateY(calc(1.375rem / -4));
         }
 
-        i.widget-content {
-        }
 
         i.widget-right {
           left: auto;
@@ -465,15 +512,67 @@
           i.widget-right {
             width: calc(1.375rem / 2.5);
             height: calc(1.375rem / 1.15);
-            -webkit-transform: none;
-            -moz-transform: none;
-            -o-transform: none;
-            -ms-transform: none;
             transform: none;
           }
         }
       }
     }
+  }
+
+
+  &.isFixed {
+    background: #fff;
+    outline: 1px solid #e3e8f7;
+
+    .nav-group {
+      color: #333;
+
+      .mask-name-container {
+        .name-container {
+          z-index: 101;
+          transition: .3s;
+          top: 10px;
+
+          a {
+            background: 0 0;
+            text-shadow: none;
+            box-shadow: none;
+            font-weight: 700;
+            border-radius: 100px;
+            min-width: 100px;
+            line-height: 1.5rem;
+            transition: .3s;
+            opacity: 1;
+            display: inline;
+
+            &:hover {
+              color: #425aef;
+              background: #425aef;
+            }
+
+            &:hover::after {
+              opacity: 1;
+            }
+          }
+        }
+
+
+      }
+
+      .menus {
+        z-index: 100;
+
+        .menu-list {
+          transition: .3s;
+          height: 40px;
+          margin: auto 0;
+          transform: translateY(-60px);
+          will-change: transform
+        }
+      }
+    }
+
+
   }
 }
 </style>

@@ -262,6 +262,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type ResultString_ = {
+    code?: number;
+    data?: string;
+    msg?: string;
+  };
+
   type ResultSystemInfoVo_ = {
     code?: number;
     data?: SystemInfoVo;
