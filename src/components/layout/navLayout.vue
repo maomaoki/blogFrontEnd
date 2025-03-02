@@ -51,7 +51,7 @@
 
       <div class="mask-name-container">
         <div class="name-container">
-          <a href="#">
+          <a @click="goToArriveTop">
             云猫 - 生活明朗 万物可爱
           </a>
         </div>
@@ -68,6 +68,13 @@
           <i class="widget-content"></i>
           <i class="widget-right"></i>
         </div>
+
+        <div class="top-button" :class="isArriveFooter?'isArriveFooter':''">
+          <a @click="goToArriveTop">
+            <i class="iconfont icon-wangshang"></i>
+            <span>{{ isArriveFooter ? '返回顶部' : topScrollNumber }}</span>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -78,35 +85,54 @@
 <script lang="ts" setup>
 
 import {onMounted, onUnmounted, ref} from "vue";
+import {componentStores} from "@/stores/componentStores.ts";
+import {goToArriveTop} from "@/utils/componentsUtils.ts";
 
 /**
  * 是否固定
  */
 const isFixed = ref<boolean>(false)
 
+/**
+ * 滚动数
+ */
+let topScrollNumber = ref<number>(0);
 
 /**
- * 获取 window 对象
+ * 是否 到达 底部了
  */
-const windowObj: Window = window;
+let isArriveFooter = ref<boolean>(false);
+
+
+/**
+ * 组件 全局 仓库
+ */
+const {getIsArrive} = componentStores();
+
 
 /**
  *  改变 nav 状态
  */
 function changeNavbar() {
 
-  if (windowObj.scrollY >= 800) {
+  const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+
+  if (scrollY >= 800) {
     // 需要 切换
     isFixed.value = true
+    topScrollNumber.value = Math.floor(scrollY / 50);
 
-
-  } else {
-    isFixed.value = false
+    isArriveFooter.value = getIsArrive()
+    return
   }
+  isFixed.value = false
 }
 
 
 onMounted(() => {
+
+
   /**
    * 监听滚动事件
    */
@@ -166,7 +192,6 @@ onUnmounted(() => {
         align-items: center;
         justify-content: center;
         margin-right: 4px;
-        z-index: 999;
         z-index: 999;
 
         &:hover {
@@ -294,6 +319,8 @@ onUnmounted(() => {
       margin: 0;
       transform: translateZ(0);
       will-change: auto;
+      z-index: 9;
+
 
       .menu-list {
         position: relative;
@@ -305,6 +332,7 @@ onUnmounted(() => {
         display: flex;
         flex-direction: row;
         justify-content: center;
+        transition: transform .3s;
 
         .menu-item {
           padding: 0 .4rem;
@@ -454,7 +482,6 @@ onUnmounted(() => {
       }
 
       .widget {
-        --icon-size: 1.375rem;
         position: relative;
         right: 0;
         top: 0;
@@ -462,21 +489,13 @@ onUnmounted(() => {
         height: 1.375rem;
         width: 1.375rem;
         cursor: pointer;
-        -webkit-transition: 1s;
-        -moz-transition: 1s;
-        -o-transition: 1s;
-        -ms-transition: 1s;
         transition: 1s;
         margin-left: 1rem;
 
         i {
-          background: #4c4948;
+          background: #fff;
           position: absolute;
           border-radius: calc(1.375rem * .15);
-          -webkit-transition: .5s cubic-bezier(0.6, 0.1, 0, 1);
-          -moz-transition: .5s cubic-bezier(0.6, 0.1, 0, 1);
-          -o-transition: .5s cubic-bezier(0.6, 0.1, 0, 1);
-          -ms-transition: .5s cubic-bezier(0.6, 0.1, 0, 1);
           transition: .5s cubic-bezier(0.6, 0.1, 0, 1);
           inset: 0;
           margin: auto;
@@ -516,6 +535,63 @@ onUnmounted(() => {
           }
         }
       }
+
+      .top-button {
+        cursor: pointer;
+        padding: 0;
+        width: 0;
+        margin-left: 0;
+        overflow: hidden;
+        transition: .3s ease-in;
+        height: 35px;
+        display: flex;
+        border-radius: 50px;
+        align-items: center;
+        justify-content: space-around;
+
+        a {
+          width: 25px;
+          height: 25px;
+          border-radius: 40px;
+          background: #4c4948;
+          color: #fff;
+          transition: all .3s ease-in-out;
+          text-shadow: none;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          i {
+            font-size: 1rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: .3s;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+          }
+
+          span {
+            font-weight: 700;
+            transition: .3s;
+            font-size: 13px;
+            border-radius: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            white-space: nowrap;
+            color: #fff;
+            width: 25px;
+            height: 25px;
+
+          }
+
+        }
+      }
+
     }
   }
 
@@ -563,15 +639,70 @@ onUnmounted(() => {
         z-index: 100;
 
         .menu-list {
-          transition: .3s;
+
           height: 40px;
           margin: auto 0;
           transform: translateY(-60px);
-          will-change: transform
+          will-change: transform;
+
+        }
+      }
+
+      .nav-right {
+
+        .widget {
+          i {
+            background: #333;
+          }
+        }
+
+
+        .top-button {
+          width: 35px;
+          height: 35px;
+          margin-left: 1rem;
+          padding: 0;
+
+
+          &:not(&.isArriveFooter):hover a {
+            height: 35px;
+          }
+
+          &:hover a {
+            width: 35px;
+            background: #425aef;
+          }
+
+          &:hover a i {
+            opacity: 1;
+            color: #fff;
+            transition: .3s;
+            line-height: 1;
+          }
+
+          &:hover a span {
+            opacity: 0;
+            transform: scale(1.5);
+            font-weight: 700;
+          }
+        }
+
+        .top-button.isArriveFooter {
+          width: 70px;
+
+          a {
+            width: 70px;
+
+            i {
+              font-size: 0.8rem;
+              top: 52%;
+            }
+          }
+
+
         }
       }
     }
-
 
   }
 }

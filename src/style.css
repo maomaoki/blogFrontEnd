@@ -12,6 +12,10 @@
 body {
     font-family: myFont, serif;
     overflow-x: hidden;
+
+    a{
+        text-decoration: none;
+    }
 }
 
 ::-webkit-scrollbar {

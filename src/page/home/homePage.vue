@@ -71,6 +71,9 @@ async function getBannerImage() {
  */
 onMounted(() => {
   getBannerImage()
+
+
+
 })
 
 </script>

@@ -1,6 +1,6 @@
 <template>
 
-  <footer id="footerBox">
+  <footer id="footerBox" ref="footerBoxRef">
     <div id="footer-wrap">
 
       <div class="footer-icon-list">
@@ -99,6 +99,29 @@
   </footer>
 </template>
 <script lang="ts" setup>
+
+import {onMounted, ref} from "vue";
+import {componentStores} from "@/stores/componentStores.ts";
+
+const footerBoxRef = ref()
+
+const {setIsArrive} = componentStores();
+
+/**
+ *  使用 监听器
+ */
+const ob = new IntersectionObserver((entries) => {
+  const entry = entries[0]
+  setIsArrive(entry.isIntersecting)
+}, {
+  // root:null,
+  threshold: 0.3, // 阈值
+})
+
+onMounted(() => {
+  ob.observe(footerBoxRef.value)
+})
+
 
 </script>
 
