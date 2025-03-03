@@ -2,7 +2,7 @@
 
   <div id="homePage">
     <!--bg-->
-    <homeBanner :banner-image="bannerImage"/>
+    <homeBanner/>
 
     <div id="divide"></div>
 
@@ -43,38 +43,6 @@ import Pagination from "@/components/page/home/pagination.vue";
 import CardInfo from "@/components/page/home/cardInfo.vue";
 import StickyLayout from "@/components/page/home/stickyLayout.vue";
 import HomeBanner from "@/components/page/home/homeBanner.vue";
-import {onMounted, ref} from "vue";
-import {getBannerPictureUsingGet} from "@/api/systemController.ts";
-import {message} from "ant-design-vue";
-
-
-/**
- *  背景图
- */
-const bannerImage = ref<string>("")
-
-/**
- *  获取 背景图
- */
-async function getBannerImage() {
-  const result = await getBannerPictureUsingGet();
-  if (result.data.code != 0) {
-    message.error("获取banner错误: " + result.data.msg);
-    return
-  }
-  bannerImage.value = result.data.data as string;
-}
-
-
-/**
- * 组件挂载后加载数据
- */
-onMounted(() => {
-  getBannerImage()
-
-
-
-})
 
 </script>
 
@@ -92,7 +60,7 @@ onMounted(() => {
 
   }
 
-  #divide{
+  #divide {
     width: 100%;
     height: 50px;
     margin-bottom: 30px;

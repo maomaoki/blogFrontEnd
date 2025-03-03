@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 
+
 /**
  *  组件 全局仓库
  */
@@ -26,6 +27,7 @@ export const componentStores = defineStore('component', () => {
     function setIsArrive(is: boolean) {
         isArrive.value = is;
     }
+
 
     return {
         getIsArrive,

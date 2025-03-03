@@ -161,6 +161,12 @@ declare namespace API {
     updateTime?: string;
   };
 
+  type BannerInfoVo = {
+    bannerImageUrl?: string;
+    bannerTitle?: string;
+    printList?: string[];
+  };
+
   type getArticleByIdUsingGETParams = {
     /** id */
     id: string;
@@ -232,6 +238,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type ResultBannerInfoVo_ = {
+    code?: number;
+    data?: BannerInfoVo;
+    msg?: string;
+  };
+
   type ResultBoolean_ = {
     code?: number;
     data?: boolean;
@@ -259,12 +271,6 @@ declare namespace API {
   type ResultPageUserVo_ = {
     code?: number;
     data?: PageUserVo_;
-    msg?: string;
-  };
-
-  type ResultString_ = {
-    code?: number;
-    data?: string;
     msg?: string;
   };
 

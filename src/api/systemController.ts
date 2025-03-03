@@ -2,11 +2,9 @@
 /* eslint-disable */
 import request from "@/axios";
 
-/** getBannerPicture GET /api/system/banner */
-export async function getBannerPictureUsingGet(options?: {
-  [key: string]: any;
-}) {
-  return request<API.ResultString_>("/api/system/banner", {
+/** getBannerInfo GET /api/system/bannerInfo */
+export async function getBannerInfoUsingGet(options?: { [key: string]: any }) {
+  return request<API.ResultBannerInfoVo_>("/api/system/bannerInfo", {
     method: "GET",
     ...(options || {}),
   });
