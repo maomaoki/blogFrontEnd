@@ -79,6 +79,8 @@
 
     </div>
 
+    <!-- 中控 遮罩-->
+    <central-control-mask />
   </nav>
 </template>
 
@@ -87,6 +89,7 @@
 import {onMounted, onUnmounted, ref} from "vue";
 import {componentStores} from "@/stores/componentStores.ts";
 import {goToArriveTop} from "@/utils/componentsUtils.ts";
+import CentralControlMask from "@/mask/centralControlMask.vue";
 
 /**
  * 是否固定

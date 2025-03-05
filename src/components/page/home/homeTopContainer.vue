@@ -69,7 +69,7 @@
       </div>
     </div>
 
-    <div class="top-group">
+    <div class="top-group" @mouseleave="mouseleaveLookCard">
 
       <div class="recent-post-item">
 
@@ -143,17 +143,17 @@
         </div>
 
       </div>
-
-      <div class="todayCard hide">
+      <div class="todayCard" :class="hide?'hide':''">
         <div class="todayCard-info">
           <span>测试</span>
           <span>YunMao-Test</span>
         </div>
-        <img src="../assets/images/banner-right.jpg" alt="">
+        <img src="http://localhost:9999/api/images/banner/1893682464272867329/af2e9f37bae04595a9fa26f082f03ed7.jpg"
+             alt="">
 
         <div class="banner-group-button">
 
-          <div class="banner-button">
+          <div class="banner-button" @click="look">
 
             <i class="iconfont icon-xieyou"></i>
             <span>查看更多</span>
@@ -166,6 +166,31 @@
 </template>
 
 <script lang="ts" setup>
+
+import {ref} from "vue";
+
+/**
+ * true 展示 查看更多
+ */
+const hide = ref<boolean>(false);
+
+
+/**
+ * 查看更多 失焦 事件
+ */
+function mouseleaveLookCard() {
+  if (!hide.value) {
+    return;
+  }
+  hide.value = false;
+}
+
+/**
+ * 查看 更多
+ */
+function look() {
+  hide.value = true;
+}
 
 </script>
 
