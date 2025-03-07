@@ -1,6 +1,7 @@
 <template>
 
-  <div id="centralControlMask" class="isShow">
+  <div id="centralControlMask"
+       :class="getIsShowCentralControl()?'isShow':''">
 
     <div class="centralControl-card-group">
 
@@ -49,20 +50,194 @@
             <div class="author-content-item-title">
               寻找你喜欢的领域
             </div>
+            <div class="card-tags">
+
+              <div class="item-headline"></div>
+              <div class="card-tag-cloud">
+                <a href="#" v-for="item in tags">
+                  {{ item.title }}
+                  <sup>{{ item.sup }}</sup>
+                </a>
+              </div>
+            </div>
           </div>
 
         </div>
 
-        <div class="console-card history"></div>
+        <div class="console-card history">
+          <div class="card-archives">
+
+            <ul class="card-archive-list">
+
+              <li v-for="_ in 8" class="card-archive-list-item">
+                <a href="#" class="card-archive-list-link">
+                  <span class="card-archive-list-date">八月 2023</span>
+                  <div class="card-archive-list-count-group">
+                    <span class="card-archive-list-count">
+                      4
+                    </span>
+                    <span>篇</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="button-group">
+
+      <div class="console-btn-item">
+        <a title="测试" href="#" class="darkmode_switchbutton">
+          <i class="iconfont icon-yueliang"></i>
+        </a>
+      </div>
+      <div class="console-btn-item">
+        <a title="测试" href="#" class="darkmode_switchbutton">
+          <i class="iconfont icon-yueliang"></i>
+        </a>
+      </div>
+      <div class="console-btn-item">
+        <a title="测试" href="#" class="darkmode_switchbutton">
+          <i class="iconfont icon-yueliang"></i>
+        </a>
+      </div>
+      <div class="console-btn-item">
+        <a title="测试" href="#" class="darkmode_switchbutton">
+          <i class="iconfont icon-yueliang"></i>
+        </a>
+      </div>
+      <div class="console-btn-item on">
+        <a title="测试" href="#" class="darkmode_switchbutton">
+          <i class="iconfont icon-yueliang"></i>
+        </a>
       </div>
 
     </div>
 
 
-    <div class="mask-bg"></div>
+    <div class="mask-bg" @click.stop="isNotShow"></div>
   </div>
 </template>
 <script setup lang="ts">
+
+import {componentStores} from "@/stores/componentStores.ts";
+
+const {getIsShowCentralControl, setIsShowCentralControl} = componentStores();
+
+
+/**
+ *  标签 列表
+ */
+const tags = [
+  {
+    title: "AI",
+    sup: 7
+  },
+  {
+    title: "CDN",
+    sup: 1
+  },
+  {
+    title: "HTTPS",
+    sup: 1
+  },
+  {
+    title: "JavaScript",
+    sup: 7
+  },
+  {
+    title: "Logo",
+    sup: 6
+  },
+  {
+    title: "React",
+    sup: 7
+  },
+  {
+    title: "分享",
+    sup: 7
+  },
+  {
+    title: "操作系统",
+    sup: 7
+  },
+  {
+    title: "课程",
+    sup: 7
+  },
+  {
+    title: "前端",
+    sup: 7
+  },
+  {
+    title: "后端",
+    sup: 7
+  },
+  {
+    title: "bili测试",
+    sup: 7
+  },
+  {
+    title: "AI",
+    sup: 7
+  },
+  {
+    title: "CDN",
+    sup: 1
+  },
+  {
+    title: "HTTPS",
+    sup: 1
+  },
+  {
+    title: "JavaScript",
+    sup: 7
+  },
+  {
+    title: "Logo",
+    sup: 6
+  },
+  {
+    title: "React",
+    sup: 7
+  },
+  {
+    title: "分享",
+    sup: 7
+  },
+  {
+    title: "操作系统",
+    sup: 7
+  },
+  {
+    title: "课程",
+    sup: 7
+  },
+  {
+    title: "前端",
+    sup: 7
+  },
+  {
+    title: "后端",
+    sup: 7
+  },
+  {
+    title: "bili测试",
+    sup: 7
+  }
+]
+
+
+/**
+ *  关闭 遮罩
+ */
+function isNotShow() {
+
+  setIsShowCentralControl(false)
+}
 
 </script>
 
@@ -81,7 +256,7 @@
   align-items: center;
   pointer-events: none;
   margin: 0 !important;
-  z-index: 2;
+  z-index: 999;
 
   &.isShow {
     opacity: 1;
@@ -120,6 +295,20 @@
       padding: 40px;
     }
 
+    .card-content .author-content-item-tips {
+      opacity: .8;
+      font-size: 12px;
+      margin-bottom: 15px;
+      color: #4c4948;
+    }
+
+    .card-content .author-content-item-title {
+      font-size: 27px;
+      font-weight: 700;
+      line-height: 1;
+      color: #4c4948;
+    }
+
     .centralControl-card-group-left {
       margin-right: 15px;
       width: 40%;
@@ -129,19 +318,6 @@
         height: 100%;
         min-height: 580px;
 
-        .card-content .author-content-item-tips {
-          opacity: .8;
-          font-size: 12px;
-          margin-bottom: 15px;
-          color: #4c4948;
-        }
-
-        .card-content .author-content-item-title {
-          font-size: 27px;
-          font-weight: 700;
-          line-height: 1;
-          color: #4c4948;
-        }
 
         .aside-list {
           display: flex;
@@ -264,8 +440,46 @@
       .tags {
         height: calc(100% - 172px);
 
-        .card-content{
-          
+        .card-content {
+
+          .card-tags {
+
+            .card-tag-cloud {
+              margin-top: 15px;
+              display: flex;
+              flex-wrap: wrap;
+              max-height: 230px;
+              overflow: hidden;
+            }
+
+            .card-tag-cloud a {
+              color: #363636 !important;
+              margin: 6px 4px;
+              padding: 8px 8px;
+              border-radius: 8px;
+              background: #f7f7f9;
+              border: 1px solid #e3e8f7;
+              font-size: 14px !important;
+              font-weight: 700;
+              transition: all .2s ease 0s;
+            }
+
+            .card-tag-cloud a sup {
+              opacity: .6;
+              font-size: 75%;
+              top: -.5em;
+              line-height: 0;
+              position: relative;
+              vertical-align: baseline;
+            }
+
+
+            .card-tag-cloud a:hover {
+              background: #425aef;
+              color: #fff !important;
+            }
+
+          }
         }
       }
 
@@ -278,8 +492,120 @@
         border: none;
         overflow: hidden;
         min-width: 575px;
+
+
+        .card-archives {
+
+          .card-archive-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            margin: -3px;
+
+            .card-archive-list-item {
+              list-style: none;
+              flex: 0 0 25%;
+              width: 100%;
+              -webkit-box-flex: 1;
+            }
+
+            .card-archive-list-item a {
+              transition: all .2s ease 0s;
+              overflow-wrap: break-word;
+              color: #363636;
+              text-decoration: none;
+              border-radius: 8px;
+              margin: 4px;
+              display: flex;
+              flex-direction: column;
+              align-content: space-between;
+              border: 1px solid #e3e8f7;
+              background: #fff;
+              padding: 8px 16px;
+            }
+
+            .card-archive-list-item a:hover {
+              background: #425aef;
+              color: #fff !important;
+            }
+
+            .card-archive-list-item .card-archive-list-date {
+              font-size: 13px;
+              opacity: .6;
+            }
+
+            .card-archive-list-item .card-archive-list-count-group {
+              display: flex;
+              flex-direction: row;
+              align-items: baseline;
+              padding: 12px 0;
+            }
+
+            .card-archive-list-count {
+              width: auto;
+              text-align: left;
+              font-size: 18px;
+              line-height: .9;
+              font-weight: 700;
+            }
+
+
+          }
+        }
       }
 
+    }
+  }
+
+  .button-group {
+    display: flex;
+    margin: 1rem auto 0 auto;
+    justify-content: center;
+    width: fit-content;
+
+    .console-btn-item {
+      width: 60px;
+      height: 60px;
+      transition: .3s;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        margin-right: .5rem;
+      }
+
+      a {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border: 1px solid #e3e8f7;
+        border-radius: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #363636;
+        transition: all .2s ease 0s;
+        overflow-wrap: break-word;
+
+        &:hover {
+          background: #425aef !important;
+          color: #fff;
+        }
+
+        i {
+          font-size: 18px;
+          font-weight: 700;
+        }
+      }
+
+    }
+
+
+    .console-btn-item.on {
+      a {
+        background: #e38100;
+        color: #fff;
+        transition: .3s;
+      }
     }
   }
 

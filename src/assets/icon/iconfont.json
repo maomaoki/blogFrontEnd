@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5387387",
+      "name": "键盘",
+      "font_class": "jianpan",
+      "unicode": "eac2",
+      "unicode_decimal": 60098
+    },
+    {
+      "icon_id": "15779822",
+      "name": "月亮",
+      "font_class": "yueliang",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    },
+    {
+      "icon_id": "28894093",
+      "name": "消息",
+      "font_class": "xiaoxi",
+      "unicode": "e781",
+      "unicode_decimal": 59265
+    },
+    {
+      "icon_id": "35262970",
+      "name": "音乐",
+      "font_class": "yinle",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "41299524",
+      "name": "缩放-copy",
+      "font_class": "suofang",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "1297",
       "name": "向下",
       "font_class": "xiangxia",

@@ -63,7 +63,7 @@
              <i class="iconfont icon-sousuo1"></i>
           </span>
         </div>
-        <div class="widget" title="中控台">
+        <div @click="setIsShowCentralControl(true)" class="widget" title="中控台">
           <i class="widget-left"></i>
           <i class="widget-content"></i>
           <i class="widget-right"></i>
@@ -90,6 +90,13 @@ import {onMounted, onUnmounted, ref} from "vue";
 import {componentStores} from "@/stores/componentStores.ts";
 import {goToArriveTop} from "@/utils/componentsUtils.ts";
 import CentralControlMask from "@/mask/centralControlMask.vue";
+
+/**
+ * 打开 中控 遮罩
+ */
+const {setIsShowCentralControl} = componentStores();
+
+
 
 /**
  * 是否固定
