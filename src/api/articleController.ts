@@ -66,7 +66,7 @@ export async function adminPageArticleUsingPost(
   body: API.AdminPageArticleDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.ResultPageArticleVo_>("/api/article/admin/page", {
+  return request<API.ResultPageArticlePageVo_>("/api/article/admin/page", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export async function getArticleByIdUsingGet(
   options?: { [key: string]: any }
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.ResultArticleVo_>(`/api/article/get/${param0}`, {
+  return request<API.ResultArticlePageVo_>(`/api/article/get/${param0}`, {
     method: "GET",
     params: { ...queryParams },
     ...(options || {}),
@@ -95,7 +95,22 @@ export async function getArticleByIdAndPasswordUsingPost(
   body: API.GetArticleByPasswordDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.ResultArticleVo_>("/api/article/get/encrypt", {
+  return request<API.ResultArticlePageVo_>("/api/article/get/encrypt", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** pageArticle POST /api/article/page */
+export async function pageArticleUsingPost(
+  body: API.AdminPageArticleDto,
+  options?: { [key: string]: any }
+) {
+  return request<API.ResultPageArticlePageVo_>("/api/article/page", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -100,9 +100,14 @@
         </a>
       </div>
       <div class="console-btn-item">
-        <a title="测试" href="#" class="darkmode_switchbutton">
-          <i class="iconfont icon-yueliang"></i>
+        <a v-if="userInfo == null" title="登录" href="/login" class="darkmode_switchbutton">
+          <span>login</span>
         </a>
+
+        <a v-else title="个人后台" href="/admin/home" class="darkmode_switchbutton">
+          <img :src="userInfo.userAvatar" alt="头像">
+        </a>
+
       </div>
       <div class="console-btn-item">
         <a title="测试" href="#" class="darkmode_switchbutton">
@@ -114,7 +119,11 @@
           <i class="iconfont icon-yueliang"></i>
         </a>
       </div>
-
+      <div class="console-btn-item" @click="logout">
+        <a title="注销" href="#" class="darkmode_switchbutton">
+          <LoginOutlined />
+        </a>
+      </div>
     </div>
 
 
@@ -123,9 +132,15 @@
 </template>
 <script setup lang="ts">
 
-import {componentStores} from "@/stores/componentStores.ts";
+import {useComponentStores} from "@/stores/useComponentStores.ts";
+import {userIsLogin} from "@/common/useUserIsLogin.ts";
+import {onMounted, ref} from "vue";
+import {LoginOutlined} from "@ant-design/icons-vue";
+import {userLogoutUsingPost} from "@/api/userController.ts";
+import {message} from "ant-design-vue";
+import router from "@/routers";
 
-const {getIsShowCentralControl, setIsShowCentralControl} = componentStores();
+const {getIsShowCentralControl, setIsShowCentralControl} = useComponentStores();
 
 
 /**
@@ -238,6 +253,40 @@ function isNotShow() {
 
   setIsShowCentralControl(false)
 }
+
+/**
+ * 用户 信息
+ */
+const userInfo = ref()
+
+
+/**
+ *  获取 用户 登录 信息
+ */
+onMounted(async () => {
+  userInfo.value = await userIsLogin();
+})
+
+/**
+ * 注销
+ */
+async function logout() {
+
+  const result = await userLogoutUsingPost()
+  if (result.data.code !== 0) {
+    message.error("注销失败:" + result.data.msg);
+    return;
+  }
+  message.success("注销成功");
+
+  // 1. 需要清空一些东西
+  localStorage.removeItem("tags_list");
+  // 2. 关闭 中控 遮罩
+  isNotShow()
+  // 3. 跳转到 主页
+  await router.push("/home")
+}
+
 
 </script>
 
@@ -595,7 +644,15 @@ function isNotShow() {
           font-size: 18px;
           font-weight: 700;
         }
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 60px;
+
+        }
       }
+
 
     }
 

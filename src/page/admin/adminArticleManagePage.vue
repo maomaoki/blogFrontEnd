@@ -228,6 +228,12 @@
 							{{ record.articleCollectNumber }}
 						</div>
 					</template>
+          <!--文章作者-->
+          <template v-if="column.dataIndex === 'articleAuthor'">
+            <div class="role">
+              {{ record.articleAuthor }}
+            </div>
+          </template>
 					<!--文章加密状态-->
 					<template v-if="column.dataIndex === 'isEncrypt'">
 						<div class="status">
@@ -442,7 +448,7 @@ const columns = ref<TableColumnsType>([
 /**
  * 数据
  */
-const dataList = ref<API.ArticleVo[]>([]);
+const dataList = ref<API.ArticlePageVo[]>([]);
 
 /**
  * 标签颜色

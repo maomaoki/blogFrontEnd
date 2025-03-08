@@ -5,7 +5,7 @@ import {ref} from "vue";
 /**
  *  组件 全局仓库
  */
-export const componentStores = defineStore('component', () => {
+export const useComponentStores = defineStore('component', () => {
 
     /**
      * 是否到达底部

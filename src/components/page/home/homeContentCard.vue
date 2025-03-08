@@ -1,24 +1,25 @@
 <template>
-  <div v-for="(item,index) in 12" id="homeContentCard">
+  <div v-for="item in articleList" :key="item.id" id="homeContentCard">
 
     <div class="item-img">
-      <img src="../assets/images/image-link.jpg" alt="">
+      <img :src="item.articleBgImage" alt="文章背景图">
     </div>
     <div class="item-info">
 
       <div class="item-info-top">
         <div class="item-info-top-tips">
-                <span class="sticky-warp" v-if="index === 0">
-                  <i class="iconfont icon-icon_zhiding"></i>
-                  <span>置顶</span>
-                </span>
+                          <span class="sticky-warp" v-if="item.isRecommend">
+                            <i class="iconfont icon-tuijian"></i>
+                            <span>推荐</span>
+                          </span>
           <div class="article-categories-original">
-            前端开发
+            {{ item.articleCategory }}
           </div>
-          <div class="newPost">最新</div>
+
+          <div class="newPost" v-if="isNowTime(item.editTime as string)">最新</div>
 
         </div>
-        <span class="item-info-title">安知鱼主题标签 Tag Plugins</span>
+        <span class="item-info-title">{{ item.articleTitle }}</span>
 
 
       </div>
@@ -28,31 +29,112 @@
                <span class="info-menu-date">
 
                 <i class="iconfont icon-rili"></i>
-                 <span>2023-6-1</span>
+                 <span>{{ dayjs(item.createTime).format('YYYY-MM-DD') }}</span>
 
               </span>
         <span class="info-menu-list">
-
-                <span class="info-menu-item">
-
+                <span class="info-menu-item" v-if="item.articleTags"
+                      v-for="tag in JSON.parse(item.articleTags)">
                   <i class="iconfont icon-biaoqian"></i>
-                  <span>前端</span>
-
-                </span>
-
-                 <span class="info-menu-item">
-
-                  <i class="iconfont icon-biaoqian"></i>
-                  <span>后端</span>
-
+                  <span>{{ tag }}</span>
                 </span>
               </span>
 
       </div>
     </div>
   </div>
+
+
+  <pagination
+      :total="total"
+      :change-page="changePage"
+      :page-size="pageSize"
+  />
+
 </template>
 <script lang="ts" setup>
+import {onMounted, ref} from "vue";
+import {pageArticleUsingPost} from "@/api/articleController.ts";
+import {message} from "ant-design-vue";
+import dayjs from "dayjs";
+import Pagination from "@/components/page/home/pagination.vue";
+
+/**
+ *  分页 获取 文章(默认 获取 推荐文章 前 10 条)
+ */
+const articleList = ref<API.ArticlePageVo[]>([])
+
+/**
+ * 总条数
+ */
+const total = ref<number>(0)
+
+
+/**
+ * 一页 展示 多少 条 (默认10)
+ */
+const pageSize = ref<number>(4)
+
+
+/**
+ *  搜索 函数
+ */
+async function doSearch(data: API.AdminPageArticleDto) {
+  // 这是默认
+  const result = await pageArticleUsingPost(data)
+  if (result.data.code != 0) {
+    message.error("获取文章失败")
+    return
+  }
+  if (result.data.data) {
+    articleList.value = result.data.data.records ?? [];
+    // @ts-ignore
+    total.value = Number.parseInt(result.data.data.total) ?? 0;
+  }
+}
+
+
+/**
+ * 页码 发生 变化 触发 函数
+ */
+async function changePage(currentPage: number) {
+  await doSearch({
+    timeSortField: "editTime",
+    timeSortOrder: "desc",
+    sortField: "isRecommend",
+    sortOrder: "desc",
+    pageSize: pageSize.value,
+    pageNum:currentPage
+  })
+}
+
+
+onMounted(async () => {
+  await doSearch({
+    timeSortField: "editTime",
+    timeSortOrder: "desc",
+    sortField: "isRecommend",
+    sortOrder: "desc",
+    pageSize: pageSize.value
+  })
+
+})
+
+/**
+ * 是否 为 最新 文章
+ */
+function isNowTime(time: string): boolean {
+  // 将传入的日期字符串转换为 Date 对象
+  const inputDate = new Date(time);
+  // 获取当前时间
+  const currentDate = new Date();
+  // 计算当前时间的前三天的日期
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(currentDate.getDate() - 3);
+  // 判断传入的日期是否在当前时间的前三天范围内
+  return inputDate >= threeDaysAgo && inputDate <= currentDate;
+}
+
 
 </script>
 
@@ -131,28 +213,19 @@
         display: flex;
         align-items: center;
         margin-top: 20px;
+        margin-bottom: 5px;
 
 
         .sticky-warp {
           line-height: 23px;
           display: flex;
-          -webkit-box-align: center;
-          -moz-box-align: center;
-          -o-box-align: center;
-          -ms-flex-align: center;
-          -webkit-align-items: center;
           align-items: center;
-          -webkit-box-pack: center;
-          -moz-box-pack: center;
-          -o-box-pack: center;
-          -ms-flex-pack: center;
-          -webkit-justify-content: center;
           justify-content: center;
           margin-right: 8px;
 
           i {
-            color: #ff7242;
-            font-size: 14px;
+            color: #ee3a05;
+            font-size: 18px;
           }
 
           span {

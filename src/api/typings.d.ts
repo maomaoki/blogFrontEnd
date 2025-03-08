@@ -65,6 +65,8 @@ declare namespace API {
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
+    timeSortField?: string;
+    timeSortOrder?: string;
   };
 
   type AdminPagePictureDto = {
@@ -85,6 +87,8 @@ declare namespace API {
     reviewStatus?: number;
     sortField?: string;
     sortOrder?: string;
+    timeSortField?: string;
+    timeSortOrder?: string;
   };
 
   type AdminPageUserDto = {
@@ -96,6 +100,8 @@ declare namespace API {
     sortField?: string;
     sortOrder?: string;
     startTime?: string;
+    timeSortField?: string;
+    timeSortOrder?: string;
     userAccount?: string;
     userAge?: number;
     userFGender?: number;
@@ -139,13 +145,12 @@ declare namespace API {
     updateTime?: string;
   };
 
-  type ArticleVo = {
+  type ArticlePageVo = {
     articleAuthor?: string;
     articleBgImage?: string;
     articleCategory?: string;
     articleCollectNumber?: number;
     articleCommentNumber?: number;
-    articleContent?: string;
     articleIntroduction?: string;
     articleLikeNumber?: number;
     articleLookNumber?: number;
@@ -177,10 +182,10 @@ declare namespace API {
     password?: string;
   };
 
-  type PageArticleVo_ = {
+  type PageArticlePageVo_ = {
     current?: number;
     pages?: number;
-    records?: ArticleVo[];
+    records?: ArticlePageVo[];
     size?: number;
     total?: number;
   };
@@ -232,9 +237,9 @@ declare namespace API {
     msg?: string;
   };
 
-  type ResultArticleVo_ = {
+  type ResultArticlePageVo_ = {
     code?: number;
-    data?: ArticleVo;
+    data?: ArticlePageVo;
     msg?: string;
   };
 
@@ -256,9 +261,9 @@ declare namespace API {
     msg?: string;
   };
 
-  type ResultPageArticleVo_ = {
+  type ResultPageArticlePageVo_ = {
     code?: number;
-    data?: PageArticleVo_;
+    data?: PageArticlePageVo_;
     msg?: string;
   };
 

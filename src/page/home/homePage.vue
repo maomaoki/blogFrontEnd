@@ -18,7 +18,6 @@
 
         <home-content-card/>
 
-        <pagination/>
       </div>
 
       <div class="right">

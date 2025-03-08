@@ -71,78 +71,16 @@
 
     <div class="top-group" @mouseleave="mouseleaveLookCard">
 
-      <div class="recent-post-item">
-
+      <div class="recent-post-item" v-for="item in hotArticleList">
         <div class="image-info">
-          <span>推荐</span>
-          <img src="../assets/images/recent-image-1.jpg" alt="">
+          <span>热门</span>
+          <img :src="item.articleBgImage" alt="文章背景图">
         </div>
-
         <div class="text-info">
-          <span>为你的博客安装上便携小空调</span>
+          <span>{{ item.articleTitle }}</span>
         </div>
-
       </div>
-      <div class="recent-post-item">
 
-        <div class="image-info">
-          <span>推荐</span>
-          <img src="../assets/images/recent-image-2.jpg" alt="">
-        </div>
-
-        <div class="text-info">
-          <span>为你的博客安装上便携小空调</span>
-        </div>
-
-      </div>
-      <div class="recent-post-item">
-
-        <div class="image-info">
-          <span>推荐</span>
-          <img src="../assets/images/recent-image-3.jpg" alt="">
-        </div>
-
-        <div class="text-info">
-          <span>为你的博客安装上便携小空调</span>
-        </div>
-
-      </div>
-      <div class="recent-post-item">
-
-        <div class="image-info">
-          <span>推荐</span>
-          <img src="../assets/images/recent-image-4.jpg" alt="">
-        </div>
-
-        <div class="text-info">
-          <span>为你的博客安装上便携小空调</span>
-        </div>
-
-      </div>
-      <div class="recent-post-item">
-
-        <div class="image-info">
-          <span>推荐</span>
-          <img src="../assets/images/recent-image-1.jpg" alt="">
-        </div>
-
-        <div class="text-info">
-          <span>为你的博客安装上便携小空调</span>
-        </div>
-
-      </div>
-      <div class="recent-post-item">
-
-        <div class="image-info">
-          <span>推荐</span>
-          <img src="../assets/images/recent-image-2.jpg" alt="">
-        </div>
-
-        <div class="text-info">
-          <span>为你的博客安装上便携小空调</span>
-        </div>
-
-      </div>
       <div class="todayCard" :class="hide?'hide':''">
         <div class="todayCard-info">
           <span>测试</span>
@@ -154,9 +92,8 @@
         <div class="banner-group-button">
 
           <div class="banner-button" @click="look">
-
             <i class="iconfont icon-xieyou"></i>
-            <span>查看更多</span>
+            <span>查看热门</span>
           </div>
         </div>
       </div>
@@ -167,13 +104,14 @@
 
 <script lang="ts" setup>
 
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import {pageArticleUsingPost} from "@/api/articleController.ts";
+import {message} from "ant-design-vue";
 
 /**
  * true 展示 查看更多
  */
 const hide = ref<boolean>(false);
-
 
 /**
  * 查看更多 失焦 事件
@@ -191,6 +129,31 @@ function mouseleaveLookCard() {
 function look() {
   hide.value = true;
 }
+
+
+/**
+ *  热门 文章
+ */
+const hotArticleList = ref<API.ArticlePageVo[]>([]);
+
+
+onMounted(async () => {
+  // 这是默认
+  const result = await pageArticleUsingPost({
+    timeSortField: "editTime",
+    timeSortOrder: "desc",
+    isHot:1,
+    pageSize: 10
+  })
+  if (result.data.code != 0) {
+    message.error("获取热门文章失败")
+    return
+  }
+  if (result.data.data) {
+    hotArticleList.value = result.data.data.records ?? [];
+  }
+})
+
 
 </script>
 

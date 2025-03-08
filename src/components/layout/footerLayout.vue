@@ -101,11 +101,11 @@
 <script lang="ts" setup>
 
 import {onMounted, ref} from "vue";
-import {componentStores} from "@/stores/componentStores.ts";
+import {useComponentStores} from "@/stores/useComponentStores.ts";
 
 const footerBoxRef = ref()
 
-const {setIsArrive} = componentStores();
+const {setIsArrive} = useComponentStores();
 
 /**
  *  使用 监听器

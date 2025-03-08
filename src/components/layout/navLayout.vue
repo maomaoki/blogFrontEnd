@@ -87,14 +87,14 @@
 <script lang="ts" setup>
 
 import {onMounted, onUnmounted, ref} from "vue";
-import {componentStores} from "@/stores/componentStores.ts";
+import {useComponentStores} from "@/stores/useComponentStores.ts";
 import {goToArriveTop} from "@/utils/componentsUtils.ts";
 import CentralControlMask from "@/mask/centralControlMask.vue";
 
 /**
  * 打开 中控 遮罩
  */
-const {setIsShowCentralControl} = componentStores();
+const {setIsShowCentralControl} = useComponentStores();
 
 
 
@@ -117,7 +117,7 @@ let isArriveFooter = ref<boolean>(false);
 /**
  * 组件 全局 仓库
  */
-const {getIsArrive} = componentStores();
+const {getIsArrive} = useComponentStores();
 
 
 /**
