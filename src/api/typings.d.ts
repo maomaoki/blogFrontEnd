@@ -166,6 +166,28 @@ declare namespace API {
     updateTime?: string;
   };
 
+  type ArticleVo = {
+    articleAuthor?: string;
+    articleBgImage?: string;
+    articleCategory?: string;
+    articleCollectNumber?: number;
+    articleCommentNumber?: number;
+    articleContent?: string;
+    articleIntroduction?: string;
+    articleLikeNumber?: number;
+    articleLookNumber?: number;
+    articleStatus?: number;
+    articleTags?: string;
+    articleTitle?: string;
+    createTime?: string;
+    editTime?: string;
+    id?: number;
+    isEncrypt?: number;
+    isHot?: number;
+    isRecommend?: number;
+    updateTime?: string;
+  };
+
   type BannerInfoVo = {
     bannerImageUrl?: string;
     bannerTitle?: string;
@@ -237,9 +259,9 @@ declare namespace API {
     msg?: string;
   };
 
-  type ResultArticlePageVo_ = {
+  type ResultArticleVo_ = {
     code?: number;
-    data?: ArticlePageVo;
+    data?: ArticleVo;
     msg?: string;
   };
 

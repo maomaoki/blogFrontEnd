@@ -38,7 +38,6 @@ import NowTimeNews from "@/components/page/home/nowTimeNews.vue";
 import HomeTopContainer from "@/components/page/home/homeTopContainer.vue";
 import CategoryBarBox from "@/components/page/home/categoryBarBox.vue";
 import HomeContentCard from "@/components/page/home/homeContentCard.vue";
-import Pagination from "@/components/page/home/pagination.vue";
 import CardInfo from "@/components/page/home/cardInfo.vue";
 import StickyLayout from "@/components/page/home/stickyLayout.vue";
 import HomeBanner from "@/components/page/home/homeBanner.vue";

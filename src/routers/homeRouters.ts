@@ -12,10 +12,19 @@ const homeRouters: RouteRecordRaw[] = [
             {
                 path: "/home",
                 name: "主页",
+                meta:{
+                    scrollNumber:800
+                },
                 component: () => import("@/page/home/homePage.vue")
+            },
+            {
+                path:"/article/:id",
+                name:"文章",
+                component:()=>import("@/page/home/articlePage.vue")
             }
         ]
-    }
+    },
+
 ]
 
 export default homeRouters;

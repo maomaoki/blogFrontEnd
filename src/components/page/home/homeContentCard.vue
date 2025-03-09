@@ -1,5 +1,7 @@
 <template>
-  <div v-for="item in articleList" :key="item.id" id="homeContentCard">
+  <div v-for="item in articleList"
+       @click="()=>{router.push(`/article/${item.id}`)}"
+       :key="item.id" id="homeContentCard">
 
     <div class="item-img">
       <img :src="item.articleBgImage" alt="文章背景图">
@@ -58,6 +60,7 @@ import {pageArticleUsingPost} from "@/api/articleController.ts";
 import {message} from "ant-design-vue";
 import dayjs from "dayjs";
 import Pagination from "@/components/page/home/pagination.vue";
+import router from "@/routers";
 
 /**
  *  分页 获取 文章(默认 获取 推荐文章 前 10 条)

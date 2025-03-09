@@ -83,7 +83,7 @@ export async function getArticleByIdUsingGet(
   options?: { [key: string]: any }
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.ResultArticlePageVo_>(`/api/article/get/${param0}`, {
+  return request<API.ResultArticleVo_>(`/api/article/get/${param0}`, {
     method: "GET",
     params: { ...queryParams },
     ...(options || {}),
@@ -95,7 +95,7 @@ export async function getArticleByIdAndPasswordUsingPost(
   body: API.GetArticleByPasswordDto,
   options?: { [key: string]: any }
 ) {
-  return request<API.ResultArticlePageVo_>("/api/article/get/encrypt", {
+  return request<API.ResultArticleVo_>("/api/article/get/encrypt", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

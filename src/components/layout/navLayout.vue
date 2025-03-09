@@ -6,7 +6,7 @@
         <div class="_ym_box">
           <i class="iconfont icon-caidan"></i>
         </div>
-        <div class="back_button_box">
+        <div class="back_button_box" @click="()=>{router.push('/home')}">
           <span class="title">云猫</span>
           <i class="iconfont icon-shouye"></i>
         </div>
@@ -80,22 +80,23 @@
     </div>
 
     <!-- 中控 遮罩-->
-    <central-control-mask />
+    <central-control-mask/>
   </nav>
 </template>
 
 <script lang="ts" setup>
 
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useComponentStores} from "@/stores/useComponentStores.ts";
 import {goToArriveTop} from "@/utils/componentsUtils.ts";
 import CentralControlMask from "@/mask/centralControlMask.vue";
+import {onBeforeRouteUpdate, useRoute} from "vue-router";
+import router from "@/routers";
 
 /**
  * 打开 中控 遮罩
  */
 const {setIsShowCentralControl} = useComponentStores();
-
 
 
 /**
@@ -121,14 +122,26 @@ const {getIsArrive} = useComponentStores();
 
 
 /**
+ *  滑动 多少 变化 (路由参数传过来)
+ */
+let scrollNumber = ref<number>(0);
+
+const route = useRoute();
+// 默认 500
+// scrollNumber.value = route.meta.scrollNumber as number || 500
+// 监听路由变化
+onBeforeRouteUpdate((to, _) => {
+  scrollNumber.value = to.meta.scrollNumber as number || 500
+});
+
+
+/**
  *  改变 nav 状态
  */
 function changeNavbar() {
 
   const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-
-
-  if (scrollY >= 800) {
+  if (scrollY >= scrollNumber.value) {
     // 需要 切换
     isFixed.value = true
     topScrollNumber.value = Math.floor(scrollY / 50);
@@ -141,6 +154,9 @@ function changeNavbar() {
 
 
 onMounted(() => {
+
+  // 默认 500
+  scrollNumber.value = route.meta.scrollNumber as number || 500
 
 
   /**

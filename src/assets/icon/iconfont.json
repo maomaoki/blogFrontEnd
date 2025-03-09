@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2076262",
+      "name": "目录",
+      "font_class": "mulu",
+      "unicode": "e890",
+      "unicode_decimal": 59536
+    },
+    {
+      "icon_id": "7417103",
+      "name": "阅读量",
+      "font_class": "yueduliang",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "18406351",
+      "name": "评论",
+      "font_class": "pinglun",
+      "unicode": "e6f0",
+      "unicode_decimal": 59120
+    },
+    {
+      "icon_id": "894136",
+      "name": "cd字数",
+      "font_class": "zishu",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "6561003",
+      "name": "最新更新",
+      "font_class": "zuixingengxin",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "577362",
+      "name": "时钟",
+      "font_class": "shizhong",
+      "unicode": "e74f",
+      "unicode_decimal": 59215
+    },
+    {
+      "icon_id": "26033188",
+      "name": "定位",
+      "font_class": "dingwei",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "38985669",
+      "name": "井号",
+      "font_class": "jinghao",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
       "icon_id": "1010159",
       "name": "推荐",
       "font_class": "tuijian",
