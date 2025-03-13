@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4766410 */
-  src: url('iconfont.woff2?t=1741519655281') format('woff2'),
-       url('iconfont.woff?t=1741519655281') format('woff'),
-       url('iconfont.ttf?t=1741519655281') format('truetype');
+  src: url('iconfont.woff2?t=1741870096426') format('woff2'),
+       url('iconfont.woff?t=1741870096426') format('woff'),
+       url('iconfont.ttf?t=1741870096426') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,62 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-chrome:before {
+  content: "\e681";
+}
+
+.icon-daohang:before {
+  content: "\e643";
+}
+
+.icon-firefox:before {
+  content: "\e93d";
+}
+
+.icon-liulanqi:before {
+  content: "\e60b";
+}
+
+.icon-window-n:before {
+  content: "\e60c";
+}
+
+.icon-edge:before {
+  content: "\ebfa";
+}
+
+.icon-pinglun11:before {
+  content: "\e6b7";
+}
+
+.icon-pinglun1:before {
+  content: "\e8c5";
+}
+
+.icon-shuaxin:before {
+  content: "\e642";
+}
+
+.icon-smile:before {
+  content: "\e625";
+}
+
+.icon-tupian:before {
+  content: "\e8ba";
+}
+
+.icon-jiandao:before {
+  content: "\e6c1";
+}
+
+.icon-dianzan:before {
+  content: "\e8c3";
+}
+
+.icon-shoucang:before {
+  content: "\e62a";
 }
 
 .icon-mulu:before {

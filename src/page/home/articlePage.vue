@@ -83,9 +83,111 @@
               @GetCatalog="getCatalog"
               :id="id" :modelValue="article?.articleContent"/>
         </div>
+
+        <div class="hr">
+          <i class="iconfont icon-jiandao"></i>
+        </div>
+
+        <div class="articleComment">
+          <div class="comment-header">
+
+            <div class="comment-line">
+              <i class="iconfont icon-pinglun11"></i>
+              <span>评论</span>
+            </div>
+            <div class="comment-randomInfo">
+              <a href="#">
+                言论政策
+              </a>
+            </div>
+          </div>
+          <div class="comment-input">
+            <div class="el-textarea">
+              <textarea placeholder="请留下你的评论!"></textarea>
+              <span class="font-number">0/2000</span>
+              <div class="expression">
+                <div class="item">
+                  <i class="iconfont icon-smile"></i>
+                </div>
+                <div class="item">
+                  <i class="iconfont icon-tupian"></i>
+                </div>
+              </div>
+            </div>
+            <div class="comment-button">
+              <button class="isNotSrc">发送</button>
+            </div>
+          </div>
+          <div class="comment-number">
+            <div class="number">
+              <span>99</span>
+              条评论
+            </div>
+            <div class="renovate">
+              <span>
+                <i class="iconfont icon-shuaxin"></i>
+              </span>
+            </div>
+          </div>
+          <div class="comment-list">
+            <div class="comment-item">
+              <div class="comment-avatar">
+                <img
+                    src="http://localhost:9999/api/images/avatar/1893682464272867329/746e706659e5468896fd355e81ee78c6.jpeg"
+                    alt="">
+              </div>
+
+              <div class="comment-main">
+                <div class="comment-row">
+                  <div class="comment-name">
+                    <span class="name">张三</span>
+                    <span class="check">审核中</span>
+                    <span class="time">2022-10-11</span>
+                  </div>
+
+                  <div class="thumbs-up">
+                    <span class="tuijian">
+                      <i class="iconfont icon-tuijian"></i>
+                      <span>1</span>
+                    </span>
+                    <span class="pinglun">
+                      <i class="iconfont icon-pinglun"></i>
+                    </span>
+                  </div>
+
+
+                </div>
+                <div class="comment-content">
+                  <p>
+                    测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制测试字数多少会不会有限制</p>
+                </div>
+                <div class="comment-info">
+                  <div class="info-item">
+                    <i class="iconfont icon-daohang"></i>
+                    <span>广东</span>
+                  </div>
+                  <div class="info-item window">
+                    <i class="iconfont icon-window-n"></i>
+                    <span>window 11</span>
+                  </div>
+
+                  <div class="info-item brower">
+                    <i class="iconfont icon-chrome"></i>
+                    <span>Chrome 115.0.0.0</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="aside-content">
+
+        <card-info/>
+
+
         <div class="sticky_layout">
           <div class="catalogue">
             <div class="item-headline">
@@ -105,6 +207,20 @@
                   </a>
                 </li>
               </ol>
+            </div>
+          </div>
+          <div class="functionalRegional">
+            <div class="item">
+              <i class="iconfont icon-dianzan"></i>
+            </div>
+            <div class="item">
+              <i class="iconfont icon-shoucang"></i>
+            </div>
+            <div class="item">
+              <i class="iconfont icon-wangshang"></i>
+            </div>
+            <div class="item">
+              <i class="iconfont icon-pinglun"></i>
             </div>
           </div>
         </div>
@@ -129,6 +245,7 @@ import {getArticleByIdUsingGet} from "@/api/articleController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
 import dayjs from "dayjs";
+import CardInfo from "@/components/page/home/cardInfo.vue";
 
 const route = useRoute();
 
@@ -195,6 +312,7 @@ function handleAnchorClick(text: string) {
 
 <style lang="less">
 #articlePage {
+  background: #f7f9fe;
 
   #page-header {
     position: relative;
@@ -387,6 +505,392 @@ function handleAnchorClick(text: string) {
         }
       }
 
+      .hr {
+        position: relative;
+        margin: 40px auto;
+        border: 2px dashed rgba(161, 172, 247, 0.137);
+        width: calc(100% - 4px);
+
+        &:hover {
+          i {
+            left: calc(95% - 20px);
+          }
+        }
+
+        i {
+          font-size: 30px;
+          font-weight: 700;
+          position: absolute;
+          top: -16px;
+          left: 5%;
+          z-index: 1;
+          color: rgba(123, 139, 244, 0.137);
+          transition: all 1s ease-in-out;
+
+        }
+      }
+
+      .articleComment {
+
+        .comment-header {
+          font-size: 14px !important;
+          margin-bottom: 10px;
+          display: flex;
+          -webkit-box-align: center;
+          align-items: center;
+          flex-wrap: wrap;
+
+          .comment-line {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 20px;
+
+            i {
+              font-size: 20px;
+              margin-right: 10px;
+            }
+
+            span {
+              font-weight: 700;
+              font-size: 20px;
+            }
+          }
+
+          .comment-randomInfo {
+            margin-left: auto;
+            font-size: 13px;
+
+            a {
+              font-size: 13px;
+              color: #817979;
+              font-weight: 200;
+              text-decoration: none;
+              word-wrap: break-word;
+              -webkit-transition: all .2s ease 0s;
+              -moz-transition: all .2s ease 0s;
+              -o-transition: all .2s ease 0s;
+              -ms-transition: all .2s ease 0s;
+              transition: all .2s ease 0s;
+              overflow-wrap: break-word;
+
+              &:hover {
+                color: #409EFF;
+              }
+            }
+          }
+        }
+
+        .comment-input {
+
+
+          .el-textarea {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            vertical-align: bottom;
+            font-size: 14px;
+            margin-bottom: 10px;
+
+            textarea {
+              height: 121px;
+              background-image: url("@/assets/images/bg/comment_bg.png");
+              background-position: right bottom;
+              background-repeat: no-repeat;
+              min-height: 180px !important;
+              border-radius: 15px;
+              display: block;
+              resize: vertical;
+              padding: 16px 16px 40px 16px;
+              line-height: 1.5;
+              width: 100%;
+              font-size: inherit;
+              color: #363636;
+              background-color: #f7f7f9;
+              border: 1px solid #e3e8f7;
+              transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+              outline-color: #3e5658;
+            }
+
+            textarea:focus {
+              outline: 0;
+              border-color: #3e5658;
+            }
+
+            textarea:focus-visible {
+              outline: 0;
+              border-color: #3e5658;
+            }
+
+            .font-number {
+              position: absolute;
+              font-size: 12px;
+              bottom: 5px;
+              right: 10px;
+              color: #909399;
+              background: transparent;
+            }
+
+            .expression {
+              position: absolute;
+              bottom: 10px;
+              left: 10px;
+              display: flex;
+              align-items: center;
+
+              .item {
+                margin-right: 5px;
+                cursor: pointer;
+
+                &:hover {
+                  i {
+                    color: #0D68DF;
+                  }
+                }
+
+                i {
+                  font-size: 22px;
+
+                }
+              }
+            }
+          }
+
+          .comment-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+
+
+            button {
+              background-color: #363636;
+              border: 0 solid #3e5658;
+              color: #f7f9fe;
+              transition: 0.3s;
+              width: 120px;
+              height: 35px;
+              line-height: 35px;
+              border-radius: 12px;
+              cursor: pointer;
+              font-size: 16px;
+              text-align: center;
+            }
+
+            button.isNotSrc {
+              opacity: .3;
+              cursor: not-allowed;
+            }
+          }
+        }
+
+        .comment-number {
+          width: 100%;
+          margin: 10px 0 20px 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .number {
+            font-size: 18px;
+            font-weight: 800;
+          }
+
+          .renovate {
+            i {
+              font-size: 18px;
+              font-weight: 600;
+            }
+          }
+        }
+
+        .comment-list {
+          padding: 10px 0;
+
+          .comment-item {
+            color: #4c4948;
+            display: flex;
+            flex-direction: row;
+            word-break: break-all;
+            margin-top: 0 !important;
+            margin-bottom: 10px !important;
+            transition: .3s;
+            border-radius: 12px;
+            padding-top: 10px;
+            border: none;
+            border-top: 1px dashed #3e565823;
+
+            .comment-avatar {
+              border-radius: 50px;
+              cursor: pointer;
+              background-color: rgba(144, 147, 153, 0.13);
+              flex-shrink: 0;
+              height: 45px;
+              width: 45px;
+              overflow: hidden;
+              text-align: center;
+              margin-right: 10px;
+
+              img {
+                width: 45px;
+                height: 45px;
+                border-style: none;
+                border-radius: 8px;
+                max-width: 100%;
+                transition: all .2s ease 0s;
+                -webkit-user-drag: none;
+              }
+            }
+
+            .comment-main {
+              flex: 1;
+              width: 0;
+
+              .comment-row {
+                padding-top: 11px;
+                flex: 1;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-bottom: 14px;
+
+                .comment-name {
+                  display: flex;
+                  align-items: center;
+
+                  .name {
+                    margin-right: 6px;
+                    font-size: 18px;
+                  }
+
+                  .check {
+                    background-color: rgba(230, 162, 60, 0.13);
+                    border: 1px solid rgba(230, 162, 60, 0.5);
+                    border-radius: 2px;
+                    color: #e6a23c;
+                    font-size: 13px;
+                    padding: 3px 5px;
+                    margin-right: 10px;
+                  }
+
+                  .time {
+                    font-size: 14px;
+                  }
+
+
+                }
+
+                .thumbs-up {
+                  display: flex;
+                  align-items: center;
+
+
+                  .tuijian {
+                    margin-right: 10px;
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+
+                    i {
+                      font-size: 25px;
+                      transition: all 0.3s;
+                    }
+
+                    span {
+                      font-size: 12px;
+                      color: #0D68DF;
+                    }
+
+                    &:hover {
+                      i {
+                        color: #0D68DF;
+                      }
+                    }
+                  }
+
+                  .pinglun {
+                    i {
+                      font-size: 20px;
+                      transition: all 0.3s;
+                    }
+
+                    cursor: pointer;
+
+                    &:hover {
+                      i {
+                        color: #0D68DF;
+                      }
+                    }
+                  }
+                }
+              }
+
+              .comment-content {
+                margin-bottom: 10px;
+
+                p {
+                  font-weight: 400;
+                  font-size: 18px;
+                  line-height: 2;
+                }
+              }
+
+              .comment-info {
+                display: flex;
+                align-items: center;
+
+                .info-item {
+                  background: #fff;
+                  border: 1px solid #e3e8f7;
+                  padding: 2px 10px;
+                  border-radius: 8px;
+                  margin-right: 8px;
+                  color: rgba(60, 60, 67, 0.8);
+                  margin-top: 6px;
+                  font-size: .8rem;
+                  display: flex;
+                  align-items: center;
+
+                  i {
+                    font-size: 17px;
+                  }
+
+                  span {
+                    font-size: 12px;
+                    font-weight: 800;
+                  }
+                }
+
+                .info-item.window {
+                  padding: 3px 10px;
+
+                  i {
+                    font-size: 12px;
+                    margin-right: 3px;
+                  }
+
+                  span {
+                    font-size: 14px;
+                  }
+                }
+
+                .info-item.brower {
+                  padding: 3px 10px;
+
+                  i {
+                    font-size: 12px;
+                    margin-right: 3px;
+                  }
+
+                  span {
+                    font-size: 14px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     .aside-content {
@@ -485,6 +989,45 @@ function handleAnchorClick(text: string) {
                   color: aqua;
                 }
               }
+            }
+          }
+        }
+
+        .functionalRegional {
+          right: 0 !important;
+          max-height: calc(100vh - 100px);
+          border-radius: 12px;
+          position: relative;
+          overflow: hidden;
+          margin-top: 20px;
+          padding: 20px 24px;
+          transition: .3s;
+          box-shadow: 0 8px 16px -4px rgba(44, 45, 48, 0.047);
+          background: #fff;
+          border: 1px solid #e3e8f7;
+
+          display: flex;
+          align-items: center;
+
+          .item {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #333333;
+            cursor: pointer;
+
+            i {
+              font-size: 18px;
+
+              &:hover {
+                color: rgba(22, 93, 255);
+              }
+            }
+
+            i.active {
+              color: rgba(22, 93, 255);
             }
           }
         }

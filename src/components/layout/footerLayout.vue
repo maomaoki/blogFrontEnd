@@ -129,13 +129,7 @@ onMounted(() => {
 <style lang="less">
 #footerBox {
   position: relative;
-  background: -webkit-linear-gradient(270deg, rgba(255, 255, 255, 0) 0, #fff 25%);
-  background: -moz-linear-gradient(270deg, rgba(255, 255, 255, 0) 0, #fff 25%);
-  background: -o-linear-gradient(270deg, rgba(255, 255, 255, 0) 0, #fff 25%);
-  background: -ms-linear-gradient(270deg, rgba(255, 255, 255, 0) 0, #fff 25%);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 25%);
-  background-attachment: scroll;
-  background-position: bottom;
+  background: linear-gradient(rgba(255,255,255,0) 0, #FFFFFF 20%);
   background-size: cover;
 }
 
