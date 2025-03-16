@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "9626955",
+      "name": "文字",
+      "font_class": "wenzi",
+      "unicode": "e883",
+      "unicode_decimal": 59523
+    },
+    {
+      "icon_id": "12376269",
+      "name": "建站",
+      "font_class": "jianzhan",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "970776",
+      "name": "信息",
+      "font_class": "xinxi-copy",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "866456",
+      "name": "安卓",
+      "font_class": "anzhuologo",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "1420800",
+      "name": "IOS",
+      "font_class": "ios",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
       "icon_id": "431638",
       "name": "chrome",
       "font_class": "chrome",

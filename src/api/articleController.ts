@@ -76,6 +76,55 @@ export async function adminPageArticleUsingPost(
   });
 }
 
+/** getArticleCategoryList GET /api/article/articleCategoryList */
+export async function getArticleCategoryListUsingGet(options?: {
+  [key: string]: any;
+}) {
+  return request<API.ResultListString_>("/api/article/articleCategoryList", {
+    method: "GET",
+    ...(options || {}),
+  });
+}
+
+/** getArticleInfoCount GET /api/article/articleInfoCount */
+export async function getArticleInfoCountUsingGet(options?: {
+  [key: string]: any;
+}) {
+  return request<API.ResultArticleInfoCountVo_>(
+    "/api/article/articleInfoCount",
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
+}
+
+/** getArticleTagsCount GET /api/article/articleTagsCount */
+export async function getArticleTagsCountUsingGet(options?: {
+  [key: string]: any;
+}) {
+  return request<API.ResultListArticleTagsCountVo_>(
+    "/api/article/articleTagsCount",
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
+}
+
+/** getArticleTimeCount GET /api/article/articleTimeCount */
+export async function getArticleTimeCountUsingGet(options?: {
+  [key: string]: any;
+}) {
+  return request<API.ResultListArticleTimeCountVo_>(
+    "/api/article/articleTimeCount",
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
+}
+
 /** getArticleById GET /api/article/get/${param0} */
 export async function getArticleByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

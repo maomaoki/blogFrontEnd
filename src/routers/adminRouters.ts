@@ -50,8 +50,17 @@ const adminRouters: RouteRecordRaw[] = [
                 component: () => import('@/page/admin/adminArticleManagePage.vue'),
             },
             {
-                path:"/admin/article/edit/:id",
-                name:"编辑文章",
+                path: "/admin/adminSystemManage",
+                name: "系统管理",
+                meta: {
+                    title: "系统管理",
+                    authAdmin: true
+                },
+                component: () => import('@/page/admin/adminSystemManagePage.vue'),
+            },
+            {
+                path: "/admin/article/edit/:id",
+                name: "编辑文章",
                 meta: {
                     title: "编辑文章",
                     authAdmin: true
@@ -59,8 +68,8 @@ const adminRouters: RouteRecordRaw[] = [
                 component: () => import('@/page/admin/edit/adminEditArticlePage.vue'),
             },
             {
-                path:"/admin/article/add",
-                name:"添加文章",
+                path: "/admin/article/add",
+                name: "添加文章",
                 meta: {
                     title: "添加文章",
                     authAdmin: true

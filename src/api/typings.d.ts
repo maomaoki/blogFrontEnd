@@ -4,6 +4,7 @@ declare namespace API {
     articleCategory?: string;
     articleContent?: string;
     articleIntroduction?: string;
+    articleSize?: number;
     articleStatus?: number;
     articleTags?: string;
     articleTitle?: string;
@@ -33,6 +34,7 @@ declare namespace API {
     articleCategory?: string;
     articleContent?: string;
     articleIntroduction?: string;
+    articleSize?: number;
     articleStatus?: number;
     articleTags?: string;
     articleTitle?: string;
@@ -53,6 +55,7 @@ declare namespace API {
     articleAuthor?: string;
     articleCategory?: string;
     articleCondition?: string;
+    articleSize?: number;
     articleStatus?: number;
     articleTags?: string;
     articleTitle?: string;
@@ -131,6 +134,7 @@ declare namespace API {
     articleIntroduction?: string;
     articleLikeNumber?: number;
     articleLookNumber?: number;
+    articleSize?: number;
     articleStatus?: number;
     articleTags?: string;
     articleTitle?: string;
@@ -145,6 +149,11 @@ declare namespace API {
     updateTime?: string;
   };
 
+  type ArticleInfoCountVo = {
+    articleCount?: number;
+    articleWordCount?: string;
+  };
+
   type ArticlePageVo = {
     articleAuthor?: string;
     articleBgImage?: string;
@@ -154,6 +163,7 @@ declare namespace API {
     articleIntroduction?: string;
     articleLikeNumber?: number;
     articleLookNumber?: number;
+    articleSize?: number;
     articleStatus?: number;
     articleTags?: string;
     articleTitle?: string;
@@ -166,6 +176,16 @@ declare namespace API {
     updateTime?: string;
   };
 
+  type ArticleTagsCountVo = {
+    count?: number;
+    name?: string;
+  };
+
+  type ArticleTimeCountVo = {
+    count?: number;
+    time?: string;
+  };
+
   type ArticleVo = {
     articleAuthor?: string;
     articleBgImage?: string;
@@ -176,6 +196,7 @@ declare namespace API {
     articleIntroduction?: string;
     articleLikeNumber?: number;
     articleLookNumber?: number;
+    articleSize?: number;
     articleStatus?: number;
     articleTags?: string;
     articleTitle?: string;
@@ -259,6 +280,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type ResultArticleInfoCountVo_ = {
+    code?: number;
+    data?: ArticleInfoCountVo;
+    msg?: string;
+  };
+
   type ResultArticleVo_ = {
     code?: number;
     data?: ArticleVo;
@@ -274,6 +301,24 @@ declare namespace API {
   type ResultBoolean_ = {
     code?: number;
     data?: boolean;
+    msg?: string;
+  };
+
+  type ResultListArticleTagsCountVo_ = {
+    code?: number;
+    data?: ArticleTagsCountVo[];
+    msg?: string;
+  };
+
+  type ResultListArticleTimeCountVo_ = {
+    code?: number;
+    data?: ArticleTimeCountVo[];
+    msg?: string;
+  };
+
+  type ResultListString_ = {
+    code?: number;
+    data?: string[];
     msg?: string;
   };
 

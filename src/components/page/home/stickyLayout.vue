@@ -10,8 +10,8 @@
         <div class="card-tags-content">
           <div class="tag-item"
                v-for="item in tagsList"
-               :class="item.isActive?'active':''"
-               :key="item.id">
+               :class="item.count == firstCount || item.count == secondCount?'active':''"
+               :key="item.name">
             {{ item.name }}
             <sup>{{ item.count }}</sup>
           </div>
@@ -21,15 +21,15 @@
 
         <div class="article-count-content">
 
-          <div v-for="item in 8" class="article-count-item">
+          <div v-for="item in timeList" class="article-count-item">
 
             <a href="">
-              <span class="article-date">八月 2023</span>
+              <span class="article-date">{{ convert(item.time) }}</span>
 
               <span class="article-num-group">
 
                       <span class="article-num">
-                          4
+                          {{ item.count }}
                       </span>
                       <span class="article-num-text">
                           篇
@@ -43,7 +43,7 @@
 
         <div class="web-info-content">
 
-          <div v-for="item in 3" class="web-info-item">
+          <div class="web-info-item">
             <div class="info-item-left">
               <i class="iconfont icon-tushu"></i>
               <div class="item-name">
@@ -51,7 +51,29 @@
               </div>
             </div>
             <div class="info-item-right">
-              70
+              {{ articleInfoCount?.articleCount }}
+            </div>
+          </div>
+          <div class="web-info-item">
+            <div class="info-item-left">
+              <i class="iconfont icon-wenzi"></i>
+              <div class="item-name">
+                文章总字数
+              </div>
+            </div>
+            <div class="info-item-right">
+              {{ articleInfoCount?.articleWordCount }}
+            </div>
+          </div>
+          <div class="web-info-item">
+            <div class="info-item-left">
+              <i class="iconfont icon-jianzhan"></i>
+              <div class="item-name">
+                建站天数
+              </div>
+            </div>
+            <div class="info-item-right">
+              999
             </div>
           </div>
         </div>
@@ -61,50 +83,115 @@
   </div>
 </template>
 <script lang="ts" setup="">
-const tagsList = [
-  {
-    id: 1,
-    name: "AI",
-    count: 3,
-    isActive: false
-  },
-  {
-    id: 2,
-    name: "HTML",
-    count: 2,
-    isActive: true
-  },
-  {
-    id: 3,
-    name: "JavaScript",
-    count: 3,
-    isActive: false
-  },
-  {
-    id: 4,
-    name: "Java",
-    count: 3,
-    isActive: true
-  },
-  {
-    id: 5,
-    name: "React",
-    count: 8,
-    isActive: false
-  },
-  {
-    id: 6,
-    name: "Vue",
-    count: 10,
-    isActive: true
-  },
-  {
-    id: 7,
-    name: "MySQL",
-    count: 6,
-    isActive: false
+import {onMounted, ref} from "vue";
+import {
+  getArticleInfoCountUsingGet,
+  getArticleTagsCountUsingGet,
+  getArticleTimeCountUsingGet
+} from "@/api/articleController.ts";
+import {message} from "ant-design-vue";
+
+const tagsList = ref<API.ArticleTagsCountVo[]>()
+
+const firstCount = ref<number>(0)
+const secondCount = ref<number>(0)
+
+
+const timeList = ref<API.ArticleTimeCountVo[]>()
+
+
+const articleInfoCount = ref<API.ArticleInfoCountVo>()
+
+
+/**
+ * 数字 中文 数组
+ */
+const chineseNumbers = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
+
+/**
+ * 转换 日期
+ */
+function convert(time: string) {
+
+  // - 切割 拿到 年份 和 月份
+  const times = time.split("-");
+  const month = chineseNumbers[Number.parseInt(times[1] as string) + 1]
+  return `${month}月 ${times[0]}`
+}
+
+/**
+ * 获取 标签 统计
+ */
+async function tagsCountReq() {
+  const tagsResult = await getArticleTagsCountUsingGet();
+  if (tagsResult.data.code != 0) {
+    message.error("文章标签获取失败")
+    return
   }
-]
+
+  tagsList.value = []
+  let newTagsList = tagsResult.data.data || []
+
+  for (let i = 0; i < newTagsList.length; i++) {
+    tagsList.value.push({
+      name: newTagsList[i].name as string,
+      count: newTagsList[i].count as number
+    })
+  }
+
+
+  // 最多 前两个 改变颜色
+  // 排序 拿到 前两个 最大的
+  // @ts-ignore
+  // todo 这里需要优化一下
+  newTagsList.sort((a, b) => b.count - a.count)
+  firstCount.value = newTagsList[0].count as number
+  secondCount.value = newTagsList[1].count as number
+
+}
+
+/**
+ * 获取 日期 统计
+ */
+async function timeCountReq() {
+  // 获取 时间
+  const timeResult = await getArticleTimeCountUsingGet();
+  if (timeResult.data.code != 0) {
+    message.error("文章时间获取失败")
+    return
+  }
+
+  timeList.value = timeResult.data.data || []
+
+}
+
+/**
+ * 获取 文字 信息 统计
+ */
+async function articleInfoCountReq() {
+
+  // 获取 文章信息
+  const articleInfoResult = await getArticleInfoCountUsingGet();
+  if (articleInfoResult.data.code != 0) {
+    message.error("文章信息获取失败")
+    return
+  }
+  articleInfoCount.value = articleInfoResult.data.data || {}
+
+}
+
+
+onMounted(async () => {
+
+  await tagsCountReq()
+
+  await timeCountReq()
+
+  await articleInfoCountReq()
+
+})
+
+
 </script>
 
 

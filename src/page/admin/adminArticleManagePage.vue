@@ -290,7 +290,7 @@ import dayjs from "dayjs";
 import {CopyOutlined} from "@ant-design/icons-vue";
 import {computed, onMounted, ref} from "vue";
 import {message, type TableColumnsType, type TableProps} from "ant-design-vue";
-import {adminPageArticleUsingPost} from "@/api/articleController.ts";
+import {adminPageArticleUsingPost, getArticleCategoryListUsingGet} from "@/api/articleController.ts";
 import router from "@/routers";
 
 const searchParams = ref<API.AdminPageArticleDto>({
@@ -554,22 +554,38 @@ const articleTagsSelect = ref<string[]>([])
 /**
  * 文章分类 默认分组
  */
-const articleCategoryOptions = [
-	{
-		value: "前端"
-	},
-	{
-		value: "后端"
-	},
-	{
-		value: "测试"
-	}
-]
+const articleCategoryOptions =ref([
+  {
+    value: "前端"
+  },
+  {
+    value: "后端"
+  },
+  {
+    value: "测试"
+  }
+])
 
 /**
  * 文章分类 数据
  */
 const articleCategorySelect = ref<string>()
+
+
+/**
+ * 获取 文章 分类
+ */
+onMounted(async () => {
+  const result = await getArticleCategoryListUsingGet();
+  if (result.data.code != 0) {
+    message.error("获取文章分类失败:" + result.data.msg)
+    return
+  }
+
+  // @ts-ignore
+  articleCategoryOptions.value = result.data.data.map((item)=>({value: item}))
+})
+
 
 
 /**
@@ -740,7 +756,9 @@ const fetchData = async () => {
 	
 	
 	const result = await adminPageArticleUsingPost({
-		...searchParams.value
+		...searchParams.value,
+    timeSortField:"editTime",
+    timeSortOrder:"desc"
 	})
 	
 	if (result.data.code !== 0) {

@@ -6,7 +6,8 @@
       <div class="author-info-avatar">
         <img class="avatar-image" src="../assets/images/avatar.jpg" alt="">
         <div class="dog">
-          <img class="dog-image" src="../assets/images/dog-status.png" alt="">
+          <i class="ymIcon ym-goutou"></i>
+
         </div>
       </div>
       <div class="author-info-description">
@@ -50,7 +51,7 @@
   </div>
 </template>
 
-<script  lang="ts" setup="">
+<script lang="ts" setup="">
 
 </script>
 
@@ -158,14 +159,10 @@
         transition: .3s .2s;
         transform: scale(1);
 
-        .dog-image {
-          width: 26px;
-          height: 26px;
-          border-radius: 0;
-          transition: 0s;
-          filter: blur(0) brightness(1);
-          max-width: 100%;
+        i{
+          font-size: 23px;
         }
+
       }
     }
 

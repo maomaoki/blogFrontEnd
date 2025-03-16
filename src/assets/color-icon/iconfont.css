@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "ymIcon"; /* Project id 4859159 */
+  /* Color fonts */
+  src: 
+       url('iconfont.woff2?t=1742055425812') format('woff2'),
+       url('iconfont.woff?t=1742055425812') format('woff'),
+       url('iconfont.ttf?t=1742055425812') format('truetype');
+}
+
+.ymIcon {
+  font-family: "ymIcon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ym-goutou:before {
+  content: "\e60d";
+}
+
+.ym-goutou1:before {
+  content: "\e605";
+}
+

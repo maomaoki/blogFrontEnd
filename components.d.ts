@@ -46,6 +46,7 @@ declare module 'vue' {
     RightSideLayout: typeof import('./src/components/layout/rightSideLayout.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SlideWrap: typeof import('./src/components/page/home/slideWrap.vue')['default']
     StickyLayout: typeof import('./src/components/page/home/stickyLayout.vue')['default']
     YmAvatar: typeof import('./src/components/ym/YmAvatar/YmAvatar.vue')['default']
     YmUploadImage: typeof import('./src/components/ym/YmUploadImage/YmUploadImage.vue')['default']

@@ -7,14 +7,8 @@
 
         <div class="catalog-list">
 
-          <div class="catalog-list-item">
-            <span class="select">首页</span>
-          </div>
-          <div class="catalog-list-item">
-            <span>前端开发</span>
-          </div>
-          <div class="catalog-list-item">
-            <span>后端开发</span>
+          <div class="catalog-list-item" v-for="item in catalogList" :key="item">
+            <span :class="item == '首页'?'select':''">{{ item }}</span>
           </div>
         </div>
 
@@ -31,6 +25,29 @@
   </div>
 </template>
 <script lang="ts" setup>
+
+import {onMounted, ref} from "vue";
+import {getArticleCategoryListUsingGet} from "@/api/articleController.ts";
+import {message} from "ant-design-vue";
+
+/**
+ * 分类 列表
+ */
+const catalogList = ref(["首页"])
+
+onMounted(async () => {
+  const result = await getArticleCategoryListUsingGet()
+  if (result.data.code != 0) {
+    message.error("获取分类错误")
+    return
+  }
+
+  // @ts-ignore
+  result.data.data.forEach(item => {
+    catalogList.value.push(item)
+  })
+
+})
 
 </script>
 

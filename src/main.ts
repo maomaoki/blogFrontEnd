@@ -13,6 +13,7 @@ import "@/auth/access.ts"
 
 // icon
 import "@/assets/icon/iconfont.css"
+import "@/assets/color-icon/iconfont.css"
 
 const app = createApp(App);
 const pinia = createPinia();
