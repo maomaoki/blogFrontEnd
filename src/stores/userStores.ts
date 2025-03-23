@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
+import {userGetLoginInfoUsingGet} from "@/api/userController.ts";
 
 /**
  *  用户 全局仓库
@@ -14,8 +15,15 @@ export const useUserStores = defineStore('user', () => {
     /**
      *  请求 设置个人信息
      */
-    const setUserInfo = (info: API.UserVo) => {
-        userInfo.value = info
+    const setUserInfo = async () => {
+        const result = await userGetLoginInfoUsingGet();
+        if (result.data.code != 0) {
+            return false;
+        }
+
+        // @ts-ignore
+        userInfo.value = result.data.data;
+        return true;
     }
 
     /**

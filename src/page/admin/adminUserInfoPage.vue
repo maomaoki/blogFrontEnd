@@ -219,7 +219,6 @@ function userGender(gender: number) {
 				.tags {
 					display: flex;
 					align-items: center;
-					justify-content: center;
 					flex-wrap: wrap;
 					
 					span {

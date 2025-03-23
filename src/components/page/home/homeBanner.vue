@@ -26,7 +26,6 @@
 </template>
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref} from "vue";
-import {getBannerInfoUsingGet} from "@/api/systemController.ts";
 import {message} from "ant-design-vue";
 
 
@@ -133,18 +132,18 @@ function gotoContent(){
 
 onMounted(async () => {
 
-  /**
-   *  获取 bannerInfo
-   */
-  const result = await getBannerInfoUsingGet()
-  if (result.data.code != 0) {
-    message.error("获取banner信息错误: " + result.data.msg)
-    return
-  }
-  // @ts-ignore
-  bannerInfo.value = result.data.data
-
-  printText()
+  // /**
+  //  *  获取 bannerInfo
+  //  */
+  // const result = await getBannerInfoUsingGet()
+  // if (result.data.code != 0) {
+  //   message.error("获取banner信息错误: " + result.data.msg)
+  //   return
+  // }
+  // // @ts-ignore
+  // bannerInfo.value = result.data.data
+  //
+  // printText()
 })
 
 onUnmounted(() => {

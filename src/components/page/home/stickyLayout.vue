@@ -129,6 +129,12 @@ async function tagsCountReq() {
     return
   }
 
+  // 或者 列表为空 也返回
+  if ((tagsResult.data.data || []).length <= 0) {
+    return;
+  }
+
+
   tagsList.value = []
   let newTagsList = tagsResult.data.data || []
 

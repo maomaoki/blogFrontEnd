@@ -402,6 +402,7 @@ const columns = ref<TableColumnsType>([
 	{
 		title: '图片使用者',
 		width: 130,
+    ellipsis: true,
 		minWidth: 100,
 		maxWidth: 500,
 		dataIndex: 'usedUserId',

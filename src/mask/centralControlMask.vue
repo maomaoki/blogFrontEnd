@@ -121,7 +121,7 @@
       </div>
       <div class="console-btn-item" @click="logout">
         <a title="注销" href="#" class="darkmode_switchbutton">
-          <LoginOutlined />
+          <LoginOutlined/>
         </a>
       </div>
     </div>
@@ -133,12 +133,12 @@
 <script setup lang="ts">
 
 import {useComponentStores} from "@/stores/useComponentStores.ts";
-import {userIsLogin} from "@/common/useUserIsLogin.ts";
 import {onMounted, ref} from "vue";
 import {LoginOutlined} from "@ant-design/icons-vue";
 import {userLogoutUsingPost} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
+import {useUserStores} from "@/stores/userStores.ts";
 
 const {getIsShowCentralControl, setIsShowCentralControl} = useComponentStores();
 
@@ -257,14 +257,17 @@ function isNotShow() {
 /**
  * 用户 信息
  */
-const userInfo = ref()
+const userInfo = ref<API.UserVo>({})
+
+
+const userStore = useUserStores()
 
 
 /**
  *  获取 用户 登录 信息
  */
-onMounted(async () => {
-  userInfo.value = await userIsLogin();
+onMounted(() => {
+  userInfo.value = userStore.getUserInfo();
 })
 
 /**

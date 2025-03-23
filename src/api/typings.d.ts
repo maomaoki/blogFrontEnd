@@ -215,6 +215,34 @@ declare namespace API {
     printList?: string[];
   };
 
+  type BlogSystem = {
+    blogCreateTime?: string;
+    blogRegistrationNumber?: string;
+    blogRegistrationNumberUrl?: string;
+    blogSystemUserName?: string;
+    businessCardBiliUrl?: string;
+    businessCardGitHubUrl?: string;
+    businessCardName?: string;
+    businessCardText?: Record<string, any>;
+    businessCardTitle?: string;
+    businessCardTop?: string;
+    createTime?: string;
+    editTime?: string;
+    homeBannerBgImageUrl?: string;
+    homeBannerPrintText?: Record<string, any>;
+    homeBannerTitle?: string;
+    id?: number;
+    isDelete?: number;
+    shareBiliUrl?: string;
+    shareDyUrl?: string;
+    shareEmailUrl?: string;
+    shareGitHubUrl?: string;
+    shareGiteeUrl?: string;
+    shareQQUrl?: string;
+    shareWxUrl?: string;
+    updateTime?: string;
+  };
+
   type getArticleByIdUsingGETParams = {
     /** id */
     id: string;
@@ -298,6 +326,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type ResultBlogSystem_ = {
+    code?: number;
+    data?: BlogSystem;
+    msg?: string;
+  };
+
   type ResultBoolean_ = {
     code?: number;
     data?: boolean;
@@ -346,12 +380,6 @@ declare namespace API {
     msg?: string;
   };
 
-  type ResultSystemInfoVo_ = {
-    code?: number;
-    data?: SystemInfoVo;
-    msg?: string;
-  };
-
   type ResultUploadPictureVo_ = {
     code?: number;
     data?: UploadPictureVo;
@@ -362,14 +390,6 @@ declare namespace API {
     code?: number;
     data?: UserVo;
     msg?: string;
-  };
-
-  type SystemInfoVo = {
-    articleCount?: number;
-    chatCount?: number;
-    onlineCount?: number;
-    todayLoginCount?: number;
-    userCount?: number;
   };
 
   type uploadPictureUsingPOSTParams = {

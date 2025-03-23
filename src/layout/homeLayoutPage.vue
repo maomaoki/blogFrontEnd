@@ -15,7 +15,7 @@
 
 
     <!--右边功能按钮-->
-    <right-side-layout />
+    <right-side-layout/>
   </div>
 
 </template>
@@ -23,6 +23,22 @@
 import NavLayoutBox from "@/components/layout/navLayout.vue"
 import FooterLayout from "@/components/layout/footerLayout.vue";
 import RightSideLayout from "@/components/layout/rightSideLayout.vue";
+import {onMounted} from "vue";
+import {getBlogSystemInfoUsingGet} from "@/api/blogSystemController.ts";
+import {message} from "ant-design-vue";
+
+
+/**
+ * 这里 请求 获取 blog 系统 信息
+ */
+onMounted(async () => {
+  const result = await getBlogSystemInfoUsingGet()
+  if (result.data.code != 0) {
+    message.error("获取系统信息错误!")
+    return
+  }
+  console.log(result.data.data)
+})
 
 
 </script>
