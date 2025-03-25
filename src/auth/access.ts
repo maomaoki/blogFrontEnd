@@ -19,13 +19,13 @@ router.beforeEach(async (to, from, next) => {
         return;
     }
 
-    const userStore = useUserStores();
-    let userInfo = userStore.getUserInfo();
+    const {getUserInfo, setUserInfo} = useUserStores();
+
 
     // 2.是否第一次进入页面
     if (isFirst) {
         // 如果 是就需要请求个人信息
-        const isLogin = await userStore.setUserInfo();
+        const isLogin = await setUserInfo();
         if (!isLogin) {
             message.error("未登录");
             await router.push("/login");
@@ -35,7 +35,7 @@ router.beforeEach(async (to, from, next) => {
     // 3.校验是否需要管理员权限
     if (to.meta.authAdmin) {
         // 需要权限
-        const userRole = userInfo.userRole;
+        const userRole = getUserInfo().userRole;
         if (UserRoleEnums.BOSS === userRole || UserRoleEnums.ADMIN === userRole) {
             next();
         } else {

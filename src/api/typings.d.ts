@@ -15,6 +15,30 @@ declare namespace API {
     isRecommend?: number;
   };
 
+  type AdminAddBlogSystemDto = {
+    blogCreateTime?: string;
+    blogRegistrationNumber?: string;
+    blogRegistrationNumberUrl?: string;
+    blogSystemUserName?: string;
+    businessCardAvatarUrl?: string;
+    businessCardBiliUrl?: string;
+    businessCardGitHubUrl?: string;
+    businessCardName?: string;
+    businessCardText?: string;
+    businessCardTitle?: string;
+    businessCardTop?: string;
+    homeBannerBgImageUrl?: string;
+    homeBannerPrintText?: string;
+    homeBannerTitle?: string;
+    shareBiliUrl?: string;
+    shareDyUrl?: string;
+    shareEmailUrl?: string;
+    shareGitHubUrl?: string;
+    shareGiteeUrl?: string;
+    shareQQUrl?: string;
+    shareWxUrl?: string;
+  };
+
   type AdminAddUserDto = {
     userAccount?: string;
     userName?: string;
@@ -209,27 +233,22 @@ declare namespace API {
     updateTime?: string;
   };
 
-  type BannerInfoVo = {
-    bannerImageUrl?: string;
-    bannerTitle?: string;
-    printList?: string[];
-  };
-
   type BlogSystem = {
     blogCreateTime?: string;
     blogRegistrationNumber?: string;
     blogRegistrationNumberUrl?: string;
     blogSystemUserName?: string;
+    businessCardAvatarUrl?: string;
     businessCardBiliUrl?: string;
     businessCardGitHubUrl?: string;
     businessCardName?: string;
-    businessCardText?: Record<string, any>;
+    businessCardText?: string;
     businessCardTitle?: string;
     businessCardTop?: string;
     createTime?: string;
     editTime?: string;
     homeBannerBgImageUrl?: string;
-    homeBannerPrintText?: Record<string, any>;
+    homeBannerPrintText?: string;
     homeBannerTitle?: string;
     id?: number;
     isDelete?: number;
@@ -241,6 +260,31 @@ declare namespace API {
     shareQQUrl?: string;
     shareWxUrl?: string;
     updateTime?: string;
+  };
+
+  type BlogSystemInfoVo = {
+    blogCreateTime?: string;
+    blogRegistrationNumber?: string;
+    blogRegistrationNumberUrl?: string;
+    blogSystemUserName?: string;
+    businessCardAvatarUrl?: string;
+    businessCardBiliUrl?: string;
+    businessCardGitHubUrl?: string;
+    businessCardName?: string;
+    businessCardText?: string;
+    businessCardTitle?: string;
+    businessCardTop?: string;
+    homeBannerBgImageUrl?: string;
+    homeBannerPrintText?: string;
+    homeBannerTitle?: string;
+    id?: number;
+    shareBiliUrl?: string;
+    shareDyUrl?: string;
+    shareEmailUrl?: string;
+    shareGitHubUrl?: string;
+    shareGiteeUrl?: string;
+    shareQQUrl?: string;
+    shareWxUrl?: string;
   };
 
   type getArticleByIdUsingGETParams = {
@@ -320,15 +364,9 @@ declare namespace API {
     msg?: string;
   };
 
-  type ResultBannerInfoVo_ = {
+  type ResultBlogSystemInfoVo_ = {
     code?: number;
-    data?: BannerInfoVo;
-    msg?: string;
-  };
-
-  type ResultBlogSystem_ = {
-    code?: number;
-    data?: BlogSystem;
+    data?: BlogSystemInfoVo;
     msg?: string;
   };
 

@@ -136,23 +136,15 @@ import {
 	ApiOutlined
 } from "@ant-design/icons-vue"
 import {onMounted, ref} from "vue";
-import {getSystemInfoUsingGet} from "@/api/systemController.ts";
 import {message} from "ant-design-vue";
 
-const systemInfo = ref<API.SystemInfoVo>({})
+const systemInfo = ref({})
 
 /**
  * 挂载 渲染 数据
  */
 onMounted(async () => {
-	
-	const result = await getSystemInfoUsingGet();
-	if (result.data.code != 0) {
-		message.error("系统信息获取失败")
-		return;
-	}
-	// @ts-ignore
-	systemInfo.value = result.data.data
+
 })
 
 

@@ -181,7 +181,8 @@ import type {Rule} from "ant-design-vue/es/form";
 import {userLoginUsingPost, userRegisterUsingPost, userSendEmailCodeUsingPost} from "@/api/userController.ts";
 import emailCodeConstant from "@/constants/emailCodeConstant.ts";
 import {useRouter} from "vue-router";
-import {userIsLogin} from "@/common/useUserIsLogin.ts";
+import {useUserStores} from "@/stores/userStores.ts";
+
 
 /**
  *  (不登陆） 点击 返回 主页
@@ -321,6 +322,8 @@ const registeredRules: Record<string, Rule[]> = {
 
 const router = useRouter();
 
+const userStore = useUserStores()
+
 /**
  *  登录提交事件
  */
@@ -338,7 +341,7 @@ async function loginFinish() {
   }
 
   message.success("登陆成功")
-  await userIsLogin()
+  await userStore.setUserInfo();
   // 清空输入框
   // 跳回登录前的页面
   if (router.currentRoute.value.query.redirect) {

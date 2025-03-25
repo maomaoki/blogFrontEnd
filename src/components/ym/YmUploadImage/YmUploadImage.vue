@@ -1,7 +1,7 @@
 <template>
-	
+
 	<div id="YmUploadImage">
-		
+
 		<!--上传文件-->
 		<a-upload-dragger
 				name="picture-card"
@@ -18,7 +18,7 @@
 				文件不能大于3MB,仅支持jpg,png,webp等图片格式上传
 			</p>
 		</a-upload-dragger>
-		
+
 		<!--展示图片-->
 		<div class="imageBox" v-else>
 			<img :src="imageData?.pictureUrl"
@@ -34,7 +34,7 @@
 						  title="清除"/></i>
 			  </span>
 			</div>
-			
+
 			<!--	图片预览放大操作-->
 			<a-modal
 					wrap-class-name="ym-model"
@@ -105,23 +105,23 @@ function handleCancel() {
 
 <style lang="less">
 #YmUploadImage {
-	
+
 	max-width: 720px;
-	
+
 	.imageBox {
 		width: 100%;
 		height: 300px;
 		border-radius: 10px;
 		overflow: hidden;
 		position: relative;
-		
+
 		img {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
 			border-radius: 10px;
 		}
-		
+
 		.ym-mark {
 			position: absolute;
 			top: 0;
@@ -136,35 +136,35 @@ function handleCancel() {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			
+
 			.ym-mark-list-btn {
 				width: 100%;
 				text-align: center;
 				line-height: 0;
-				
+
 				i {
 					padding: 0 5px;
 					cursor: pointer;
-					
+
 					span {
 						font-size: 18px;
 						transition: all 0.3s;
-						
+
 						&:hover {
 							color: #FFFFFF;
 						}
 					}
 				}
-				
+
 			}
 		}
-		
+
 		&:hover {
 			.ym-mark {
 				opacity: 1;
 			}
 		}
-		
+
 		.ym-model{
 			.ant-modal {
 				max-width: 100%;
@@ -182,6 +182,6 @@ function handleCancel() {
 			}
 		}
 	}
-	
+
 }
 </style>

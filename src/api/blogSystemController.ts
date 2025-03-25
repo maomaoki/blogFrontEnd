@@ -2,20 +2,51 @@
 /* eslint-disable */
 import request from "@/axios";
 
-/** getBannerInfo GET /api/blogSystem/bannerInfo */
-export async function getBannerInfoUsingGet(options?: { [key: string]: any }) {
-  return request<API.ResultBannerInfoVo_>("/api/blogSystem/bannerInfo", {
-    method: "GET",
-    ...(options || {}),
-  });
+/** adminEditBlogSystemInfo POST /api/blogSystem/admin/editBlogSystemInfo */
+export async function adminEditBlogSystemInfoUsingPost(
+  body: API.BlogSystem,
+  options?: { [key: string]: any }
+) {
+  return request<API.ResultBoolean_>(
+    "/api/blogSystem/admin/editBlogSystemInfo",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
+}
+
+/** adminSaveBlogSystemInfo POST /api/blogSystem/admin/saveBlogSystemInfo */
+export async function adminSaveBlogSystemInfoUsingPost(
+  body: API.AdminAddBlogSystemDto,
+  options?: { [key: string]: any }
+) {
+  return request<API.ResultBoolean_>(
+    "/api/blogSystem/admin/saveBlogSystemInfo",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
 }
 
 /** getBlogSystemInfo GET /api/blogSystem/getBlogSystemInfo */
 export async function getBlogSystemInfoUsingGet(options?: {
   [key: string]: any;
 }) {
-  return request<API.ResultBlogSystem_>("/api/blogSystem/getBlogSystemInfo", {
-    method: "GET",
-    ...(options || {}),
-  });
+  return request<API.ResultBlogSystemInfoVo_>(
+    "/api/blogSystem/getBlogSystemInfo",
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
 }

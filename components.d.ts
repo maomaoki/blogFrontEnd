@@ -11,6 +11,7 @@ declare module 'vue' {
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
     AButton: typeof import('ant-design-vue/es')['Button']
+    ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
     AdminAddUser: typeof import('./src/components/admin/adminAddUser.vue')['default']
     AdminEditUserInfo: typeof import('./src/components/admin/adminEditUserInfo.vue')['default']
     ADropdown: typeof import('ant-design-vue/es')['Dropdown']

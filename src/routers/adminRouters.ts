@@ -56,7 +56,16 @@ const adminRouters: RouteRecordRaw[] = [
                     title: "系统管理",
                     authAdmin: true
                 },
-                component: () => import('@/page/admin/adminSystemManagePage.vue'),
+                component: () => import('@/page/admin/adminBlogSystemInfoMangePage.vue'),
+            },
+            {
+                path: "/admin/adminSystemManage/edit",
+                name: "编辑系统信息",
+                meta: {
+                    title: "编辑系统信息",
+                    authAdmin: true
+                },
+                component: () => import('@/page/admin/edit/adminEditBlogSystemInfoPage.vue'),
             },
             {
                 path: "/admin/article/edit/:id",
