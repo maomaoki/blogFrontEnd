@@ -50,5 +50,14 @@ onMounted(async () => {
 
 <style lang="less">
 #homeLayoutPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  background: #f7f9fe;
+
+  .top-150 {
+    padding-top: 150px;
+  }
 }
 </style>

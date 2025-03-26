@@ -4,33 +4,33 @@
     <div id="footer-wrap">
 
       <div class="footer-icon-list">
-        <div class="icon_link">
+        <a class="icon_link" title="邮件">
           <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="image_link" title="返回顶部">
-          <img src="../assets/images/image-link.jpg" alt="返回顶部">
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
-        <div class="icon_link">
-          <i class="iconfont icon-youjian"></i>
-        </div>
+        </a>
+        <a class="icon_link" title="微博">
+          <i class="iconfont icon-weibo"></i>
+        </a>
+        <a class="icon_link" title="facebook">
+          <i class="iconfont icon-facebook"></i>
+        </a>
+        <a class="icon_link" title="抖音">
+          <i class="iconfont icon-douyin"></i>
+        </a>
+        <a class="image_link" title="返回顶部" @click="goToArriveTop()">
+          <img :src="getBlogSystemInfo().businessCardAvatarUrl" alt="返回顶部">
+        </a>
+        <a class="icon_link" title="bili">
+          <i class="iconfont icon-bilibili"></i>
+        </a>
+        <a class="icon_link" title="github">
+          <i class="iconfont icon-github"></i>
+        </a>
+        <a class="icon_link" title="版权">
+          <i class="iconfont icon-banquan"></i>
+        </a>
+        <a class="icon_link" title="建站信息">
+          <i class="iconfont icon-jianzhan"></i>
+        </a>
       </div>
 
       <div class="footer-info-list">
@@ -90,8 +90,8 @@
           <div class="footer-bar-item">
             图床
           </div>
-          <a :href="getBlogSystemInfo().blogRegistrationNumberUrl" target="_blank"  class="footer-bar-item">
-             {{getBlogSystemInfo().blogRegistrationNumber}}
+          <a :href="getBlogSystemInfo().blogRegistrationNumberUrl" target="_blank" class="footer-bar-item">
+            {{ getBlogSystemInfo().blogRegistrationNumber }}
           </a>
         </div>
       </div>
@@ -103,6 +103,7 @@
 import {onMounted, ref} from "vue";
 import {useComponentStores} from "@/stores/useComponentStores.ts";
 import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+import {goToArriveTop} from "@/utils/componentsUtils.ts";
 
 const footerBoxRef = ref()
 
@@ -131,7 +132,7 @@ onMounted(() => {
 <style lang="less">
 #footerBox {
   position: relative;
-  background: linear-gradient(rgba(255,255,255,0) 0, #FFFFFF 20%);
+  background: linear-gradient(rgba(255, 255, 255, 0) 0, #FFFFFF 20%);
   background-size: cover;
 }
 
@@ -187,6 +188,7 @@ onMounted(() => {
         height: 50px;
         object-fit: cover;
         border-radius: 50%;
+        object-position: 0 0;
       }
 
       &:hover {

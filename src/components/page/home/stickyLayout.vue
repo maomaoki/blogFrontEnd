@@ -73,7 +73,7 @@
               </div>
             </div>
             <div class="info-item-right">
-              999
+              {{createBlogDay + '天'}}
             </div>
           </div>
         </div>
@@ -90,6 +90,7 @@ import {
   getArticleTimeCountUsingGet
 } from "@/api/articleController.ts";
 import {message} from "ant-design-vue";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
 
 const tagsList = ref<API.ArticleTagsCountVo[]>()
 
@@ -102,6 +103,10 @@ const timeList = ref<API.ArticleTimeCountVo[]>()
 
 const articleInfoCount = ref<API.ArticleInfoCountVo>()
 
+/**
+ * 创建 博客 日期
+ */
+const createBlogDay = ref<number>(0)
 
 /**
  * 数字 中文 数组
@@ -186,6 +191,7 @@ async function articleInfoCountReq() {
 
 }
 
+const {getBlogSystemInfo} = useLayoutStores()
 
 onMounted(async () => {
 
@@ -195,6 +201,11 @@ onMounted(async () => {
 
   await articleInfoCountReq()
 
+  // 计算 创建 日期 到 当前 日期 多少天
+  let createTime = new Date(getBlogSystemInfo().blogCreateTime ?? '2025-03-25T04:12:13.000+00:00')
+  let nowTime = new Date()
+  // @ts-ignore
+   createBlogDay.value = Math.floor((nowTime - createTime) / 1000 / 86400)
 })
 
 

@@ -50,7 +50,7 @@
         <div class="articleOtherInfo">
           <div class="infoItem">
             <i class="iconfont icon-zishu"></i>
-            <span>字数总计: {{ article?.articleContent ? article?.articleContent.length : '00' }}</span>
+            <span>字数总计: {{ article?.articleSize ?? 0 }}</span>
           </div>
           <div class="infoItem">
             <i class="iconfont icon-shizhong"></i>

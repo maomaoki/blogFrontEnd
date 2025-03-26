@@ -1,5 +1,6 @@
 <template>
-  <nav id="navBox" :class="isFixed?'isFixed':''">
+  <nav id="navBox" :class="
+  [isFixed?'isFixed':'',isChangeBlackColor?'isBlack':'']">
 
     <div class="nav-group">
       <div class="blog-name">
@@ -18,22 +19,22 @@
             <span>文章</span>
             <ul class="menu-item-children">
               <li>
-                <span>
+                <a @click="()=>{router.push('/categories')}">
                   <i class="iconfont icon-fenlei"></i>
-                  分类
-                </span>
+                  <span>分类</span>
+                </a>
               </li>
               <li>
-                <span>
+                <a @click="()=>{router.push('/tags')}">
                   <i class="iconfont icon-24gf-tags3"></i>
-                  标签
-                </span>
+                  <span>标签</span>
+                </a>
               </li>
               <li>
-                <span>
+                <a>
                   <i class="iconfont icon-wendang"></i>
-                  文档
-                </span>
+                  <span>文档</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -86,7 +87,7 @@
 
 <script lang="ts" setup>
 
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {useComponentStores} from "@/stores/useComponentStores.ts";
 import {goToArriveTop} from "@/utils/componentsUtils.ts";
 import CentralControlMask from "@/mask/centralControlMask.vue";
@@ -153,6 +154,15 @@ function changeNavbar() {
 }
 
 
+/**
+ *  路由 判断 是否 变色
+ */
+const isChangeBlackColor = ref<boolean>(false)
+onBeforeRouteUpdate((to, _) => {
+  isChangeBlackColor.value = to.meta.navColorToBlack == true
+})
+
+
 onMounted(() => {
 
   // 默认 500
@@ -165,6 +175,10 @@ onMounted(() => {
   window.addEventListener('scroll', changeNavbar);
 
 
+  /**
+   * 刷新页面 时 获取一下 是否 需要 修改 颜色
+   */
+  isChangeBlackColor.value = route.meta.navColorToBlack == true
 })
 
 onUnmounted(() => {
@@ -371,7 +385,7 @@ onUnmounted(() => {
           transition: .3s;
 
 
-          span {
+          > span {
             height: 35px;
             padding: 0 15px;
             border-radius: 50px;
@@ -435,8 +449,9 @@ onUnmounted(() => {
               display: inline-block;
               margin: 0 3px;
               list-style: none;
+              cursor: pointer;
 
-              span {
+              a {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -446,6 +461,10 @@ onUnmounted(() => {
                 width: 100%;
                 color: #4c4948;
                 font-size: 15px;
+
+                i {
+                  margin-right: 5px;
+                }
 
                 &:hover {
                   color: #fff;
@@ -621,7 +640,6 @@ onUnmounted(() => {
     }
   }
 
-
   &.isFixed {
     background: #fff;
     outline: 1px solid #e3e8f7;
@@ -731,5 +749,12 @@ onUnmounted(() => {
     }
 
   }
+
+  &.isBlack {
+    .nav-group {
+      color: #333;
+    }
+  }
+
 }
 </style>
