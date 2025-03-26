@@ -90,9 +90,9 @@
           <div class="footer-bar-item">
             图床
           </div>
-          <div class="footer-bar-item">
-            粤ICP备-xxxxxxxxxx号
-          </div>
+          <a :href="getBlogSystemInfo().blogRegistrationNumberUrl" target="_blank"  class="footer-bar-item">
+             {{getBlogSystemInfo().blogRegistrationNumber}}
+          </a>
         </div>
       </div>
     </div>
@@ -102,10 +102,12 @@
 
 import {onMounted, ref} from "vue";
 import {useComponentStores} from "@/stores/useComponentStores.ts";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
 
 const footerBoxRef = ref()
 
 const {setIsArrive} = useComponentStores();
+const {getBlogSystemInfo} = useLayoutStores();
 
 /**
  *  使用 监听器

@@ -21,6 +21,20 @@
                 style="max-height: 600px;object-fit: contain"
             />
           </div>
+          <div class="info">
+            <span>更多-背景图</span>
+            <a-image
+                :src="blogSystemInfo?.moreImageUrl"
+                style="max-height: 600px;object-fit: contain"
+            />
+          </div>
+          <div class="info">
+            <span>登录背景图</span>
+            <a-image
+                :src="blogSystemInfo?.loginImageUrl"
+                style="max-height: 600px;object-fit: contain"
+            />
+          </div>
           <!--打印文字列表-->
           <div class="info">
             <span>打印文字列表</span>
@@ -35,6 +49,20 @@
             <span>标题</span>
             <span>
 							{{ blogSystemInfo?.homeBannerTitle }}
+						</span>
+          </div>
+          <!--更多 标题-->
+          <div class="info">
+            <span>更多-标题</span>
+            <span>
+							{{ blogSystemInfo?.moreTitle }}
+						</span>
+          </div>
+          <!--更多 内容-->
+          <div class="info">
+            <span>更多-内容</span>
+            <span>
+							{{ blogSystemInfo?.moreContent }}
 						</span>
           </div>
         </div>

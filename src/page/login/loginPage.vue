@@ -181,7 +181,7 @@ import type {Rule} from "ant-design-vue/es/form";
 import {userLoginUsingPost, userRegisterUsingPost, userSendEmailCodeUsingPost} from "@/api/userController.ts";
 import emailCodeConstant from "@/constants/emailCodeConstant.ts";
 import {useRouter} from "vue-router";
-import {useUserStores} from "@/stores/userStores.ts";
+import {useUserStores} from "@/stores/useUserStores.ts";
 
 
 /**

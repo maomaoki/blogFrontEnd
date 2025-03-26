@@ -23,10 +23,12 @@
 import NavLayoutBox from "@/components/layout/navLayout.vue"
 import FooterLayout from "@/components/layout/footerLayout.vue";
 import RightSideLayout from "@/components/layout/rightSideLayout.vue";
-import {onMounted} from "vue";
+import {onMounted, onUpdated} from "vue";
 import {getBlogSystemInfoUsingGet} from "@/api/blogSystemController.ts";
 import {message} from "ant-design-vue";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
 
+const {setBlogSystemInfo} = useLayoutStores()
 
 /**
  * 这里 请求 获取 blog 系统 信息
@@ -37,7 +39,10 @@ onMounted(async () => {
     message.error("获取系统信息错误!")
     return
   }
-  console.log(result.data.data)
+  // 塞入 全局 仓库里面
+  //@ts-ignore
+  setBlogSystemInfo(result.data.data)
+
 })
 
 

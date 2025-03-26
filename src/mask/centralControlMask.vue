@@ -138,7 +138,7 @@ import {LoginOutlined} from "@ant-design/icons-vue";
 import {userLogoutUsingPost} from "@/api/userController.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";
-import {useUserStores} from "@/stores/userStores.ts";
+import {useUserStores} from "@/stores/useUserStores.ts";
 
 const {getIsShowCentralControl, setIsShowCentralControl} = useComponentStores();
 

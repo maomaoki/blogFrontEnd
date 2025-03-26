@@ -19,6 +19,26 @@
                 :before-upload="bannerBeforeUpload"
                 :clear-data="bannerClearData"/>
           </div>
+          <!--更多背景图-->
+          <div class="info">
+            <span>更多-背景图</span>
+            <ym-upload-image
+                :image-data="moreImageData"
+                :loading="moreUploadLoading"
+                :upload="moreUpload"
+                :before-upload="moreBeforeUpload"
+                :clear-data="moreClearData"/>
+          </div>
+          <!--登录背景图-->
+          <div class="info">
+            <span>登录-背景图</span>
+            <ym-upload-image
+                :image-data="loginImageData"
+                :loading="loginUploadLoading"
+                :upload="loginUpload"
+                :before-upload="loginBeforeUpload"
+                :clear-data="loginClearData"/>
+          </div>
           <!--打印文字列表-->
           <div class="info">
             <span>打印文字列表</span>
@@ -37,6 +57,28 @@
                   style="width: 40%"
                   v-model:value="blogSystemInfo.homeBannerTitle"
                   placeholder="banner标题"
+              />
+						</span>
+          </div>
+          <!--更多 - 标题-->
+          <div class="info">
+            <span>更多-标题</span>
+            <span>
+              <a-input
+                  style="width: 40%"
+                  v-model:value="blogSystemInfo.moreTitle"
+                  placeholder="更多de标题"
+              />
+						</span>
+          </div>
+          <!--更多 - 内容-->
+          <div class="info">
+            <span>更多-内容</span>
+            <span>
+              <a-input
+                  style="width: 40%"
+                  v-model:value="blogSystemInfo.moreContent"
+                  placeholder="更多de内容"
               />
 						</span>
           </div>
@@ -386,6 +428,99 @@ function avatarClearData() {
   avatarImageData.value = {}
 }
 
+
+// more图片数据
+const moreImageData = ref<API.UploadPictureVo>({})
+// more上传loading
+const moreUploadLoading = ref<boolean>(false)
+
+// more上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。
+function moreBeforeUpload(file: File) {
+  if (file.size > 1024 * 1024 * 3) {
+    message.error("文件大小过大")
+    return false
+  }
+
+  if (!PictureConstant.ALLOWED_FILE_TYPES.includes(file.type)) {
+    message.error("文件类型错误")
+    return false
+  }
+  return true;
+}
+
+// more图片上传逻辑
+async function moreUpload(file: File) {
+  moreUploadLoading.value = true
+
+  // 上传 文件, 类型是more
+  const result = await uploadPictureUsingPost({
+    pictureCategory: PictureConstant.PICTURE_CATEGORY_MORE
+  }, {}, file)
+  // @ts-ignore
+  if (result.data.code != 0) {
+    // @ts-ignore
+    message.error("上传文件失败:" + result.data.msg)
+    moreUploadLoading.value = false
+    return
+  }
+  // @ts-ignore
+  moreImageData.value = result.data.data;
+  moreUploadLoading.value = false
+  message.success("上传成功")
+}
+
+// more清除照片数据
+function moreClearData() {
+  moreImageData.value = {}
+}
+
+
+// login图片数据
+const loginImageData = ref<API.UploadPictureVo>({})
+// login上传loading
+const loginUploadLoading = ref<boolean>(false)
+
+// login上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。
+function loginBeforeUpload(file: File) {
+  if (file.size > 1024 * 1024 * 3) {
+    message.error("文件大小过大")
+    return false
+  }
+
+  if (!PictureConstant.ALLOWED_FILE_TYPES.includes(file.type)) {
+    message.error("文件类型错误")
+    return false
+  }
+  return true;
+}
+
+// login图片上传逻辑
+async function loginUpload(file: File) {
+  loginUploadLoading.value = true
+
+  // 上传 文件, 类型是more
+  const result = await uploadPictureUsingPost({
+    pictureCategory: PictureConstant.PICTURE_CATEGORY_LOGIN
+  }, {}, file)
+  // @ts-ignore
+  if (result.data.code != 0) {
+    // @ts-ignore
+    message.error("上传文件失败:" + result.data.msg)
+    loginUploadLoading.value = false
+    return
+  }
+  // @ts-ignore
+  loginImageData.value = result.data.data;
+  loginUploadLoading.value = false
+  message.success("上传成功")
+}
+
+// login清除照片数据
+function loginClearData() {
+  moreImageData.value = {}
+}
+
+
 /**
  * 博客 创建日期
  */
@@ -404,6 +539,10 @@ onMounted(async () => {
   bannerImageData.value.pictureUrl = blogSystemInfo.value?.homeBannerBgImageUrl
   // avatar
   avatarImageData.value.pictureUrl = blogSystemInfo.value?.businessCardAvatarUrl
+  // more
+  moreImageData.value.pictureUrl = blogSystemInfo.value?.moreImageUrl
+  // login
+  loginImageData.value.pictureUrl = blogSystemInfo.value?.loginImageUrl
   // blogCreateTime
   blogCreate.value = dayjs(blogSystemInfo.value.blogCreateTime)
 })
@@ -417,6 +556,8 @@ async function doEdit() {
   // 刷新数据
   blogSystemInfo.value.homeBannerBgImageUrl = bannerImageData.value.pictureUrl
   blogSystemInfo.value.businessCardAvatarUrl = avatarImageData.value.pictureUrl
+  blogSystemInfo.value.moreImageUrl = moreImageData.value.pictureUrl
+  blogSystemInfo.value.loginImageUrl = loginImageData.value.pictureUrl
   // @ts-ignore
   blogSystemInfo.value.blogCreateTime = blogCreate.value
 
@@ -438,7 +579,6 @@ function doReset() {
 
   message.warn("此功能不需要做!")
 }
-
 
 </script>
 

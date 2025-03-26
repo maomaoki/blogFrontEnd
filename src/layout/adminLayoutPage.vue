@@ -141,7 +141,7 @@ import {
 } from '@ant-design/icons-vue';
 import {message} from 'ant-design-vue';
 import {useRoute, useRouter} from "vue-router";
-import {useUserStores} from "@/stores/userStores.ts";
+import {useUserStores} from "@/stores/useUserStores.ts";
 import {userLogoutUsingPost} from "@/api/userController.ts";
 import checkAdmin from "@/auth/checkAdmin.ts";
 

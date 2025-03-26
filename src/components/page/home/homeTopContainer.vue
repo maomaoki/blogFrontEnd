@@ -16,10 +16,10 @@
 
       <div class="todayCard" :class="hide?'hide':''">
         <div class="todayCard-info">
-          <span>测试</span>
-          <span>YunMao-Test</span>
+          <span>{{getBlogSystemInfo().moreContent}}</span>
+          <span>{{getBlogSystemInfo().moreTitle}}</span>
         </div>
-        <img src="http://localhost:9999/api/images/banner/1893682464272867329/af2e9f37bae04595a9fa26f082f03ed7.jpg"
+        <img :src="getBlogSystemInfo().moreImageUrl"
              alt="">
 
         <div class="banner-group-button">
@@ -41,6 +41,13 @@ import {onMounted, ref} from "vue";
 import {pageArticleUsingPost} from "@/api/articleController.ts";
 import {message} from "ant-design-vue";
 import SlideWrap from "@/components/page/home/slideWrap.vue";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+
+/**
+ * 获取 更多 的 背景图
+ */
+const {getBlogSystemInfo} = useLayoutStores()
+
 
 /**
  * true 展示 查看更多
@@ -87,6 +94,8 @@ onMounted(async () => {
     hotArticleList.value = result.data.data.records ?? [];
   }
 })
+
+
 
 
 </script>

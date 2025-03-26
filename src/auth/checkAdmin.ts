@@ -1,4 +1,4 @@
-import {useUserStores} from "@/stores/userStores.ts";
+import {useUserStores} from "@/stores/useUserStores.ts";
 import {UserRoleEnums} from "@/enums/userRoleEnums.ts";
 import {message} from "ant-design-vue";
 import router from "@/routers";

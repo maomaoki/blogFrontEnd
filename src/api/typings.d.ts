@@ -30,6 +30,10 @@ declare namespace API {
     homeBannerBgImageUrl?: string;
     homeBannerPrintText?: string;
     homeBannerTitle?: string;
+    loginImageUrl?: string;
+    moreContent?: string;
+    moreImageUrl?: string;
+    moreTitle?: string;
     shareBiliUrl?: string;
     shareDyUrl?: string;
     shareEmailUrl?: string;
@@ -252,6 +256,10 @@ declare namespace API {
     homeBannerTitle?: string;
     id?: number;
     isDelete?: number;
+    loginImageUrl?: string;
+    moreContent?: string;
+    moreImageUrl?: string;
+    moreTitle?: string;
     shareBiliUrl?: string;
     shareDyUrl?: string;
     shareEmailUrl?: string;
@@ -278,6 +286,10 @@ declare namespace API {
     homeBannerPrintText?: string;
     homeBannerTitle?: string;
     id?: number;
+    loginImageUrl?: string;
+    moreContent?: string;
+    moreImageUrl?: string;
+    moreTitle?: string;
     shareBiliUrl?: string;
     shareDyUrl?: string;
     shareEmailUrl?: string;

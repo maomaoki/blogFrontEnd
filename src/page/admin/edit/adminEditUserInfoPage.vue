@@ -108,7 +108,7 @@ import router from "@/routers";
 import YmAvatar from "@/components/ym/YmAvatar/YmAvatar.vue";
 import PictureConstant from "@/constants/pictureConstant.ts";
 import {uploadPictureUsingPost} from "@/api/pictureController.ts";
-import {useUserStores} from "@/stores/userStores.ts";
+import {useUserStores} from "@/stores/useUserStores.ts";
 
 /**
  *  用户 个人 信息

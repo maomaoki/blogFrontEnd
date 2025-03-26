@@ -4,45 +4,36 @@
     <div class="card-content">
       <div class="card-prompt">吃饱了才能睡着</div>
       <div class="author-info-avatar">
-        <img class="avatar-image" src="../assets/images/avatar.jpg" alt="">
+        <img class="avatar-image" :src="layoutStores.getBlogSystemInfo().businessCardAvatarUrl" alt="">
         <div class="dog">
           <i class="ymIcon ym-goutou"></i>
 
         </div>
       </div>
       <div class="author-info-description">
-
-        <div>
-          这有关于<b>产品、设计、开发</b>
-          相关的问题和看法，还有
-          <b>文章翻译</b>和
-          <b>分享</b>。
-        </div>
-        <div>相信你可以在这里找到对你有用的
-          <b>知识</b>和<b>教程</b>。
-        </div>
+        <div v-for="item in descriptionList" v-html="item" />
       </div>
       <div class="author-bottom-group">
 
         <div class="author-bottom-group_left">
 
           <h1 class="author-info-name">
-            云猫YM
+            {{ layoutStores.getBlogSystemInfo().businessCardName }}
           </h1>
 
           <span class="author-info-desc">
-                  生活明朗 万物可爱
+                  {{ layoutStores.getBlogSystemInfo().businessCardTitle }}
                 </span>
 
         </div>
 
         <div class="author-bottom-group_right">
 
-          <a href="">
+          <a :href="layoutStores.getBlogSystemInfo().businessCardGitHubUrl" target="_blank">
             <i class="iconfont icon-github"></i>
           </a>
 
-          <a href="">
+          <a :href="layoutStores.getBlogSystemInfo().businessCardBiliUrl" target="_blank">
             <i class="iconfont icon-bilibili"></i>
           </a>
         </div>
@@ -52,6 +43,36 @@
 </template>
 
 <script lang="ts" setup="">
+
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+import {onMounted, ref} from "vue";
+
+const layoutStores = useLayoutStores()
+
+/**
+ * 描述 字符串 数组 以 。 隔开
+ */
+const descriptionList = ref<string[]>([])
+
+onMounted(() => {
+
+  const text = layoutStores.getBlogSystemInfo().businessCardText
+  if (text != undefined) {
+    // @ts-ignore
+    descriptionList.value = layoutStores.getBlogSystemInfo().businessCardText.split("。").slice(0, -1)
+    if (descriptionList.value.length > 0) {
+      descriptionList.value = descriptionList.value.map((item) => item + "。")
+    }
+  }
+
+  layoutStores.$subscribe((_, state) => {
+    if (descriptionList.value.length > 0 || state.blogSystemInfo.businessCardText == undefined) return
+    descriptionList.value = state.blogSystemInfo.businessCardText.split("。").slice(0, -1)
+    descriptionList.value = descriptionList.value.map((item) => item + "。")
+  })
+
+
+})
 
 </script>
 
@@ -133,6 +154,7 @@
         border-radius: 500px;
         object-fit: cover;
         position: absolute;
+        object-position: 0 0;
         opacity: 1;
         -ms-filter: none;
         -webkit-transition: .3s;
@@ -159,7 +181,7 @@
         transition: .3s .2s;
         transform: scale(1);
 
-        i{
+        i {
           font-size: 23px;
         }
 

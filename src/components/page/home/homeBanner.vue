@@ -3,13 +3,13 @@
 
     <div class="banner-box">
 
-      <img :src="bannerInfo?.bannerImageUrl"
+      <img :src="layoutStores.getBlogSystemInfo().homeBannerBgImageUrl"
            alt="背景">
     </div>
 
     <div class="banner-info">
       <h1>
-        <span>{{ bannerInfo?.bannerTitle }}</span>
+        <span>{{ layoutStores.getBlogSystemInfo().homeBannerTitle }}</span>
       </h1>
       <div class="printer" @click="refreshPrint">
         <div class="printer-item">
@@ -26,10 +26,18 @@
 </template>
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref} from "vue";
-import {message} from "ant-design-vue";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+
+/**
+ * 取出 blog系统 信息
+ */
+const layoutStores = useLayoutStores();
 
 
-const bannerInfo = ref<API.BannerInfoVo>({})
+/**
+ * 打印 文字 列表
+ */
+const printTextList = ref<string[]>([])
 
 
 /**
@@ -41,10 +49,12 @@ let selectStr = ref<string>("");
  * 随机 选取 一个 打印
  */
 function randomChangeStrPrint() {
+
+
   // @ts-ignore
-  const randomIndex = Math.floor(Math.random() * bannerInfo.value.printList.length);
+  const randomIndex = Math.floor(Math.random() * printTextList.value.length);
   // @ts-ignore
-  selectStr.value = bannerInfo.value.printList[randomIndex];
+  selectStr.value = printTextList.value[randomIndex];
 
 }
 
@@ -122,7 +132,7 @@ function refreshPrint(): void {
 /**
  *  点击 去往内容
  */
-function gotoContent(){
+function gotoContent() {
   window.scrollTo({
     top: 800,
     behavior: 'smooth'
@@ -130,21 +140,18 @@ function gotoContent(){
 }
 
 
-onMounted(async () => {
+onMounted(() => {
+  layoutStores.$subscribe((_, state) => {
+    if (state.blogSystemInfo.homeBannerPrintText == undefined) {
+      return;
+    }
+    printTextList.value = state.blogSystemInfo.homeBannerPrintText.split("。").slice(0, -1)
+    printTextList.value = printTextList.value.map((item) => item + "。")
+    printText()
+  })
 
-  // /**
-  //  *  获取 bannerInfo
-  //  */
-  // const result = await getBannerInfoUsingGet()
-  // if (result.data.code != 0) {
-  //   message.error("获取banner信息错误: " + result.data.msg)
-  //   return
-  // }
-  // // @ts-ignore
-  // bannerInfo.value = result.data.data
-  //
-  // printText()
 })
+
 
 onUnmounted(() => {
   if (timer != -1) {
