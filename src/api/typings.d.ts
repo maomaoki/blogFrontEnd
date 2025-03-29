@@ -41,6 +41,8 @@ declare namespace API {
     shareGiteeUrl?: string;
     shareQQUrl?: string;
     shareWxUrl?: string;
+    slideWrapTitle?: string;
+    slideWrapUrl?: string;
   };
 
   type AdminAddUserDto = {
@@ -267,6 +269,8 @@ declare namespace API {
     shareGiteeUrl?: string;
     shareQQUrl?: string;
     shareWxUrl?: string;
+    slideWrapTitle?: string;
+    slideWrapUrl?: string;
     updateTime?: string;
   };
 
@@ -297,6 +301,8 @@ declare namespace API {
     shareGiteeUrl?: string;
     shareQQUrl?: string;
     shareWxUrl?: string;
+    slideWrapTitle?: string;
+    slideWrapUrl?: string;
   };
 
   type getArticleByIdUsingGETParams = {
@@ -397,12 +403,6 @@ declare namespace API {
   type ResultListArticleTimeCountVo_ = {
     code?: number;
     data?: ArticleTimeCountVo[];
-    msg?: string;
-  };
-
-  type ResultListString_ = {
-    code?: number;
-    data?: string[];
     msg?: string;
   };
 

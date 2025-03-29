@@ -7,8 +7,11 @@
 
         <div class="catalog-list">
 
-          <div class="catalog-list-item" v-for="item in catalogList" :key="item">
-            <span :class="item == '首页'?'select':''">{{ item }}</span>
+          <div class="catalog-list-item"
+
+               v-for="item in catalogList" :key="item.name">
+            <span v-if="item.name == '首页'" class="select">{{ '首页' }}</span>
+            <span v-else @click="()=>router.push('/categories/'+item.name)">{{ item.name }}</span>
           </div>
         </div>
 
@@ -17,7 +20,7 @@
           <i class="iconfont icon-shaixuanyoubian"></i>
         </div>
 
-        <a href="" class="catalog-more">
+        <a @click="()=>router.push('/categories/')" class="catalog-more">
           更多
         </a>
       </div>
@@ -29,11 +32,15 @@
 import {onMounted, ref} from "vue";
 import {getArticleCategoryListUsingGet} from "@/api/articleController.ts";
 import {message} from "ant-design-vue";
+import router from "@/routers";
 
 /**
  * 分类 列表
  */
-const catalogList = ref(["首页"])
+const catalogList = ref<API.ArticleTagsCountVo[]>([{
+  name: "首页",
+  count: 0
+}])
 
 onMounted(async () => {
   const result = await getArticleCategoryListUsingGet()

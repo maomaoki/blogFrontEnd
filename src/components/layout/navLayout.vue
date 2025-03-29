@@ -8,7 +8,7 @@
           <i class="iconfont icon-caidan"></i>
         </div>
         <div class="back_button_box" @click="()=>{router.push('/home')}">
-          <span class="title">云猫</span>
+          <span class="title">{{ getBlogSystemInfo().blogSystemUserName }}</span>
           <i class="iconfont icon-shouye"></i>
         </div>
       </div>
@@ -53,7 +53,8 @@
       <div class="mask-name-container">
         <div class="name-container">
           <a @click="goToArriveTop">
-            云猫 - 生活明朗 万物可爱
+
+            {{ getBlogSystemInfo().blogSystemUserName }} - {{ getBlogSystemInfo()?.slideWrapTitle?.replace(/。/g, ' ') }}
           </a>
         </div>
       </div>
@@ -93,6 +94,7 @@ import {goToArriveTop} from "@/utils/componentsUtils.ts";
 import CentralControlMask from "@/mask/centralControlMask.vue";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
 import router from "@/routers";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
 
 /**
  * 打开 中控 遮罩
@@ -180,6 +182,13 @@ onMounted(() => {
    */
   isChangeBlackColor.value = route.meta.navColorToBlack == true
 })
+
+
+/**
+ * 获取 系统信息
+ */
+const {getBlogSystemInfo} = useLayoutStores()
+
 
 onUnmounted(() => {
   /**

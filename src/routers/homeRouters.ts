@@ -25,19 +25,43 @@ const homeRouters: RouteRecordRaw[] = [
             {
                 path: "/categories",
                 name: "分类",
-                meta:{
-                    navColorToBlack:true
+                meta: {
+                    navColorToBlack: true
                 },
-                component: () => import("@/page/home/categoriesPage.vue")
+                component: () => import("@/page/home/articleCategoriesPage.vue")
+            },
+            {
+                path: "/categories/:title",
+                name: "分类列表",
+                meta: {
+                    navColorToBlack: true
+                },
+                component: () => import("@/page/home/articleCategoriesListPage.vue")
             },
             {
                 path: "/tags",
                 name: "标签",
-                meta:{
-                    navColorToBlack:true
+                meta: {
+                    navColorToBlack: true
                 },
-                component: () => import("@/page/home/tagPage.vue")
-            }
+                component: () => import("@/page/home/articleTagPage.vue")
+            },
+            {
+                path: "/tags/:title",
+                name: "标签列表",
+                meta: {
+                    navColorToBlack: true
+                },
+                component: () => import("@/page/home/articleTagsListPage.vue")
+            },
+            {
+                path: "/timer/:year/:month",
+                name: "日期列表",
+                meta: {
+                    navColorToBlack: true
+                },
+                component: () => import("@/page/home/articleTimerListPage.vue")
+            },
         ]
     },
 

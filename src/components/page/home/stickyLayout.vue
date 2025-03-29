@@ -9,6 +9,7 @@
 
         <div class="card-tags-content">
           <div class="tag-item"
+               @click="()=>router.push('/tags/' + item.name)"
                v-for="item in tagsList"
                :class="item.count == firstCount || item.count == secondCount?'active':''"
                :key="item.name">
@@ -23,7 +24,7 @@
 
           <div v-for="item in timeList" class="article-count-item">
 
-            <a href="">
+            <a @click="()=>router.push('/timer/' + convertYearAndMonth(item.time))">
               <span class="article-date">{{ convert(item.time) }}</span>
 
               <span class="article-num-group">
@@ -73,7 +74,7 @@
               </div>
             </div>
             <div class="info-item-right">
-              {{createBlogDay + '天'}}
+              {{ createBlogDay + '天' }}
             </div>
           </div>
         </div>
@@ -91,6 +92,7 @@ import {
 } from "@/api/articleController.ts";
 import {message} from "ant-design-vue";
 import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+import router from "@/routers";
 
 const tagsList = ref<API.ArticleTagsCountVo[]>()
 
@@ -120,8 +122,19 @@ function convert(time: string) {
 
   // - 切割 拿到 年份 和 月份
   const times = time.split("-");
-  const month = chineseNumbers[Number.parseInt(times[1] as string) + 1]
+  const month = chineseNumbers[Number.parseInt(times[1] as string) - 1]
   return `${month}月 ${times[0]}`
+}
+
+/**
+ * 转换 查询 年月日期
+ */
+function convertYearAndMonth(time: string) {
+  // - 切割 拿到 年份 和 月份
+  const times = time.split("-");
+  const year = times[0];
+  const month = times[1];
+  return `${year}/${month}`
 }
 
 /**
@@ -156,6 +169,12 @@ async function tagsCountReq() {
   // @ts-ignore
   // todo 这里需要优化一下
   newTagsList.sort((a, b) => b.count - a.count)
+
+  if (newTagsList.length < 2) {
+    firstCount.value = newTagsList[0].count as number
+    secondCount.value = newTagsList[0].count as number
+    return
+  }
   firstCount.value = newTagsList[0].count as number
   secondCount.value = newTagsList[1].count as number
 
@@ -205,7 +224,7 @@ onMounted(async () => {
   let createTime = new Date(getBlogSystemInfo().blogCreateTime ?? '2025-03-25T04:12:13.000+00:00')
   let nowTime = new Date()
   // @ts-ignore
-   createBlogDay.value = Math.floor((nowTime - createTime) / 1000 / 86400)
+  createBlogDay.value = Math.floor((nowTime - createTime) / 1000 / 86400)
 })
 
 

@@ -65,6 +65,20 @@
 							{{ blogSystemInfo?.moreContent }}
 						</span>
           </div>
+          <!--随便看看 内容-->
+          <div class="info">
+            <span>随便看看-内容</span>
+            <span>
+							{{ blogSystemInfo?.slideWrapTitle }}
+						</span>
+          </div>
+          <!--随便看看 url-->
+          <div class="info">
+            <span>随便看看-url</span>
+            <span>
+							{{ blogSystemInfo?.slideWrapUrl }}
+						</span>
+          </div>
         </div>
       </div>
 

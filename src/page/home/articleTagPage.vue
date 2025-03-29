@@ -7,13 +7,15 @@
         <h1>标签</h1>
       </div>
       <div class="tagsContent-content">
-        <div v-for="item in 10" class="tagsContent-content-item">
+        <div
+            @click="()=>router.push('/tags/'+item.name)"
+            v-for="item in tagsList" class="tagsContent-content-item">
           <span class="tags-punctuation">
             #
           </span>
-          前端开发
+          {{ item.name }}
           <span class="tagsPageCount">
-            26
+            {{ item.count }}
           </span>
         </div>
       </div>
@@ -23,7 +25,22 @@
 
 
 <script setup lang="ts">
+import {onMounted, ref} from "vue";
+import {getArticleTagsCountUsingGet} from "@/api/articleController.ts";
+import {message} from "ant-design-vue";
+import router from "@/routers";
 
+const tagsList = ref<API.ArticleTagsCountVo[]>([])
+
+onMounted(async () => {
+  const result = await getArticleTagsCountUsingGet()
+  if (result.data.code != 0) {
+    message.error("文章分类获取失败")
+    return
+  }
+  //@ts-ignore
+  tagsList.value = result.data.data
+})
 </script>
 
 

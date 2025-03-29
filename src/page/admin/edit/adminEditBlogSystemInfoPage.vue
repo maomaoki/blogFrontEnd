@@ -82,6 +82,28 @@
               />
 						</span>
           </div>
+          <!--随便看看 - 内容-->
+          <div class="info">
+            <span>随便看看-内容</span>
+            <span>
+              <a-textarea
+                  style="width: 40%"
+                  v-model:value="blogSystemInfo.slideWrapTitle"
+                  placeholder="随便看看de内容,以中文。分割"
+              />
+						</span>
+          </div>
+          <!--随便看看 - url-->
+          <div class="info">
+            <span>随便看看-url</span>
+            <span>
+              <a-input
+                  style="width: 40%"
+                  v-model:value="blogSystemInfo.slideWrapUrl"
+                  placeholder="随便看看deUrl"
+              />
+						</span>
+          </div>
         </div>
       </div>
 

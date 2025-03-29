@@ -194,6 +194,16 @@ function searchPage() {
     return
   }
 }
+
+
+/**
+ * 暴露 给 父组件 清除 当前页面
+ */
+function resetPageNumber(pageNumber: number) {
+  currentPage.value = pageNumber
+}
+
+defineExpose({resetPageNumber})
 </script>
 
 

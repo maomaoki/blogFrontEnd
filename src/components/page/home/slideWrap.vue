@@ -3,9 +3,12 @@
     <div class="random-banner">
 
       <div class="banner-title">
-        <div class="banner-title-big">生活明朗</div>
-        <div class="banner-title-big">万物可爱。</div>
-        <div class="banner-title-small">ANHEYU.COM</div>
+        <div class="banner-title-big"
+             v-if="getBlogSystemInfo()?.slideWrapTitle !== undefined"
+             v-for="item in getBlogSystemInfo()?.slideWrapTitle?.split('。')">
+          {{ item }}
+        </div>
+        <div class="banner-title-small">{{ getBlogSystemInfo().slideWrapUrl }}</div>
       </div>
 
       <div class="skills-tags-group-all">
@@ -94,25 +97,25 @@
 
       <div class="categoryItem">
 
-        <div class="c-button blue">
+        <div class="c-button blue" @click="()=>router.push('/categories/' + articleCategoryList[0])">
 
-          <span>前端</span>
+          <span>{{ articleCategoryList[0] }}</span>
           <i class="iconfont icon-a-30"></i>
         </div>
 
       </div>
-      <div class="categoryItem">
+      <div class="categoryItem" @click="()=>router.push('/categories/' + articleCategoryList[1])">
 
         <div class="c-button red">
-          <span>大学日常</span>
+          <span>{{ articleCategoryList[1] }}</span>
           <i class="iconfont icon-kapianrehuo"></i>
         </div>
 
       </div>
-      <div class="categoryItem">
+      <div class="categoryItem" @click="()=>router.push('/categories/' + articleCategoryList[2])">
 
         <div class="c-button green">
-          <span>生活</span>
+          <span>{{ articleCategoryList[2] }}</span>
           <i class="iconfont icon-tushu"></i>
         </div>
 
@@ -139,6 +142,42 @@ import pythonIcon from "@/assets/images/pair/python.png"
 import viteIcon from "@/assets/images/pair/vite-logo.svg"
 import vueIcon from "@/assets/images/pair/vue-logo.png"
 import reactIcon from "@/assets/images/pair/react.svg"
+import {onMounted, ref} from "vue";
+import {getArticleCategoryListUsingGet} from "@/api/articleController.ts";
+import router from "@/routers";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+
+
+const articleCategoryList = ref<string[]>([
+  "前端",
+  "后端",
+  "测试"
+])
+
+/**
+ * 获取 系统信息
+ */
+const {getBlogSystemInfo} = useLayoutStores()
+
+/**
+ * 获取 分类 前三最多的
+ */
+onMounted(async () => {
+  const result = await getArticleCategoryListUsingGet()
+  if (result.data.code != 0) {
+    // message.error("获取文章分类失败")
+    return
+  }
+
+  // @ts-ignore
+  // 降级处理
+  if (result.data?.data.length < 3) articleCategoryList.value = result.data.data?.map(item => item.name)
+
+  // @ts-ignore
+  // 排序
+  articleCategoryList.value = result.data.data.sort((a, b) => b.count - a.count).map(item => item.name).slice(0, 3)
+
+})
 
 
 </script>

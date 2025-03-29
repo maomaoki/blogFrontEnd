@@ -80,10 +80,13 @@ export async function adminPageArticleUsingPost(
 export async function getArticleCategoryListUsingGet(options?: {
   [key: string]: any;
 }) {
-  return request<API.ResultListString_>("/api/article/articleCategoryList", {
-    method: "GET",
-    ...(options || {}),
-  });
+  return request<API.ResultListArticleTagsCountVo_>(
+    "/api/article/articleCategoryList",
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
 }
 
 /** getArticleInfoCount GET /api/article/articleInfoCount */

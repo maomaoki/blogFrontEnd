@@ -68,16 +68,13 @@
         </a-form-item>
 
         <a-form-item label="文章分类">
-          <a-space>
-            <a-select
-                v-model:value="articleCategorySelect"
-                mode="combobox"
-                :allowClear="true"
-                style="width: 120px"
-                placeholder="请输入文章分类"
-                :options="articleCategoryOptions"
-            ></a-select>
-          </a-space>
+          <a-input
+              :allowClear="true"
+              style="width: 140px"
+              placeholder="请输入文章分类"
+              v-model:value="articleCategoryInput">
+          </a-input>
+
         </a-form-item>
 
         <a-form-item label="是否加密">
@@ -225,39 +222,9 @@ const handleInputConfirm = () => {
 
 
 /**
- * 文章分类 默认分组
- */
-const articleCategoryOptions = ref([
-  {
-    value: "前端"
-  },
-  {
-    value: "后端"
-  },
-  {
-    value: "测试"
-  }
-])
-
-/**
  * 文章分类 数据
  */
-const articleCategorySelect = ref<string>()
-
-
-/**
- * 获取 文章 分类
- */
-onMounted(async () => {
-  const result = await getArticleCategoryListUsingGet();
-  if (result.data.code != 0) {
-    message.error("获取文章分类失败:" + result.data.msg)
-    return
-  }
-
-  // @ts-ignore
-  articleCategoryOptions.value = result.data.data.map((item)=>({value: item}))
-})
+const articleCategoryInput = ref<string>()
 
 
 /**
@@ -395,7 +362,7 @@ async function doAdd() {
   addArticlePost.articleContent = text.value
   addArticlePost.articleIntroduction = addArticle.value.articleIntroduction
   addArticlePost.articleTags = JSON.stringify(tagsState.tags)
-  addArticlePost.articleCategory = articleCategorySelect.value
+  addArticlePost.articleCategory = articleCategoryInput.value
   addArticlePost.isEncrypt = isEncrypt.value ? 1 : 0
   addArticlePost.encryptPassword = isEncrypt.value ? password.value : ""
   addArticlePost.isRecommend = isRecommend.value ? 1 : 0

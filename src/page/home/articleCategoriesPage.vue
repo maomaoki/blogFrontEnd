@@ -7,13 +7,15 @@
         <h1>分类</h1>
       </div>
       <div class="categories-content">
-        <div v-for="item in 10" class="categories-content-item">
+        <div v-for="item in categoriesList"
+             class="categories-content-item"
+             @click="()=>router.push('/categories/'+item.name)">
           <span class="tags-punctuation">
             #
           </span>
-          前端开发
+          {{ item.name }}
           <span class="tagsPageCount">
-            26
+            {{ item.count }}
           </span>
         </div>
       </div>
@@ -23,6 +25,24 @@
 
 
 <script setup lang="ts">
+
+import {onMounted, ref} from "vue";
+import {getArticleCategoryListUsingGet} from "@/api/articleController.ts";
+import {message} from "ant-design-vue";
+import router from "@/routers";
+
+const categoriesList = ref<API.ArticleTagsCountVo[]>([])
+
+onMounted(async () => {
+  const result = await getArticleCategoryListUsingGet()
+  if (result.data.code != 0) {
+    message.error("文章分类获取失败")
+    return
+  }
+  //@ts-ignore
+  categoriesList.value = result.data.data
+})
+
 
 </script>
 
