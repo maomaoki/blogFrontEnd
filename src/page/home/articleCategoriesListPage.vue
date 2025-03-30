@@ -70,6 +70,12 @@
         />
       </div>
     </div>
+
+    <div id="aside-content">
+      <card-info/>
+
+      <sticky-layout/>
+    </div>
   </div>
 </template>
 
@@ -82,6 +88,8 @@ import {message} from "ant-design-vue";
 import router from "@/routers";
 import Pagination from "@/components/page/home/pagination.vue";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
+import CardInfo from "@/components/page/home/cardInfo.vue";
+import StickyLayout from "@/components/page/home/stickyLayout.vue";
 
 
 const route = useRoute()
@@ -205,11 +213,12 @@ onBeforeRouteUpdate(async (to) => {
 
 <style lang="less">
 #categoriesListPage {
-  width: calc(100% - 300px);
+  max-width: 1400px;
+  width: 100%;
   display: flex;
   flex: 1 auto;
   margin: 0 auto;
-  padding: 1.25rem 1.5rem;
+  padding: 20px 20px;
   justify-content: center;
 
   #category-bar {
@@ -307,7 +316,7 @@ onBeforeRouteUpdate(async (to) => {
   }
 
   #categoriesContent {
-    width: 100% !important;
+    width: calc(100% - 300px);
     transition: all .3s ease 0s;
     border-radius: 12px;
     background: rgba(255, 255, 255, .9);
@@ -316,6 +325,7 @@ onBeforeRouteUpdate(async (to) => {
     border: 1px solid #e3e8f7;
     align-self: flex-start;
     animation: slide-in .6s .1s backwards;
+
 
     .categories-title {
       margin: 10px 0 30px;
@@ -430,6 +440,12 @@ onBeforeRouteUpdate(async (to) => {
       }
     }
 
+  }
+
+  #aside-content {
+    padding-left: 15px;
+    animation: slide-in .6s .3s backwards;
+    width: 300px;
   }
 
   @keyframes slide-in {

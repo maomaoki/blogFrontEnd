@@ -86,15 +86,8 @@ import HomeBanner from "@/components/page/home/homeBanner.vue";
     }
 
     .right {
-
       width: 300px;
-      -webkit-animation: slide-in .6s .3s backwards;
-      -moz-animation: slide-in .6s .3s backwards;
-      -o-animation: slide-in .6s .3s backwards;
-      -ms-animation: slide-in .6s .3s backwards;
       animation: slide-in .6s .3s backwards;
-
-
     }
 
 

@@ -50,3 +50,18 @@ export async function getBlogSystemInfoUsingGet(options?: {
     }
   );
 }
+
+/** getNewsList POST /api/blogSystem/news */
+export async function getNewsListUsingPost(
+  body: API.NewsDto,
+  options?: { [key: string]: any }
+) {
+  return request<API.ResultListNewsVo_>("/api/blogSystem/news", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

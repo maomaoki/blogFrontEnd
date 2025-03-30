@@ -39,7 +39,27 @@
             </ul>
           </div>
           <div class="menu-item">
-            <span>文章</span>
+            <span>我的</span>
+            <ul class="menu-item-children">
+              <li>
+                <a @click="()=>{router.push('/news')}">
+                  <i class="iconfont icon-tushu"></i>
+                  <span>新闻</span>
+                </a>
+              </li>
+              <li>
+                <a @click="()=>{router.push('/tags')}">
+                  <i class="iconfont icon-24gf-tags3"></i>
+                  <span>标签</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <i class="iconfont icon-wendang"></i>
+                  <span>文档</span>
+                </a>
+              </li>
+            </ul>
           </div>
           <div class="menu-item">
             <span>文章</span>

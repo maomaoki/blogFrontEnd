@@ -15,7 +15,7 @@
 
 
     <!--右边功能按钮-->
-    <right-side-layout/>
+<!--    <right-side-layout/>-->
   </div>
 
 </template>

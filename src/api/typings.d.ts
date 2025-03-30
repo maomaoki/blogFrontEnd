@@ -315,6 +315,18 @@ declare namespace API {
     password?: string;
   };
 
+  type NewsDto = {
+    id?: string;
+    size?: number;
+  };
+
+  type NewsVo = {
+    hotValue?: string;
+    index?: number;
+    link?: string;
+    title?: string;
+  };
+
   type PageArticlePageVo_ = {
     current?: number;
     pages?: number;
@@ -403,6 +415,12 @@ declare namespace API {
   type ResultListArticleTimeCountVo_ = {
     code?: number;
     data?: ArticleTimeCountVo[];
+    msg?: string;
+  };
+
+  type ResultListNewsVo_ = {
+    code?: number;
+    data?: NewsVo[];
     msg?: string;
   };
 
