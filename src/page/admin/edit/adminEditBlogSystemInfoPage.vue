@@ -39,6 +39,16 @@
                 :before-upload="loginBeforeUpload"
                 :clear-data="loginClearData"/>
           </div>
+          <!--新闻-背景图-->
+          <div class="info">
+            <span>新闻-背景图</span>
+            <ym-upload-image
+                :image-data="newsBannerImageData"
+                :loading="newsBannerUploadLoading"
+                :upload="newsBannerUpload"
+                :before-upload="newsBannerBeforeUpload"
+                :clear-data="newsBannerClearData"/>
+          </div>
           <!--打印文字列表-->
           <div class="info">
             <span>打印文字列表</span>
@@ -101,6 +111,28 @@
                   style="width: 40%"
                   v-model:value="blogSystemInfo.slideWrapUrl"
                   placeholder="随便看看deUrl"
+              />
+						</span>
+          </div>
+          <!--新闻 - 标题-->
+          <div class="info">
+            <span>新闻-标题</span>
+            <span>
+              <a-input
+                  style="width: 40%"
+                  v-model:value="blogSystemInfo.newsBannerTitle"
+                  placeholder="新闻de标题"
+              />
+						</span>
+          </div>
+          <!--新闻 - 内容-->
+          <div class="info">
+            <span>新闻banner-打印文字</span>
+            <span>
+              <a-textarea
+                  :rows="4"
+                  v-model:value="blogSystemInfo.newsBannerPrintText"
+                  placeholder="新闻de内容,以中文。隔开"
               />
 						</span>
           </div>
@@ -539,7 +571,53 @@ async function loginUpload(file: File) {
 
 // login清除照片数据
 function loginClearData() {
-  moreImageData.value = {}
+  loginImageData.value = {}
+}
+
+
+// newsBanner图片数据
+const newsBannerImageData = ref<API.UploadPictureVo>({})
+// newsBanner上传loading
+const newsBannerUploadLoading = ref<boolean>(false)
+
+// newsBanner上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。
+function newsBannerBeforeUpload(file: File) {
+  if (file.size > 1024 * 1024 * 3) {
+    message.error("文件大小过大")
+    return false
+  }
+
+  if (!PictureConstant.ALLOWED_FILE_TYPES.includes(file.type)) {
+    message.error("文件类型错误")
+    return false
+  }
+  return true;
+}
+
+// newsBanner图片上传逻辑
+async function newsBannerUpload(file: File) {
+  newsBannerUploadLoading.value = true
+
+  // 上传 文件, 类型是more
+  const result = await uploadPictureUsingPost({
+    pictureCategory: PictureConstant.PICTURE_CATEGORY_NEWS_BANNER
+  }, {}, file)
+  // @ts-ignore
+  if (result.data.code != 0) {
+    // @ts-ignore
+    message.error("上传文件失败:" + result.data.msg)
+    newsBannerUploadLoading.value = false
+    return
+  }
+  // @ts-ignore
+  newsBannerImageData.value = result.data.data;
+  newsBannerUploadLoading.value = false
+  message.success("上传成功")
+}
+
+// newsBanner清除照片数据
+function newsBannerClearData() {
+  newsBannerImageData.value = {}
 }
 
 
@@ -565,6 +643,8 @@ onMounted(async () => {
   moreImageData.value.pictureUrl = blogSystemInfo.value?.moreImageUrl
   // login
   loginImageData.value.pictureUrl = blogSystemInfo.value?.loginImageUrl
+  // news
+  newsBannerImageData.value.pictureUrl = blogSystemInfo.value?.newsBannerBgImageUrl
   // blogCreateTime
   blogCreate.value = dayjs(blogSystemInfo.value.blogCreateTime)
 })
@@ -580,6 +660,7 @@ async function doEdit() {
   blogSystemInfo.value.businessCardAvatarUrl = avatarImageData.value.pictureUrl
   blogSystemInfo.value.moreImageUrl = moreImageData.value.pictureUrl
   blogSystemInfo.value.loginImageUrl = loginImageData.value.pictureUrl
+  blogSystemInfo.value.homeBannerBgImageUrl = bannerImageData.value.pictureUrl
   // @ts-ignore
   blogSystemInfo.value.blogCreateTime = blogCreate.value
 

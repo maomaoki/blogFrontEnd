@@ -65,9 +65,6 @@ const homeRouters: RouteRecordRaw[] = [
             {
                 path: "/news",
                 name: "新闻",
-                meta: {
-                    navColorToBlack: true
-                },
                 component: () => import("@/page/home/newsPage.vue")
             },
 

@@ -2,7 +2,12 @@
 
   <div id="homePage">
     <!--bg-->
-    <homeBanner/>
+    <home-banner
+        :banner-bg-image-url="bannerBgImageUrl"
+        :title="title"
+        :top="800"
+        :print-text-list="printTextList"
+    />
 
     <div id="divide"></div>
 
@@ -41,6 +46,33 @@ import HomeContentCard from "@/components/page/home/homeContentCard.vue";
 import CardInfo from "@/components/page/home/cardInfo.vue";
 import StickyLayout from "@/components/page/home/stickyLayout.vue";
 import HomeBanner from "@/components/page/home/homeBanner.vue";
+import {onMounted, ref} from "vue";
+import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+
+
+const bannerBgImageUrl = ref<string>("")
+const title = ref<string>("")
+const printTextList = ref<string[]>([])
+const layoutStores = useLayoutStores()
+layoutStores.$subscribe((_, state) => {
+  bannerBgImageUrl.value =
+      state.blogSystemInfo.homeBannerBgImageUrl || ""
+  title.value = state.blogSystemInfo.homeBannerTitle || ""
+
+  printTextList.value =
+      state.blogSystemInfo.homeBannerPrintText?.split("。").slice(0, -1) || []
+})
+onMounted(() => {
+
+  bannerBgImageUrl.value =
+      layoutStores.getBlogSystemInfo().homeBannerBgImageUrl || ""
+  title.value = layoutStores.getBlogSystemInfo().homeBannerTitle || ""
+
+  printTextList.value =
+      layoutStores.getBlogSystemInfo().homeBannerPrintText?.split("。").slice(0, -1) || []
+
+
+})
 
 </script>
 

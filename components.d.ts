@@ -42,6 +42,7 @@ declare module 'vue' {
     HomeContentCard: typeof import('./src/components/page/home/homeContentCard.vue')['default']
     HomeTopContainer: typeof import('./src/components/page/home/homeTopContainer.vue')['default']
     NavLayout: typeof import('./src/components/layout/navLayout.vue')['default']
+    NewsBanner: typeof import('./src/components/page/home/newsBanner.vue')['default']
     NowTimeNews: typeof import('./src/components/page/home/nowTimeNews.vue')['default']
     Pagination: typeof import('./src/components/page/home/pagination.vue')['default']
     RightSideLayout: typeof import('./src/components/layout/rightSideLayout.vue')['default']

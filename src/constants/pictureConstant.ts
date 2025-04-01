@@ -25,6 +25,12 @@ const PictureConstant = {
     PICTURE_CATEGORY_BANNER: "banner",
 
     /**
+     * 图片 分类 - news-banner
+     */
+    PICTURE_CATEGORY_NEWS_BANNER: "news-banner",
+
+
+    /**
      * 图片 分类 - more
      */
     PICTURE_CATEGORY_MORE: "more",

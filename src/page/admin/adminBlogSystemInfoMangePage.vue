@@ -35,6 +35,13 @@
                 style="max-height: 600px;object-fit: contain"
             />
           </div>
+          <div class="info">
+            <span>新闻背景图</span>
+            <a-image
+                :src="blogSystemInfo?.newsBannerBgImageUrl"
+                style="max-height: 600px;object-fit: contain"
+            />
+          </div>
           <!--打印文字列表-->
           <div class="info">
             <span>打印文字列表</span>
@@ -77,6 +84,22 @@
             <span>随便看看-url</span>
             <span>
 							{{ blogSystemInfo?.slideWrapUrl }}
+						</span>
+          </div>
+          <!--news banner printText-->
+          <div class="info">
+            <span>新闻-打印文字列表</span>
+            <div>
+              <p v-for="item in cutPrintText(blogSystemInfo?.newsBannerPrintText)">
+                {{ item + '。' }}
+              </p>
+            </div>
+          </div>
+          <!--news banner 标题-->
+          <div class="info">
+            <span>新闻页面-标题</span>
+            <span>
+							{{ blogSystemInfo?.newsBannerTitle }}
 						</span>
           </div>
         </div>

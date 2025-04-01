@@ -34,6 +34,9 @@ declare namespace API {
     moreContent?: string;
     moreImageUrl?: string;
     moreTitle?: string;
+    newsBannerBgImageUrl?: string;
+    newsBannerPrintText?: string;
+    newsBannerTitle?: string;
     shareBiliUrl?: string;
     shareDyUrl?: string;
     shareEmailUrl?: string;
@@ -262,6 +265,9 @@ declare namespace API {
     moreContent?: string;
     moreImageUrl?: string;
     moreTitle?: string;
+    newsBannerBgImageUrl?: string;
+    newsBannerPrintText?: string;
+    newsBannerTitle?: string;
     shareBiliUrl?: string;
     shareDyUrl?: string;
     shareEmailUrl?: string;
@@ -294,6 +300,9 @@ declare namespace API {
     moreContent?: string;
     moreImageUrl?: string;
     moreTitle?: string;
+    newsBannerBgImageUrl?: string;
+    newsBannerPrintText?: string;
+    newsBannerTitle?: string;
     shareBiliUrl?: string;
     shareDyUrl?: string;
     shareEmailUrl?: string;

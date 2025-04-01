@@ -3,13 +3,13 @@
 
     <div class="banner-box">
 
-      <img :src="layoutStores.getBlogSystemInfo().homeBannerBgImageUrl"
+      <img :src="props.bannerBgImageUrl"
            alt="背景">
     </div>
 
     <div class="banner-info">
       <h1>
-        <span>{{ layoutStores.getBlogSystemInfo().homeBannerTitle }}</span>
+        <span>{{ props.title }}</span>
       </h1>
       <div class="printer" @click="refreshPrint">
         <div class="printer-item">
@@ -25,13 +25,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref} from "vue";
-import {useLayoutStores} from "@/stores/useLayoutStores.ts";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 
-/**
- * 取出 blog系统 信息
- */
-const layoutStores = useLayoutStores();
+interface propsType {
+  top: number;
+  printTextList: string[];
+  title: string;
+  bannerBgImageUrl: string;
+}
+
+const props = defineProps<propsType>()
 
 
 /**
@@ -49,13 +52,10 @@ let selectStr = ref<string>("");
  * 随机 选取 一个 打印
  */
 function randomChangeStrPrint() {
-
-
   // @ts-ignore
   const randomIndex = Math.floor(Math.random() * printTextList.value.length);
   // @ts-ignore
   selectStr.value = printTextList.value[randomIndex];
-
 }
 
 /**
@@ -134,22 +134,26 @@ function refreshPrint(): void {
  */
 function gotoContent() {
   window.scrollTo({
-    top: 800,
+    top: props.top,
     behavior: 'smooth'
   });
 }
 
 
 onMounted(() => {
-  layoutStores.$subscribe((_, state) => {
-    if (state.blogSystemInfo.homeBannerPrintText == undefined) {
-      return;
-    }
-    printTextList.value = state.blogSystemInfo.homeBannerPrintText.split("。").slice(0, -1)
-    printTextList.value = printTextList.value.map((item) => item + "。")
-    printText()
-  })
+  printTextList.value = props.printTextList
+  if (printTextList.value.length <= 0) {
+    return
+  }
+  printText()
+})
 
+watch(() => props.printTextList, () => {
+  printTextList.value = props.printTextList
+  if (printTextList.value.length <= 0) {
+    return
+  }
+  printText()
 })
 
 
