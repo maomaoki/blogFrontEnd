@@ -102,7 +102,7 @@
     </div>
 
     <!-- 中控 遮罩-->
-    <central-control-mask/>
+    <central-control-mask v-if="getIsShowCentralControl()"/>
   </nav>
 </template>
 
@@ -119,7 +119,7 @@ import {useLayoutStores} from "@/stores/useLayoutStores.ts";
 /**
  * 打开 中控 遮罩
  */
-const {setIsShowCentralControl} = useComponentStores();
+const {setIsShowCentralControl,getIsShowCentralControl} = useComponentStores();
 
 
 /**

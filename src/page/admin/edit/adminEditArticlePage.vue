@@ -409,8 +409,10 @@ async function doEdit() {
     editArticlePost.articleBgImage = imageData.value.pictureUrl
     editArticlePost.imageId = imageData.value.id
   }
-
-
+	
+	
+	// 字数
+	editArticlePost.articleSize = editArticlePost.articleContent?.length
   const result = await adminEditArticleUsingPost(editArticlePost);
   if (result.data.code != 0) {
     message.error("编辑文章失败:" + result.data.msg)

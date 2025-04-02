@@ -375,7 +375,8 @@ async function doAdd() {
     addArticlePost.imageId = imageData.value.id
   }
 
-
+  // 字数
+	addArticlePost.articleSize = addArticlePost.articleContent?.length
   const result = await adminAddArticleUsingPost(addArticlePost);
   if (result.data.code != 0) {
     message.error("添加文章失败:" + result.data.msg)

@@ -18,6 +18,7 @@ export const useUserStores = defineStore('user', () => {
     const setUserInfo = async () => {
         const result = await userGetLoginInfoUsingGet();
         if (result.data.code != 0) {
+            userInfo.value = {}
             return false;
         }
 
@@ -33,10 +34,18 @@ export const useUserStores = defineStore('user', () => {
         return userInfo.value;
     }
 
+    /**
+     * 清空 个人登录信息
+     */
+    const cleanUserInfo = () => {
+        userInfo.value = {}
+    }
+
 
     return {
         userInfo,
         setUserInfo,
-        getUserInfo
+        getUserInfo,
+        cleanUserInfo
     }
 })

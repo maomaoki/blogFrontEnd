@@ -54,7 +54,8 @@ const adminRouters: RouteRecordRaw[] = [
                 name: "系统管理",
                 meta: {
                     title: "系统管理",
-                    authAdmin: true
+                    authAdmin: true,
+                    authBoss:true
                 },
                 component: () => import('@/page/admin/adminBlogSystemInfoMangePage.vue'),
             },

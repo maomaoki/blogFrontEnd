@@ -660,11 +660,12 @@ async function doEdit() {
   blogSystemInfo.value.businessCardAvatarUrl = avatarImageData.value.pictureUrl
   blogSystemInfo.value.moreImageUrl = moreImageData.value.pictureUrl
   blogSystemInfo.value.loginImageUrl = loginImageData.value.pictureUrl
-  blogSystemInfo.value.homeBannerBgImageUrl = bannerImageData.value.pictureUrl
+  blogSystemInfo.value.newsBannerBgImageUrl = newsBannerImageData.value.pictureUrl
   // @ts-ignore
   blogSystemInfo.value.blogCreateTime = blogCreate.value
 
 
+	
   // 提交修改
   const result = await adminEditBlogSystemInfoUsingPost(blogSystemInfo.value)
   if (result.data.code != 0) {
