@@ -4,11 +4,13 @@
 // API 唯一标识：
 import * as articleController from "./articleController";
 import * as blogSystemController from "./blogSystemController";
+import * as commentController from "./commentController";
 import * as pictureController from "./pictureController";
 import * as userController from "./userController";
 export default {
   articleController,
   blogSystemController,
+  commentController,
   pictureController,
   userController,
 };

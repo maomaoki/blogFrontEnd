@@ -314,6 +314,39 @@ declare namespace API {
     slideWrapUrl?: string;
   };
 
+  type CommentByArticlePageDto = {
+    articleId?: number;
+    pageNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    timeSortField?: string;
+    timeSortOrder?: string;
+  };
+
+  type CommentSaveDto = {
+    articleId?: number;
+    commentBrowserDevice?: string;
+    commentDevice?: string;
+    commentPositionAddress?: string;
+    content?: string;
+  };
+
+  type CommentVo = {
+    articleId?: number;
+    commentBrowserDevice?: string;
+    commentDevice?: string;
+    commentPositionAddress?: string;
+    content?: string;
+    createTime?: string;
+    id?: number;
+    isHot?: number;
+    isSticky?: number;
+    likeNumber?: number;
+    replyNumber?: number;
+    userCommentVo?: UserCommentVo;
+  };
+
   type getArticleByIdUsingGETParams = {
     /** id */
     id: string;
@@ -340,6 +373,14 @@ declare namespace API {
     current?: number;
     pages?: number;
     records?: ArticlePageVo[];
+    size?: number;
+    total?: number;
+  };
+
+  type PageCommentVo_ = {
+    current?: number;
+    pages?: number;
+    records?: CommentVo[];
     size?: number;
     total?: number;
   };
@@ -445,6 +486,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type ResultPageCommentVo_ = {
+    code?: number;
+    data?: PageCommentVo_;
+    msg?: string;
+  };
+
   type ResultPagePictureVo_ = {
     code?: number;
     data?: PagePictureVo_;
@@ -477,6 +524,13 @@ declare namespace API {
     id?: number;
     pictureName?: string;
     pictureUrl?: string;
+  };
+
+  type UserCommentVo = {
+    id?: number;
+    userAccount?: string;
+    userAvatar?: string;
+    userName?: string;
   };
 
   type UserEditDto = {
