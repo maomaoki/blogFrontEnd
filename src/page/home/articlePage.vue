@@ -81,14 +81,14 @@
         <div class="content">
           <MdPreview
               @GetCatalog="getCatalog"
-              :id="id" :modelValue="article?.articleContent"/>
+              :modelValue="article?.articleContent"/>
         </div>
 
         <div class="hr">
           <i class="iconfont icon-jiandao"></i>
         </div>
 
-        <div class="articleComment">
+        <div class="articleComment" ref="articleCommentRef">
           <div class="comment-header">
 
             <div class="comment-line">
@@ -120,22 +120,24 @@
               </div>
             </div>
             <div class="comment-button">
-              <button class="" @click="saveComment">发送</button>
+              <button :class="getUserInfo().id==undefined? 'isNotSrc':''" @click="saveComment">发送</button>
             </div>
           </div>
           <div class="comment-number">
             <div class="number">
-              <span>99</span>
+              <span>{{ commentList.length }}</span>
               条评论
             </div>
-            <div class="renovate">
+            <div class="refresh" @click="refreshCommentList">
               <span>
                 <i class="iconfont icon-shuaxin"></i>
               </span>
             </div>
           </div>
-          <div class="comment-list">
-            <div v-for="item in commentList" class="comment-item">
+          <div v-if="commentList.length > 0" class="comment-list">
+            <div
+                :id="item.id + ''"
+                v-for="item in commentList" class="comment-item">
               <div class="comment-avatar">
                 <img
                     :src="item?.userCommentVo?.userAvatar"
@@ -145,19 +147,19 @@
               <div class="comment-main">
                 <div class="comment-row">
                   <div class="comment-name">
-                    <span class="name">{{item?.userCommentVo?.userName}}</span>
-<!--                    <span class="check">审核中</span>-->
-                    <span class="time">{{dayjs(item.createTime).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                    <span class="name">{{ item?.userCommentVo?.userName }}</span>
+                    <!--                    <span class="check">审核中</span>-->
+                    <span class="time">{{ dayjs(item.createTime).format("YYYY-MM-DD HH:mm:ss") }}</span>
                   </div>
 
                   <div class="thumbs-up">
                     <span class="tuijian">
                       <i class="iconfont icon-tuijian"></i>
-                      <span>{{item.likeNumber}}</span>
+                      <span>{{ item.likeNumber }}</span>
                     </span>
                     <span class="pinglun">
                       <i class="iconfont icon-pinglun"></i>
-                       <span>{{item.replyNumber}}</span>
+                       <span>{{ item.replyNumber }}</span>
                     </span>
                   </div>
 
@@ -165,7 +167,7 @@
                 </div>
                 <div class="comment-content">
                   <p>
-                    {{item.content}}
+                    {{ item.content }}
                   </p>
                 </div>
                 <div class="comment-info">
@@ -175,18 +177,27 @@
                   </div>
                   <div class="info-item window">
                     <i class="iconfont icon-window-n"></i>
-                    <span>{{item.commentDevice}}</span>
+                    <span>{{ item.commentDevice }}</span>
                   </div>
 
                   <div class="info-item brower">
                     <i class="iconfont icon-chrome"></i>
-                    <span>{{item.commentBrowserDevice}}</span>
+                    <span>{{ item.commentBrowserDevice }}</span>
                   </div>
 
                 </div>
               </div>
             </div>
+            <div v-if="commentList.length > 0" class="commentPage">
+              <pagination
+                  ref="pageRef"
+                  :total="total"
+                  :change-page="changePage"
+                  :page-size="commentPageSize"
+              />
+            </div>
           </div>
+          <a-empty v-else :image="simpleImage"/>
         </div>
       </div>
 
@@ -224,10 +235,10 @@
             <div class="item">
               <i class="iconfont icon-shoucang"></i>
             </div>
-            <div class="item">
+            <div class="item" @click="goToArriveTop()">
               <i class="iconfont icon-wangshang"></i>
             </div>
-            <div class="item">
+            <div class="item"  @click="goToCommentList()">
               <i class="iconfont icon-pinglun"></i>
             </div>
           </div>
@@ -244,24 +255,30 @@ import {type HeadList, MdPreview} from 'md-editor-v3';
 // preview.css相比style.css少了编辑器那部分样式
 import 'md-editor-v3/lib/preview.css';
 
-const id = 'preview-only';
-
-
 import {useRoute} from "vue-router";
 import {computed, onMounted, ref} from "vue";
 import {getArticleByIdUsingGet} from "@/api/articleController.ts";
-import {message} from "ant-design-vue";
+import {Empty, message} from "ant-design-vue";
 import router from "@/routers";
 import dayjs from "dayjs";
 import CardInfo from "@/components/page/home/cardInfo.vue";
 import {commentPageByArticleIdUsingPost, saveCommentUsingPost} from "@/api/commentController.ts";
 import getBrowserFingerprint from "@/utils/browserFingerprintUtils.ts";
-import CommentVo = API.CommentVo;
+import {useUserStores} from "@/stores/useUserStores.ts";
+import Pagination from "@/components/page/home/pagination.vue";
+import {goToArriveTop} from "@/utils/componentsUtils.ts";
+
+const userStore = useUserStores()
+const {getUserInfo} = userStore
 
 const route = useRoute();
 
 const article = ref<API.ArticleVo>()
 
+/**
+ * 空 状态
+ */
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 
 /**
  *  目录 数据
@@ -349,6 +366,7 @@ const commentContentSize = computed(() => commentContent.value.length)
  * 保存 评论
  */
 const saveComment = async () => {
+
   if (commentContent.value.length <= 0) {
     return;
   }
@@ -376,6 +394,11 @@ const saveComment = async () => {
 
 
 /**
+ * 总条数
+ */
+const total = ref<number>(0)
+
+/**
  * 当前 评论第几页
  */
 const commentPageNumber = ref(1)
@@ -387,7 +410,7 @@ const commentPageSize = ref(2)
 /**
  * 评论 列表
  */
-const commentList = ref<CommentVo[]>([])
+const commentList = ref<API.CommentVo[]>([])
 
 /**
  * 获取 评论
@@ -408,11 +431,52 @@ const getCommentList = async () => {
   message.success("获取成功")
   // @ts-ignore
   commentList.value = result.data.data?.records || []
+  // @ts-ignore
+  total.value = parseInt(result.data.data?.total) || 0
+}
 
+
+/**
+ * 页码 发生 变化 触发 函数
+ */
+async function changePage(currentPage: number) {
+  commentPageNumber.value = currentPage
+  await getCommentList()
+}
+
+/**
+ * 滑动到 评论列表
+ */
+function goToCommentList(){
+  window.scrollTo({
+    top: articleCommentRef.value.offsetTop - 100,
+    behavior: 'smooth'
+  });
+}
+
+/**
+ * 评论 ref
+ */
+const articleCommentRef = ref()
+
+
+/**
+ * 分页器 ref
+ */
+const pageRef = ref()
+
+/**
+ * 刷新 评论页面(这里是重置)
+ */
+function refreshCommentList() {
+  commentPageNumber.value = 1
+  pageRef.value.resetPageNumber(1)
+  getCommentList()
 }
 
 
 onMounted(async () => {
+  console.log(articleCommentRef.value.offsetTop)
 
   const result = await getArticleByIdUsingGet({
     id: route.params.id as string
@@ -428,7 +492,6 @@ onMounted(async () => {
   article.value = result.data.data
 
   await getCommentList()
-  console.log(commentList.value)
 })
 </script>
 
@@ -819,7 +882,9 @@ onMounted(async () => {
             font-weight: 800;
           }
 
-          .renovate {
+          .refresh {
+            cursor: pointer;
+
             i {
               font-size: 18px;
               font-weight: 600;
@@ -934,6 +999,7 @@ onMounted(async () => {
                   .pinglun {
                     display: flex;
                     align-items: center;
+
                     i {
                       font-size: 20px;
                       transition: all 0.3s;
@@ -1021,7 +1087,13 @@ onMounted(async () => {
               }
             }
           }
+
+          .commentPage {
+            margin-top: 60px;
+          }
         }
+
+
       }
     }
 

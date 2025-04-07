@@ -1,6 +1,7 @@
 /**
  * 获取 浏览器 指纹
  */
+//@ts-nocheck
 function getBrowserFingerprint() {
     const userAgent = navigator.userAgent;
     let browserName = '未知浏览器';

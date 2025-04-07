@@ -12,6 +12,7 @@
 body {
     font-family: myFont, serif;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 
     a{
         text-decoration: none;

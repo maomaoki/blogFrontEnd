@@ -324,6 +324,11 @@ declare namespace API {
     timeSortOrder?: string;
   };
 
+  type commentListByLatestUsingGETParams = {
+    /** size */
+    size: number;
+  };
+
   type CommentSaveDto = {
     articleId?: number;
     commentBrowserDevice?: string;
@@ -465,6 +470,12 @@ declare namespace API {
   type ResultListArticleTimeCountVo_ = {
     code?: number;
     data?: ArticleTimeCountVo[];
+    msg?: string;
+  };
+
+  type ResultListCommentVo_ = {
+    code?: number;
+    data?: CommentVo[];
     msg?: string;
   };
 
