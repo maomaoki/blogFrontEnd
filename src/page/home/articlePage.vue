@@ -232,13 +232,15 @@
             <div class="item">
               <i class="iconfont icon-dianzan"></i>
             </div>
-            <div class="item">
+            <div class="item"
+                 @click="operateCollectArticle"
+                 :class="isCollectArticle?'active':''">
               <i class="iconfont icon-shoucang"></i>
             </div>
             <div class="item" @click="goToArriveTop()">
               <i class="iconfont icon-wangshang"></i>
             </div>
-            <div class="item"  @click="goToCommentList()">
+            <div class="item" @click="goToCommentList()">
               <i class="iconfont icon-pinglun"></i>
             </div>
           </div>
@@ -267,6 +269,10 @@ import getBrowserFingerprint from "@/utils/browserFingerprintUtils.ts";
 import {useUserStores} from "@/stores/useUserStores.ts";
 import Pagination from "@/components/page/home/pagination.vue";
 import {goToArriveTop} from "@/utils/componentsUtils.ts";
+import {
+  collectArticleUsingPost, deleteCollectArticleUsingPost,
+  getIsCollectArticleByArticleIdAndUserIdUsingGet
+} from "@/api/articleCollectController.ts";
 
 const userStore = useUserStores()
 const {getUserInfo} = userStore
@@ -447,7 +453,7 @@ async function changePage(currentPage: number) {
 /**
  * 滑动到 评论列表
  */
-function goToCommentList(){
+function goToCommentList() {
   window.scrollTo({
     top: articleCommentRef.value.offsetTop - 100,
     behavior: 'smooth'
@@ -475,8 +481,68 @@ function refreshCommentList() {
 }
 
 
+/**
+ * 是否 收藏 此文章
+ */
+const isCollectArticle = ref<boolean>(false)
+
+
+/**
+ * 获取 是否 收藏了 此文章
+ */
+async function getIsCollectArticle() {
+  const result = await getIsCollectArticleByArticleIdAndUserIdUsingGet({
+    articleId: article?.value?.id,
+  })
+  if (result.data.code != 0) {
+    console.log("获取收藏文章记录出错: " + result.data.msg)
+    return
+  }
+  isCollectArticle.value = result.data.data || false
+}
+
+
+/**
+ * 点击 收藏 此 文章
+ */
+async function collectArticle() {
+  const result = await collectArticleUsingPost({
+    articleId: article?.value?.id,
+  })
+  if (result.data.code != 0) {
+    message.error("收藏文章失败: " + result.data.msg)
+    return
+  }
+  isCollectArticle.value = result.data.data || false
+  message.success("收藏文章成功")
+}
+
+
+/**
+ * 点击 取消 收藏 此 文章
+ */
+async function deleteCollectArticle() {
+  const result = await deleteCollectArticleUsingPost({
+    articleId: article?.value?.id,
+  })
+  if (result.data.code != 0) {
+    message.error("取消收藏文章失败: " + result.data.msg)
+    return
+  }
+  isCollectArticle.value = false
+  message.success("取消收藏成功!")
+}
+
+
+/**
+ * 操作 收藏 文章
+ */
+function operateCollectArticle() {
+  isCollectArticle.value ? deleteCollectArticle() : collectArticle()
+}
+
+
 onMounted(async () => {
-  console.log(articleCommentRef.value.offsetTop)
 
   const result = await getArticleByIdUsingGet({
     id: route.params.id as string
@@ -491,7 +557,11 @@ onMounted(async () => {
   }
   article.value = result.data.data
 
+  await getIsCollectArticle()
+
   await getCommentList()
+
+
 })
 </script>
 
@@ -1234,6 +1304,20 @@ onMounted(async () => {
               color: rgba(22, 93, 255);
             }
           }
+
+          .item.active {
+            color: #36b0ff;
+
+            i {
+              font-size: 18px;
+
+              &:hover {
+                color: #36b0ff;
+              }
+            }
+          }
+
+
         }
       }
 

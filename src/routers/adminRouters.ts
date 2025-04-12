@@ -50,6 +50,14 @@ const adminRouters: RouteRecordRaw[] = [
                 component: () => import('@/page/admin/adminArticleManagePage.vue'),
             },
             {
+                path: '/admin/adminCollectArticleManage',
+                name: '收藏文章管理',
+                meta: {
+                    title: "收藏文章管理"
+                },
+                component: () => import('@/page/admin/adminCollectArticleManagePage.vue'),
+            },
+            {
                 path: "/admin/adminSystemManage",
                 name: "系统管理",
                 meta: {

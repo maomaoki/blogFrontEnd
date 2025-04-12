@@ -314,6 +314,33 @@ declare namespace API {
     slideWrapUrl?: string;
   };
 
+  type CollectArticleDeleteDto = {
+    articleId?: number;
+  };
+
+  type CollectArticleDto = {
+    articleId?: number;
+  };
+
+  type CollectArticlePageDto = {
+    articleCategory?: string;
+    articleTags?: string;
+    articleTitle?: string;
+    pageNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    timeSortField?: string;
+    timeSortOrder?: string;
+  };
+
+  type CollectArticleVo = {
+    articleId?: number;
+    articlePageVo?: ArticlePageVo;
+    createTime?: string;
+    id?: number;
+  };
+
   type CommentByArticlePageDto = {
     articleId?: number;
     pageNum?: number;
@@ -362,6 +389,11 @@ declare namespace API {
     password?: string;
   };
 
+  type getIsCollectArticleByArticleIdAndUserIdUsingGETParams = {
+    /** articleId */
+    articleId: number;
+  };
+
   type NewsDto = {
     id?: string;
     size?: number;
@@ -378,6 +410,14 @@ declare namespace API {
     current?: number;
     pages?: number;
     records?: ArticlePageVo[];
+    size?: number;
+    total?: number;
+  };
+
+  type PageCollectArticleVo_ = {
+    current?: number;
+    pages?: number;
+    records?: CollectArticleVo[];
     size?: number;
     total?: number;
   };
@@ -494,6 +534,12 @@ declare namespace API {
   type ResultPageArticlePageVo_ = {
     code?: number;
     data?: PageArticlePageVo_;
+    msg?: string;
+  };
+
+  type ResultPageCollectArticleVo_ = {
+    code?: number;
+    data?: PageCollectArticleVo_;
     msg?: string;
   };
 

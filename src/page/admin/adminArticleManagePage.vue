@@ -36,16 +36,16 @@
 					></a-select>
 				</a-form-item>
 				<a-form-item label="文章分类">
-					<a-space>
-						<a-select
-								v-model:value="articleCategorySelect"
-								mode="combobox"
-								:allowClear="true"
-								style="width: 120px"
-								placeholder="请输入文章分类"
-								:options="articleCategoryOptions"
-						></a-select>
-					</a-space>
+				
+          <a-input
+              v-model:value="articleCategoryInput"
+              mode="combobox"
+              :allowClear="true"
+              style="width: 140px"
+              placeholder="请输入文章分类"
+          >
+            
+          </a-input>
 				</a-form-item>
 				<a-form-item label="文章作者">
 					<a-input
@@ -290,7 +290,7 @@ import dayjs from "dayjs";
 import {CopyOutlined} from "@ant-design/icons-vue";
 import {computed, onMounted, ref} from "vue";
 import {message, type TableColumnsType, type TableProps} from "ant-design-vue";
-import {adminPageArticleUsingPost, getArticleCategoryListUsingGet} from "@/api/articleController.ts";
+import {adminPageArticleUsingPost} from "@/api/articleController.ts";
 import router from "@/routers";
 
 const searchParams = ref<API.AdminPageArticleDto>({
@@ -552,40 +552,9 @@ const articleTagsSelect = ref<string[]>([])
 
 
 /**
- * 文章分类 默认分组
+ * 文章 分类
  */
-const articleCategoryOptions =ref([
-  {
-    value: "前端"
-  },
-  {
-    value: "后端"
-  },
-  {
-    value: "测试"
-  }
-])
-
-/**
- * 文章分类 数据
- */
-const articleCategorySelect = ref<string>()
-
-
-/**
- * 获取 文章 分类
- */
-onMounted(async () => {
-  const result = await getArticleCategoryListUsingGet();
-  if (result.data.code != 0) {
-    message.error("获取文章分类失败:" + result.data.msg)
-    return
-  }
-
-  // @ts-ignore
-  articleCategoryOptions.value = result.data.data.map((item)=>({value: item}))
-})
-
+const articleCategoryInput = ref<string>()
 
 
 /**
@@ -686,7 +655,7 @@ const doReset = () => {
 	articleIsHotSelect.value = undefined
 	articleIsRecommendSelect.value = undefined
 	articleStatusSelect.value = undefined
-	articleCategorySelect.value = undefined
+	articleCategoryInput.value = ""
 	fetchData()
 }
 
@@ -726,8 +695,8 @@ const fetchData = async () => {
 	}
 	
 	// 分类
-	if (articleCategorySelect.value) {
-		searchParams.value.articleCategory = articleCategorySelect.value
+	if (articleCategoryInput.value) {
+		searchParams.value.articleCategory = articleCategoryInput.value
 	} else {
 		searchParams.value.articleCategory = ""
 	}
